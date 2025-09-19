@@ -1,0 +1,76 @@
+/* Tổng thể container */
+.profile-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 25px 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  text-align: left;
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-container:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Tiêu đề */
+.profile-container h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.profile-container h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Các dòng thông tin */
+.profile-container p {
+  font-size: 16px;
+  margin: 12px 0;
+  color: #555;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+.profile-container p:hover {
+  background-color: #f1f8ff;
+}
+
+/* Chữ in đậm */
+.profile-container strong {
+  color: #007bff;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .profile-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .profile-container h2 {
+    font-size: 20px;
+  }
+
+  .profile-container p {
+    font-size: 15px;
+    padding: 8px;
+  }
+}

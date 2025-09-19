@@ -1,0 +1,97 @@
+/* ===== Container ===== */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-box {
+  background: #fff;
+  padding: 40px 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ===== Form Inputs ===== */
+.register-box input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.register-box input:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 0 5px rgba(255, 126, 95, 0.4);
+}
+
+/* ===== Button ===== */
+.register-box button {
+  width: 100%;
+  padding: 12px;
+  background: #ff7e5f;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-box button:hover {
+  background: #e4634f;
+}
+
+/* ===== Error Message ===== */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* ===== Redirect Link ===== */
+.register-box .redirect-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.register-box .redirect-link a {
+  color: #ff7e5f;
+  text-decoration: none;
+}
+
+.register-box .redirect-link a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

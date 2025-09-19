@@ -1,0 +1,80 @@
+.order-page {
+  
+  max-width: 1400px;
+ margin: 0px auto;
+}
+
+.order-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  margin-top: 50px;
+}
+
+.order-table,
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.order-table th,
+.order-table td,
+.order-items-table th,
+.order-items-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.order-table th {
+  background-color: #0c0b0b;
+}
+
+.order-items-table th {
+  background-color: #ff2e2e;
+}
+
+.btn-detail {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-detail:hover {
+  background-color: #0056b3;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: white;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background-color: orange;
+}
+
+.status.paid {
+  background-color: blue;
+}
+
+.status.shipping {
+  background-color: purple;
+}
+
+.status.completed {
+  background-color: green;
+}
+
+.status.canceled {
+  background-color: red;
+}
+
+.order-details {
+  background-color: #fafafa;
+}

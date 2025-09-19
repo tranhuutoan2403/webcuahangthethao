@@ -1,0 +1,94 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import "../CSS/productupdate.css"
+export default function ProductUpdate() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    image: "", // Tên file hiện tại
+  });
+  const [file, setFile] = useState(null); // File mới được chọn
+ 
+  // Lấy dữ liệu sản phẩm ban đầu
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { name, price, image } = res.data;
+        setFormData({ name, price, image });
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        alert("Không thể tải dữ liệu sản phẩm.");
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  // Xử lý thay đổi input văn bản
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Xử lý file mới được chọn
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  // Gộp việc tải file và cập nhật thông tin vào một hàm duy nhất
+  const handleUpdate = async () => {
+    // Tạo FormData để gửi tất cả dữ liệu
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("price", formData.price);
+    // Dù có file mới hay không, vẫn gửi trường image để backend xử lý
+    if (file) {
+      data.append("image", file); // Gửi file mới
+    } else {
+      data.append("image", formData.image); // Gửi tên file cũ
+    }
+    // Sử dụng `axios.put` để gửi yêu cầu
+    try {
+      await axios.put(`http://localhost:5000/api/products/${id}`,data, {
+       
+      });
+      alert("Cập nhật thành công");
+      navigate("/product");
+    } catch (err) {
+      console.error("Lỗi khi cập nhật:", err);
+      alert("Cập nhật thất bại");
+    }
+  };
+
+  return (
+   <div className="update-form-container">
+  <h2>Cập nhật Sản Phẩm</h2>
+  <div>
+    <label>Tên:</label>
+    <input type="text" name="name" value={formData.name} onChange={handleChange} />
+  </div>
+  <div>
+    <label>Giá:</label>
+    <input type="number" name="price" value={formData.price} onChange={handleChange} />
+  </div>
+  <div>
+    <label>Hình:</label>
+    <input type="file" onChange={handleFileChange} />
+  </div>
+
+  {formData.image && (
+    <img
+      src={`http://localhost:5000/images/${formData.image}`}
+      alt="Hình sản phẩm hiện tại"
+    />
+  )}
+
+  <div>
+    <button onClick={handleUpdate}>Lưu</button>
+  </div>
+</div>
+
+  );
+}

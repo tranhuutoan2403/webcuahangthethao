@@ -1,0 +1,98 @@
+/* Khung bao quanh form */
+.update-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Tiêu đề */
+.update-form-container h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* Mỗi nhóm field */
+.update-form-container div {
+  margin-bottom: 30px; /* tăng khoảng cách giữa các field */
+}
+
+/* Label */
+.update-form-container label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 20px; /* tạo khoảng cách rõ ràng giữa label và input */
+  color: #555;
+  font-size: 15px;
+}
+
+/* Input text, number, file, email */
+.update-form-container input[type="text"],
+.update-form-container input[type="number"],
+.update-form-container input[type="file"],
+.update-form-container input[type="password"],
+.update-form-container select,
+.update-form-container textarea,
+.update-form-container input[type="email"] {
+  width: 100%;
+  padding: 14px 16px; /* padding vừa đủ, không quá to */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  margin-top: 5px; /* thêm khoảng cách nhỏ giữa label và input */
+}
+
+/* Hiệu ứng khi focus vào ô input */
+.update-form-container input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+}
+
+/* Ảnh preview sản phẩm */
+.update-form-container img {
+  display: block;
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+}
+
+/* Button */
+.update-form-container button {
+  width: 100%;
+  padding: 14px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.update-form-container button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .update-form-container {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .update-form-container h2 {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,44 @@
+/* src/CSS/orderSuccess.css */
+.order-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  text-align: center;
+  background-color: #f7f7f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.order-container h2 {
+  color: #28a745;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.order-container p {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.order-container strong {
+  color: #ff6600;
+  font-size: 18px;
+}
+
+.order-container a {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.order-container a:hover {
+  background-color: #0056b3;
+}

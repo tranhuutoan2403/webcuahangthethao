@@ -1,0 +1,188 @@
+/* ProductDetail.css */
+
+/* --- GENERAL LAYOUT --- */
+.container {
+    max-width: 1200px; /* Giới hạn chiều rộng trang */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-align {
+    display: flex;
+    gap: 30px; /* Khoảng cách giữa ảnh và thông tin */
+    align-items: flex-start; /* Ảnh và thông tin sẽ bắt đầu từ trên cùng */
+}
+
+/* --- PRODUCT IMAGE --- */
+.product-align > img {
+    /* Đã đặt style inline là width: 700px, nhưng nên chỉnh sửa để responsive hơn */
+    max-width: 50%; /* Chiếm tối đa 50% chiều rộng của bố cục */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* --- PRODUCT INFO --- */
+.product-info {
+    flex-grow: 1; /* Chiếm phần còn lại của không gian */
+}
+
+.product-info h2 {
+    font-size: 2.2em;
+    margin-top: 0;
+    color: #333;
+}
+
+.product-info p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.product-info p:first-of-type { /* Chỉnh giá */
+    font-size: 1.5em;
+    color: #e44d26; /* Màu nổi bật cho giá */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* --- OPTIONS (Color & Size) --- */
+.product-options {
+    margin-bottom: 25px;
+}
+
+.product-options label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.option-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.option-chips button{
+ 
+  width: 30px;
+  height: 50px;
+}
+/* --- COLOR CHIPS --- */
+.color-chip {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Hình tròn */
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    /* border đã được đặt inline, nhưng đây là style bổ sung */
+}
+
+.color-chip:hover {
+    transform: scale(1.1);
+}
+
+.color-chip.active {
+    /* Tạo hiệu ứng vòng ngoài cho màu được chọn */
+    box-shadow: 0 0 0 4px #fff, 0 0 0 6px #2a9d8f; /* Dùng màu xanh nổi bật */
+}
+
+/* --- SỬA LỖI CHO SIZE CHIP --- */
+.size-chip {
+    /* Quan trọng: Dùng inline-flex và căn giữa nội dung */
+    display: inline-flex;
+    align-items: center;      /* Căn giữa theo chiều dọc */
+    justify-content: center;  /* Căn giữa theo chiều ngang */
+    
+    /* Đã sửa padding: Nên có padding ngang để chữ không dính vào viền */
+    padding: 8px 15px; /* Padding trên/dưới 8px, trái/phải 15px */
+    
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    
+    /* Giữ nguyên chuyển động (transition) */
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.size-chip:hover {
+    border-color: #333;
+}
+
+.size-chip.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+}
+
+/* --- OPTION CHIPS (Không cần sửa, chỉ để tham khảo) --- */
+.option-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* --- QUANTITY INPUT --- */
+.quantity-group {
+    margin-bottom: 30px;
+}
+
+.quantity-group label {
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.quantity-group input[type="number"] {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* --- ADD TO CART BUTTON --- */
+.add-to-cart-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #2a9d8f; /* Màu xanh lá/teal nổi bật */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #264653; /* Tối hơn một chút khi hover */
+}
+
+.add-to-cart-btn:active {
+    transform: scale(0.99);
+}
+
+/* --- RESPONSIVENESS (cho màn hình nhỏ hơn) --- */
+@media (max-width: 900px) {
+    .product-align {
+        flex-direction: column; /* Chuyển bố cục từ ngang sang dọc */
+        gap: 20px;
+    }
+
+    .product-align > img {
+        max-width: 100%; /* Ảnh chiếm toàn bộ chiều rộng */
+    }
+
+    .product-info h2 {
+        font-size: 1.8em;
+    }
+
+    .add-to-cart-btn {
+        padding: 12px;
+        font-size: 1.1em;
+    }
+}

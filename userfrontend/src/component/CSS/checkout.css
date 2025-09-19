@@ -1,0 +1,62 @@
+.checkout-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+h2, h3 {
+  color: #E95211;
+}
+
+.checkout-info, .checkout-cart {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.checkout-total {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.checkout-btn {
+  background-color: #E95211;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.checkout-btn:hover {
+  background-color: #d1400e;
+}

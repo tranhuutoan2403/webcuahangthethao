@@ -1,0 +1,86 @@
+/* ===== Header Container ===== */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header {
+  position: fixed;      /* Luôn cố định trên đầu */
+  top: 0;               /* Cách mép trên 0px */
+  left: 0;              /* Cách mép trái 0px */
+  width: 100%;          /* Chiếm toàn bộ chiều ngang */
+  z-index: 1000;        /* Đảm bảo nổi lên trên các phần tử khác */
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #232526, #414345);
+  padding: 15px 30px;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ===== Title ===== */
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffcc00;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  margin: 0;
+}
+
+/* ===== Actions ===== */
+.header-actions {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Link Button ===== */
+.login-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #ff6600;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(255, 102, 0, 0.3);
+}
+
+.login-link:hover {
+  background: #e65c00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 102, 0, 0.4);
+}
+.welcome-text{
+  color: red;
+}
+.login-link:active {
+  transform: translateY(0);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .login-link {
+    width: 100%;
+    text-align: center;
+  }
+}

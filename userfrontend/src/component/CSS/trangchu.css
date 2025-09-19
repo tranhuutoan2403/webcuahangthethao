@@ -1,0 +1,79 @@
+/* Header.css */
+.content{
+    font-family: 'Roboto', sans-serif;
+}
+
+.menu-container{
+  
+    max-width: 1200px;
+    margin: 0px auto;
+}
+.poster{
+    margin-top: -16px;
+}
+.poster img{
+  width: 100%;
+}
+.title-head{
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 30px;
+    color: #E95211;
+    box-shadow: 0 2px 4px rgba(249, 191, 130, 0.98);
+}
+.row{
+    margin-top: 20px;
+}
+h2{
+    font-family: serif;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bolder;
+    color: rgb(250, 100, 7);
+}
+/* làm cho phần sản phẩm */
+.product-container {
+  max-width: 1200px;
+  margin: 0px auto;
+  margin-top: 20px;
+}
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 2px 4px rgba(194, 177, 158, 0.98);
+  width: 280px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card img {
+   
+  width: 280px;
+}
+.product-info {
+
+  padding: 10px;
+}
+.product-name {
+    color: #000;
+  font-weight: bold;
+}
+.product-price {
+  color: red;
+  font-weight: bold;
+}
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

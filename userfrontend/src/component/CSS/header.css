@@ -1,0 +1,264 @@
+/* ====== Cấu trúc tổng ====== */
+body{
+    font-family: 'futura-REGULAR', sans-serif;
+}
+.header {
+  width: 100%;
+  background: #fff;
+
+transition: box-shadow 0.3s ease-in-out, -webkit-box-shadow 0.3s ease-in-out;
+}
+
+/* Dải đen mỏng trên cùng */
+.top-border {
+  height: 2px;
+  background: #000;
+}
+
+/* Thanh chính có đường viền dưới màu cam */
+.header-main {
+  border-bottom: 3px solid #ff6600;
+}
+
+/* Container căn giữa */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Nội dung chính */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+
+}
+
+/* ====== Logo ====== */
+.logo img {
+  height: 55px;
+  object-fit: contain;
+}
+
+/* ====== Menu ====== */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav a,
+.nav button {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  padding: 8px 0;
+}
+
+.nav a:hover,
+.nav button:hover {
+  color: #ff6600;
+}
+
+/* ====== Dropdown ====== */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  display: none;
+  flex-direction: column;
+  min-width: 160px;
+  z-index: 100;
+}
+
+.dropdown-menu a {
+  padding: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #000;
+}
+
+.dropdown-menu a:hover {
+  background: #f2f2f2;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+/* ====== Search Box ====== */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 32px;
+}
+
+.search-box input {
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-box button {
+  background: #f5f5f5;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.search-box svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ====== Icons ====== */
+.icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #000;
+}
+
+.badge-count {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 50%;
+}
+.account-dropdown {
+  position: relative;
+  display: inline-block;
+}
+/* dropdown menu1 cho phần tài khoản xổ ra đăng ký đăng nhập */
+/* Icon User */
+.user-icon {
+  font-size: 20px;
+  color: #333;
+  cursor: pointer; /* Con trỏ chuột thành bàn tay */
+  padding: 8px;
+  transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+  color: #007bff; /* Đổi màu khi hover */
+}
+
+/* Dropdown ẩn mặc định */
+.dropdown-menu1 {
+  display: none;
+  position: absolute;
+  top: 40px; /* khoảng cách so với icon */
+  right: 100;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 100;
+}
+
+/* Khi hover vào account-dropdown thì menu hiện */
+.account-dropdown:hover .dropdown-menu1 {
+  display: block;
+}
+
+/* Style cho từng item */
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+.account-dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.user-icon {
+  font-size: 20px;
+  color: #333;
+}
+
+.dropdown-menu1 {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 160px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.account-dropdown:hover .dropdown-menu1 {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f4f4;
+}
+
+.username {
+  font-weight: bold;
+  cursor: default;
+}
+
+.logout {
+  color: red;
+  cursor: pointer;
+}
