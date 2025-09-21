@@ -14,6 +14,11 @@ import CategogyAdd from "./component/CategogyAdd";
 import CategogyUpdate from "./component/CategogyUpdate";
 import Voucher from "./component/VoucherAdmin";
 import Order from "./component/Order";
+import FlashSales from "./component/FlashSale";
+import FlashSaleAdd from "./component/FlashSaleAdd";
+import FlashSaleUpdate from "./component/FlashSaleUpdate";
+import FlashSaleProduct from "./component/FlashSaleProduct";
+import FlashSaleProductAdd from "./component/FlashSaleProductAdd";
 import "./App.css";
 
 function Layout() {
@@ -57,6 +62,13 @@ function Layout() {
              <Route path="/order" element={<Order />} />
             {/* <Route path="/categogy/add" element={<CategogyAdd />} />
             <Route path="/categogy/update/:id" element={<CategogyUpdate />} /> */}
+            {/* flashSale*/}
+            <Route path="/flash-sale" element={<FlashSales />} />
+            <Route path="/flash-sale/add" element={<FlashSaleAdd />} />
+            <Route path="/flash-sale/update/:id" element={<FlashSaleUpdate />} />
+              {/* flashSale*/}
+            <Route path="/flashsale-products" element={<FlashSaleProduct/>} />
+            <Route path="/flashsale-products/add" element={<FlashSaleProductAdd />} />
           </Routes>
         </div>
       </div>

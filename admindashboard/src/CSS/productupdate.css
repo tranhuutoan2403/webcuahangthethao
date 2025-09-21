@@ -36,6 +36,7 @@
 .update-form-container input[type="number"],
 .update-form-container input[type="file"],
 .update-form-container input[type="password"],
+.update-form-container input[type="datetime-local"],
 .update-form-container select,
 .update-form-container textarea,
 .update-form-container input[type="email"] {
@@ -95,4 +96,11 @@
   .update-form-container h2 {
     font-size: 20px;
   }
+}
+/* Dòng thong bao loi */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 10px;
 }

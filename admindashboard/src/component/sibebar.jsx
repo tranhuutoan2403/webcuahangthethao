@@ -11,6 +11,8 @@ const Sidebar = () => {
         <li><Link to="/product">📦 Products</Link></li>
         <li><Link to="/categogy"> Categories</Link></li>
         <li><Link to="/voucher">Voucher</Link></li>
+        <li><Link to="/flash-sale">Flash Sales</Link></li>
+        <li><Link to="/flashsale-products">Flash Sales Products</Link></li>
         <li><Link to="/order">🛒 Orders</Link></li>
         <li>📊 Reports</li>
       </ul>

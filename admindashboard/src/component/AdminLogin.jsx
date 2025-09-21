@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState(""); // Thông báo lỗi
   const navigate = useNavigate();
 
   // Xử lý khi người dùng nhập vào input
@@ -12,6 +13,7 @@ const AdminLogin = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(""); // Reset lỗi khi người dùng gõ lại
   };
 
   // Xử lý khi submit form
@@ -30,8 +32,9 @@ const AdminLogin = () => {
       const data = await res.json();
 
       if (res.ok) {
+        // Kiểm tra quyền admin
         if (data.user.role !== "admin") {
-          alert("Tài khoản này không có quyền Admin!");
+          setError("Tài khoản này không có quyền Admin!");
           return;
         }
 
@@ -39,14 +42,15 @@ const AdminLogin = () => {
         localStorage.setItem("admin_token", data.token);
         localStorage.setItem("admin_user", JSON.stringify(data.user));
 
-        alert("Đăng nhập thành công!");
-        navigate("/"); // Điều hướng về Dashboard Admin
+        // Chuyển sang trang dashboard admin
+        navigate("/");
       } else {
-        alert(data.message || "Đăng nhập thất bại!");
+        // Sai username hoặc password
+        setError(data.message || "Tên đăng nhập hoặc mật khẩu không đúng");
       }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
-      alert("Có lỗi xảy ra. Vui lòng thử lại!");
+      setError("Có lỗi xảy ra. Vui lòng thử lại!");
     }
   };
 
@@ -78,6 +82,9 @@ const AdminLogin = () => {
               required
             />
           </div>
+
+          {/* Hiển thị thông báo lỗi màu đỏ */}
+          {error && <p className="error-text">{error}</p>}
 
           <button type="submit" className="admin-login-btn">
             Đăng Nhập

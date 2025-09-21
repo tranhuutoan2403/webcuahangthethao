@@ -25,17 +25,30 @@ export default function UserUpdate() {
   }, [id]);
 
   const handleUpdate = () => {
-    fetch(`http://localhost:5000/api/users/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, phone, address })
+  fetch(`http://localhost:5000/api/users/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("admin_token")}` // ✅ gắn token vào headers
+    },
+    body: JSON.stringify({ username, email, password, phone, address })
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Cập nhật thất bại!");
+      }
+      return res.json();
     })
-      .then(res => res.json())
-      .then(() => {
-        alert("Cập nhật thành công");
-        navigate("/users"); // quay lại danh sách
-      });
-  };
+    .then(() => {
+      // alert("Cập nhật thành công");
+      navigate("/users"); // quay lại danh sách
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Có lỗi xảy ra khi cập nhật người dùng.");
+    });
+};
+
   return (
     <div className="update-form-container">
       <h2>Cập nhật người dùng</h2>

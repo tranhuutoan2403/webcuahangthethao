@@ -81,3 +81,31 @@ exports.restoreUser = (req, res) => {
     res.json({ message: 'User đã được khôi phục' });
   });
 };
+// Đổi mật khẩu user
+exports.changePassword = (req, res) => {
+  const { id } = req.params;
+  const { currentPassword, newPassword } = req.body;
+
+  // Lấy mật khẩu hiện tại của user
+  const sqlGet = "SELECT password FROM users WHERE user_id = ?";
+  db.query(sqlGet, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) return res.status(404).json({ error: "Người dùng không tồn tại" });
+
+    const hashedPassword = results[0].password;
+
+    // So sánh mật khẩu hiện tại
+    const match = bcrypt.compareSync(currentPassword, hashedPassword);
+    if (!match) return res.status(400).json({ error: "Mật khẩu hiện tại không đúng" });
+
+    // Hash mật khẩu mới
+    const newHashedPassword = bcrypt.hashSync(newPassword, 10);
+
+    // Cập nhật vào DB
+    const sqlUpdate = "UPDATE users SET password = ? WHERE user_id = ?";
+    db.query(sqlUpdate, [newHashedPassword, id], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Đổi mật khẩu thành công" });
+    });
+  });
+};

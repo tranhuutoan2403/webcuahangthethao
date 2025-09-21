@@ -24,17 +24,17 @@ function Product() {
       })
         .then((res) => {
           if (res.ok) {
-            alert("Xóa thành công!");
+            // alert("Xóa thành công!");
             // Gọi lại hàm fetchProducts để cập nhật danh sách
             fetchProduct(); 
           } else {
             console.error("Lỗi khi xóa:", res.statusText);
-            alert("Có lỗi xảy ra khi xóa sản phẩm.");
+            // alert("Có lỗi xảy ra khi xóa sản phẩm.");
           }
         })
         .catch((err) => {
           console.error("Lỗi khi xóa:", err);
-          alert("Có lỗi khi kết nối đến máy chủ.");
+          // alert("Có lỗi khi kết nối đến máy chủ.");
         });
     }
   };

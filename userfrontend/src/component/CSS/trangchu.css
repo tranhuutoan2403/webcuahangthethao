@@ -77,3 +77,31 @@ h2{
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+.flash-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ff4d4f;
+  color: #fff;
+  padding: 4px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 5px;
+}
+
+.sale-price {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.countdown {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 5px;
+}

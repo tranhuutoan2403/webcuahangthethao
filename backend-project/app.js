@@ -12,6 +12,8 @@ const voucherRoutes = require("./Routers/voucherRouter");
 const checkoutRoutes = require("./Routers/CheckoutRouter");
 const orderRoutes = require('./Routers/orderRouter');
 const productMaterialRouter = require("./Routers/MaterialProductRouter");
+const flashSaleRouter = require("./Routers/flashSaleRouter");
+const flashSaleProductRouter = require("./Routers/FlashSaleProductRouter");
 // Cho phép gọi API từ frontend
 app.use(cors());
 
@@ -37,7 +39,8 @@ app.use("/api/checkout", checkoutRoutes);
 app.use('/api/orders', orderRoutes);
 // Routes ProductMaterials
 app.use("/api/product-materials", productMaterialRouter);
-
+app.use("/api/flash-sale", flashSaleRouter);
+app.use("/api/flashsale-products", flashSaleProductRouter);
 // Chạy server
 app.listen(5000, () => {
   console.log('Server đang chạy tại http://localhost:5000');

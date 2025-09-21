@@ -123,7 +123,7 @@ export default function Header() {
                     <i className="fa-regular fa-user user-icon"></i>
                     {user && (
                       <span className="username">
-                        Xin chào, <strong>{user.username}</strong>
+                        <strong>{user.username}</strong>
                       </span>
                     )}
                   </div>

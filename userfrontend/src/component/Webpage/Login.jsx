@@ -4,11 +4,13 @@ import "../CSS/auth.css";
 
 function Login() {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState(""); // Lưu thông báo lỗi từ server
   const navigate = useNavigate();
 
-  // Xử lý thay đổi input
+  // Khi người dùng nhập, reset lỗi
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(""); // Xóa lỗi khi người dùng nhập lại
   };
 
   // Xử lý submit form
@@ -25,29 +27,29 @@ function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        // Kiểm tra nếu là admin -> Không cho login vào frontend
+        // Nếu là admin nhưng đăng nhập ở frontend
         if (data.user.role === "admin") {
-          alert(
-            "Tài khoản này là Admin. Vui lòng đăng nhập tại trang quản trị (port 3001)."
+          setError(
+            "Tài khoản này là Admin. Vui lòng đăng nhập ở trang quản trị!"
           );
-          return; // Dừng lại, không lưu token, không navigate
+          return;
         }
 
-        // Nếu là user -> lưu thông tin vào localStorage
+        // Nếu là user hợp lệ -> lưu token và thông tin user
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user)); // Lưu object phải stringify
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-        // 🔹 Phát sự kiện thông báo cho Header cập nhật ngay lập tức
+        // Cập nhật header ngay lập tức
         window.dispatchEvent(new Event("userChanged"));
 
-        alert("Đăng nhập thành công!");
         navigate("/"); // Điều hướng về trang chủ
       } else {
-        alert(data.message || "Đăng nhập thất bại!");
+        // Nếu sai username hoặc password
+        setError(data.message || "Tên đăng nhập hoặc mật khẩu không đúng");
       }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
-      alert("Có lỗi xảy ra. Vui lòng thử lại!");
+      setError("Có lỗi xảy ra. Vui lòng thử lại!");
     }
   };
 
@@ -72,6 +74,10 @@ function Login() {
             onChange={handleChange}
             required
           />
+
+          {/* Thông báo lỗi từ server */}
+          {error && <p className="error-text">{error}</p>}
+
           <button type="submit">Đăng Nhập</button>
         </form>
         <p>

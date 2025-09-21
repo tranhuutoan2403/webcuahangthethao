@@ -74,3 +74,152 @@
     padding: 8px;
   }
 }
+/* Overlay nền modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+/* Modal box */
+.modal {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  font-family: "Arial", sans-serif;
+  position: relative;
+  text-align: left;
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Tiêu đề modal */
+.modal h3 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.modal h3::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #007bff;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Form trong modal */
+.modal .form-group {
+  margin-bottom: 15px;
+}
+
+.modal .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.modal .form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.modal .form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #f1f8ff;
+}
+
+/* Nút lưu và hủy */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-update {
+  padding: 10px 20px;
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-update:hover {
+  background: #0056b3;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  background: #ccc;
+  color: #333;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+  background: #aaa;
+}
+
+/* Thông báo lỗi / thành công */
+.modal .message {
+  text-align: center;
+  font-weight: 600;
+  color: red;
+  margin-top: 10px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .modal {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .modal h3 {
+    font-size: 20px;
+  }
+
+  .modal .form-group input {
+    padding: 8px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

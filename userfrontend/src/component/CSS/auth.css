@@ -95,3 +95,18 @@
 .auth-box p a:hover {
   text-decoration: underline;
 }
+/* Hiển thị chữ lỗi màu đỏ dưới input */
+.error-text {
+  color: #d93025; /* Màu đỏ lỗi */
+  font-size: 14px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+
+/* Lỗi từ server sẽ đậm hơn */
+.server-error {
+  font-weight: bold;
+  text-align: center;
+}

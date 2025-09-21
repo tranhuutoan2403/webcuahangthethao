@@ -30,35 +30,45 @@ exports.login = (req, res) => {
     return res.status(400).json({ message: "Vui lòng nhập username và mật khẩu!" });
   }
 
-  const sql = "SELECT * FROM users WHERE username = ?";
-  db.query(sql, [username], (err, results) => {
+  // 1. Tìm user không phân biệt hoa thường:
+  const sqlIgnoreCase = "SELECT * FROM users WHERE LOWER(username) = LOWER(?)";
+
+  db.query(sqlIgnoreCase, [username], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0) return res.status(401).json({ message: "Username không tồn tại!" });
+
+    if (results.length === 0) {
+      // Không tìm thấy username (kể cả khi ignore case)
+      return res.status(401).json({ message: "Tên Đăng Nhập Và Mật Khẩu không chính xác" });
+    }
 
     const user = results[0];
 
-    // So sánh password
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
-    if (!isPasswordValid) return res.status(401).json({ message: "Sai mật khẩu!" });
+    // 2. Kiểm tra chữ hoa-thường có chính xác không
+    if (user.username !== username) {
+      return res.status(401).json({ message: "Tên Đăng Nhập Và Mật Khẩu không chính xác" });
+    }
 
-    // Tạo token
+    // 3. So sánh mật khẩu
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) return res.status(401).json({ message: "Tên Đăng Nhập Và Mật Khẩu không chính xác" });
+
+    // 4. Tạo token
     const token = jwt.sign(
       { id: user.user_id, role: user.role },
       SECRET_KEY,
       { expiresIn: "1d" }
     );
 
-    // TRẢ VỀ ĐẦY ĐỦ DỮ LIỆU
+    // 5. Trả về dữ liệu
     res.json({
       message: "Đăng nhập thành công!",
       token,
       user: {
         id: user.user_id,
-        username: user.username, // Quan trọng!
+        username: user.username,
         email: user.email,
         role: user.role
       }
     });
   });
 };
-

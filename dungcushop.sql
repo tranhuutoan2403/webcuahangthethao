@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2025 at 04:00 PM
+-- Generation Time: Sep 21, 2025 at 12:01 PM
 -- Server version: 10.6.22-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,14 +95,16 @@ CREATE TABLE IF NOT EXISTS `flash_sales` (
   `status` enum('scheduled','active','ended','cancelled') DEFAULT 'scheduled',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`flash_sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `flash_sales`
 --
 
 INSERT INTO `flash_sales` (`flash_sale_id`, `name`, `description`, `discount_type`, `discount_value`, `start_at`, `end_at`, `status`, `created_at`) VALUES
-(1, 'Flash Sale 9/2025', 'Giảm giá sốc 50% cho sản phẩm', 'percent', 50, '2025-09-20 09:00:00', '2025-09-20 12:00:00', 'scheduled', '2025-09-13 14:50:32');
+(1, 'Flash Sale 9/2025', 'Giảm giá sốc 30% cho sản phẩm', 'percent', 30, '2025-09-20 19:00:00', '2025-09-21 22:00:00', 'active', '2025-09-13 14:50:32'),
+(2, 'Đại Hội Săn Sale', 'Giảm 20% cho tất cả sản phẩm', 'percent', 20, '2025-09-21 10:35:00', '2025-09-22 10:35:00', 'active', '2025-09-21 03:35:54'),
+(3, 'Chương Trình Giảm Giá Tháng 11', 'Săn sale ngập tràn ưu đãi', 'percent', 25, '2025-09-23 10:51:00', '2025-09-30 10:51:00', 'scheduled', '2025-09-21 03:51:22');
 
 -- --------------------------------------------------------
 
@@ -115,22 +117,20 @@ CREATE TABLE IF NOT EXISTS `flash_sale_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `flash_sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `sale_price` decimal(10,0) DEFAULT NULL,
-  `discount_type` enum('percent','fixed') DEFAULT NULL,
-  `discount_value` decimal(10,0) DEFAULT NULL,
   `stock_limit` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `flash_sale_id` (`flash_sale_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `flash_sale_products`
 --
 
-INSERT INTO `flash_sale_products` (`id`, `flash_sale_id`, `product_id`, `sale_price`, `discount_type`, `discount_value`, `stock_limit`, `created_at`) VALUES
-(1, 1, 1, NULL, 'percent', 50, 10, '2025-09-13 14:50:32');
+INSERT INTO `flash_sale_products` (`id`, `flash_sale_id`, `product_id`, `stock_limit`, `created_at`) VALUES
+(1, 1, 1, 10, '2025-09-13 14:50:32'),
+(4, 2, 1, 10, '2025-09-21 04:34:15');
 
 -- --------------------------------------------------------
 
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 --
 
 INSERT INTO `news` (`news_id`, `title`, `slug`, `excerpt`, `content`, `author_id`, `image`, `status`, `published_at`, `created_at`) VALUES
-(1, 'Giới thiệu về chúng tôi', 'gioi-thieu-chung-toi', 'Thông tin giới thiệu công ty', '<p>Nội dung giới thiệu chi tiết...</p>', 1, NULL, 'published', '2025-09-13 21:50:33', '2025-09-13 14:50:33');
+(1, 'Giới thiệu về chúng tôi', 'gioi-thieu-chung-toi', 'Thông tin giới thiệu công ty', '<p>Nội dung giới thiệu chi tiết...</p>', NULL, NULL, 'published', '2025-09-13 21:50:33', '2025-09-13 14:50:33');
 
 -- --------------------------------------------------------
 
@@ -326,24 +326,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `address`, `role`, `status`, `created_at`) VALUES
-(1, 'Nguyen Van A1', 'a@example.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkAZyTt3YUMc3xHcTej8rRj4G', '0912345678', '123 Lê Lợi, TP.HCM', 'admin', 'active', '2025-09-13 14:50:31'),
 (2, 'Tran Thi B', 'b@example.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkAZyTt3YUMc3xHcTej8rRj4G', '0987654321', '456 Hai Bà Trưng, Hà Nội', 'user', 'active', '2025-09-13 14:50:31'),
 (5, 'QuangDungVip', 'nguyenphamquangdung9611@gmail.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkfhhh', '0454646463', '454 Trần Đại Nghĩa', 'user', 'active', '2025-09-14 07:55:42'),
 (6, 'HoangPro098', 'hoangsuon012@gmail.com', '$2b$10$CUhoYMk6IUsC6.WqZgXi4uZHzx8.r9iOeTZvGr5ZkWijB4cVSPigW', '0242455231', '123 Nguyễn Cửu Phú', 'user', 'active', '2025-09-15 10:33:12'),
-(7, 'MinhTien', 'minhtien@gmail.com', '$2b$10$7bgnN.c313X4fVFcNKXgC.FlmdGbEpvngrD4/pVwJtXr2Dv2Z0.wC', '0373466151', 'Trần Phú TPHCM', 'user', 'active', '2025-09-15 10:36:18'),
+(7, 'MinhTien', 'minhtien@gmail.com', '$2b$10$YETOupHgHuWVijQ0tUexke61uwfTvZtrFVApTP2Ql1qn6TJETRkO2', '0373466151', 'Trần Phú TPHCM', 'user', 'active', '2025-09-15 10:36:18'),
 (8, 'PhuocNguyen2034', 'phuoc@gmail.com', '$2b$10$0jmNkB.cE0wsWJtigJSgtOnwHtmSElDjjdiHJQO/M8D.gHFatRAEa', '02425233', 'ng3663631', 'user', 'active', '2025-09-15 10:39:59'),
 (13, 'dewq294e1', 'r224242@gmail.com', '$2b$10$ELyrC4NTJ02EbUZGNM0ZWOdykpr6DFDTCA1TG/Trf1CCFlSZ3fyMS', '024211144', 'ff33535', 'user', 'active', '2025-09-15 10:55:11'),
 (15, 'ft35352', 'wrw3@gmail.com', '$2b$10$D1A3jzllK/YTQ5dsyS7zQ.hV7.An8yFW2RtOjocbaIoS1HtX5SEpS', '024242111', 'f353535', 'user', 'inactive', '2025-09-15 11:02:39'),
 (16, 'TrongLuc', 'trongluc@gmail.com', '$2b$10$qg6g3VHRAWIKgyLZHeWgOONMjtYYEyLlhRNGyirZPgqo1KT07pjQO', '033242424', 'Võ Văn Vân TPHCM', 'admin', 'active', '2025-09-15 14:46:41'),
 (17, 'DaiMinh', 'daiminh@gmail.com', '$2b$10$AqCLmsiIIWgmeiHjtiVhpecjwmH1vzaLjIbbX.LCrrzgEwJxHVYsq', '0935352312', '224 An Dương Vương, TPHCM', 'admin', 'active', '2025-09-19 12:42:07'),
-(19, 'HuuToan', 'huutoan@gmail.com', '$2b$10$0NxqZD6ImGVZWekDLgaA.ev1RPH65pifo2UldPnFhm2h0W.MGx98u', '045645632', 'Long An', 'admin', 'active', '2025-09-19 13:43:07');
+(19, 'HuuToan', 'huutoan@gmail.com', '$2b$10$0NxqZD6ImGVZWekDLgaA.ev1RPH65pifo2UldPnFhm2h0W.MGx98u', '045645632', 'Long An', 'admin', 'active', '2025-09-19 13:43:07'),
+(20, 'HongDuc', 'hongduc@gmail.com', '$2b$10$yjlsGm58kJmrnFNQUhtF2OqJ/xB59De/Z4lLI4doW/TVTPIIr7PYO', '0965055060', 'Thủ Đức Tphcm', 'user', 'active', '2025-09-20 13:00:18'),
+(21, 'HuyNguyen213', 'nguyenhuy9611@gmail.com', '$2b$10$wmixhMSNuKSNeSpohh5UnO.35vkKTBF/GmCMOpQ8lboEVmaaatH9m', '0965055062', 'Can Giuoc Long An', 'user', 'inactive', '2025-09-20 14:15:07');
 
 -- --------------------------------------------------------
 

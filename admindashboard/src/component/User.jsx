@@ -1,58 +1,49 @@
 import React, { useEffect, useState } from "react";
-import "../CSS/user.css"
+import api from "../api"; // ✅ Import api.js
+import "../CSS/user.css";
+
 function User() {
   const [users, setUsers] = useState([]);
 
-// Hàm để lấy danh sách user từ API
-// Hàm fetch danh sách user
-const fetchUsers = () => {
-  fetch("http://localhost:5000/api/users")
-    .then((res) => res.json())
-    .then((data) => {
-      // Lọc chỉ user có status = 'active'
-      const activeUsers = data.filter(user => user.status === 'active');
+  // Hàm lấy danh sách user từ API
+  const fetchUsers = async () => {
+    try {
+      const res = await api.get("/users"); // ✅ Token tự động đính vào headers
+      const activeUsers = res.data.filter((user) => user.status === "active");
       setUsers(activeUsers);
-    })
-    .catch((err) => console.error("Lỗi khi tải user:", err));
-};
+    } catch (err) {
+      console.error("Lỗi khi tải user:", err.response?.data || err.message);
+    }
+  };
 
-  // Lấy danh sách users ban đầu khi component được render
+  // Gọi fetchUsers khi component render lần đầu
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // Hàm xóa user
-  const handleDelete = (id) => {
-   if (window.confirm("Bạn có chắc muốn ẩn user này?")) {
-    fetch(`http://localhost:5000/api/users/hide/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    })
-        .then((res) => {
-          if (res.ok) {
-            alert("Xóa thành công!");
-            // Gọi lại hàm fetchUsers để cập nhật danh sách
-            fetchUsers(); 
-          } else {
-            console.error("Lỗi khi xóa:", res.statusText);
-            alert("Có lỗi xảy ra khi xóa user.");
-          }
-        })
-        .catch((err) => {
-          console.error("Lỗi khi xóa:", err);
-          alert("Có lỗi khi kết nối đến máy chủ.");
-        });
+  // Hàm ẩn user (status = hidden)
+  const handleDelete = async (id) => {
+    if (window.confirm("Bạn có chắc muốn ẩn user này?")) {
+      try {
+        await api.put(`/users/hide/${id}`); // ✅ Không cần headers thủ công
+        alert("Ẩn user thành công!");
+        fetchUsers(); // Reload lại danh sách sau khi ẩn
+      } catch (err) {
+        console.error("Lỗi khi ẩn user:", err.response?.data || err.message);
+        alert("Có lỗi xảy ra khi ẩn user.");
+      }
     }
   };
 
   return (
     <div className="user-list">
-       <button
-          className="edit-btn"
-          onClick={() => (window.location.href = `/users/add/`)}
-        >
-          Thêm
-        </button>
+      <button
+        className="edit-btn"
+        onClick={() => (window.location.href = `/users/add/`)}
+      >
+        Thêm
+      </button>
+
       <h2>Danh sách Users</h2>
       <table>
         <thead>
@@ -64,18 +55,18 @@ const fetchUsers = () => {
           </tr>
         </thead>
         <tbody>
-          
           {users.length > 0 ? (
             users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.user_id}> {/* ✅ Fix warning unique key */}
                 <td>{user.user_id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>
-                  
                   <button
                     className="edit-btn"
-                    onClick={() => (window.location.href = `/users/update/${user.user_id}`)}
+                    onClick={() =>
+                      (window.location.href = `/users/update/${user.user_id}`)
+                    }
                   >
                     Sửa
                   </button>
