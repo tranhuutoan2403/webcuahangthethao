@@ -13,14 +13,15 @@ exports.getAllFlashSales = (req, res) => {
 exports.getActiveFlashSaleWithProducts = (req, res) => {
   const now = new Date();
   const sql = `
-    SELECT fs.*, p.product_id, p.name, p.slug, p.price, p.image
-    FROM flash_sales fs
-    JOIN flash_sale_products fsp ON fs.flash_sale_id = fsp.flash_sale_id
-    JOIN products p ON fsp.product_id = p.product_id
-    WHERE fs.status = 'active'
-    AND fs.start_at <= ? AND fs.end_at >= ?
-    ORDER BY fs.start_at DESC
-  `;
+  SELECT fs.*, p.product_id, p.name, p.slug, p.price, p.image
+  FROM flash_sales fs
+  JOIN flash_sale_products fsp ON fs.flash_sale_id = fsp.flash_sale_id
+  JOIN products p ON fsp.product_id = p.product_id
+  WHERE fs.status = 'active'
+    AND fs.start_at <= NOW()
+    AND fs.end_at >= NOW()
+  ORDER BY fs.start_at DESC
+`;
   db.query(sql, [now, now], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
 

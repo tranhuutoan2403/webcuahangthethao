@@ -40,7 +40,7 @@ app.use('/api/orders', orderRoutes);
 // Routes ProductMaterials
 app.use("/api/product-materials", productMaterialRouter);
 app.use("/api/flash-sale", flashSaleRouter);
-app.use("/api/flashsale-products", flashSaleProductRouter);
+app.use("/api/flash-sale-products", flashSaleProductRouter);
 // Chạy server
 app.listen(5000, () => {
   console.log('Server đang chạy tại http://localhost:5000');

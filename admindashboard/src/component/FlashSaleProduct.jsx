@@ -8,7 +8,7 @@ function FlashSaleProduct() {
   // Lấy danh sách flash sale product
   const fetchFlashProducts = async () => {
     try {
-      const res = await api.get("/flashsale-products");
+      const res = await api.get("/flash-sale-products");
       
       setFlashProducts(res.data);
     } catch (err) {
@@ -24,7 +24,7 @@ function FlashSaleProduct() {
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa sản phẩm này khỏi flash sale?")) {
       try {
-        await api.delete(`/flashsale-products/${id}`);
+        await api.delete(`/flash-sale-products/${id}`);
         // alert("Xóa thành công!");
         fetchFlashProducts();
       } catch (err) {
@@ -38,7 +38,7 @@ function FlashSaleProduct() {
     <div className="user-list">
       <button
         className="edit-btn"
-        onClick={() => (window.location.href = "/flashsale-products/add")}
+        onClick={() => (window.location.href = "/flash-sale-products/add")}
       >
         Thêm
       </button>
@@ -67,7 +67,7 @@ function FlashSaleProduct() {
                   <button
                     className="edit-btn"
                     onClick={() =>
-                      (window.location.href = `/flashsale-products/update/${fp.id}`)
+                      (window.location.href = `/flash-sale-products/update/${fp.id}`)
                     }
                   >
                     Sửa

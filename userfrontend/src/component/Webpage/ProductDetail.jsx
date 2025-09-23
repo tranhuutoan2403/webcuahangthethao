@@ -65,7 +65,7 @@ function ProductDetail() {
   useEffect(() => {
     const fetchFlashSales = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/flashsales/active");
+        const res = await fetch("http://localhost:5000/api/flash-sale/active");
         if (!res.ok) throw new Error("Không thể lấy flash sale");
         const data = await res.json(); // mảng flash sale
 

@@ -19,6 +19,7 @@ import FlashSaleAdd from "./component/FlashSaleAdd";
 import FlashSaleUpdate from "./component/FlashSaleUpdate";
 import FlashSaleProduct from "./component/FlashSaleProduct";
 import FlashSaleProductAdd from "./component/FlashSaleProductAdd";
+import FlashSaleProductUpdate from "./component/FlashSaleProductUpdate";
 import "./App.css";
 
 function Layout() {
@@ -67,8 +68,9 @@ function Layout() {
             <Route path="/flash-sale/add" element={<FlashSaleAdd />} />
             <Route path="/flash-sale/update/:id" element={<FlashSaleUpdate />} />
               {/* flashSale*/}
-            <Route path="/flashsale-products" element={<FlashSaleProduct/>} />
-            <Route path="/flashsale-products/add" element={<FlashSaleProductAdd />} />
+            <Route path="/flash-sale-products" element={<FlashSaleProduct/>} />
+            <Route path="/flash-sale-products/add" element={<FlashSaleProductAdd />} />
+            <Route path="/flash-sale-products/update/:id" element={<FlashSaleProductUpdate />} />
           </Routes>
         </div>
       </div>

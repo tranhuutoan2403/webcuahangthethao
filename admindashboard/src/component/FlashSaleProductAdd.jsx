@@ -15,7 +15,7 @@ function FlashSaleProductAdd() {
   useEffect(() => {
     const fetchFlashSales = async () => {
       try {
-        const res = await api.get("/flashsales");
+        const res = await api.get("/flash-sale");
         setFlashSales(res.data);
       } catch (err) {
         console.error("Lỗi khi tải flash sales:", err.response?.data || err.message);
@@ -50,9 +50,9 @@ function FlashSaleProductAdd() {
     }
 
     try {
-      await api.post("/flashsale-products", form);
+      await api.post("/flash-sale-products", form);
       // alert("Thêm Flash Sale Product thành công!");
-      window.location.href = "/flash-sale-product";
+      window.location.href = "/flash-sale-products";
     } catch (err) {
       console.error(err.response?.data || err.message);
       // alert("Thêm Flash Sale Product thất bại.");

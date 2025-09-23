@@ -93,7 +93,7 @@ function GioHang() {
                 border: "none",
                 cursor: "pointer",
                 fontWeight: "bold",
-fontSize: "16px",
+                fontSize: "16px",
                 borderRadius: "5px"
               }}
             >

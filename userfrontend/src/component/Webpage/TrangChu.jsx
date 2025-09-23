@@ -17,7 +17,7 @@ const TrangChu = () => {
 
   // Lấy flash sale active
   useEffect(() => {
-    fetch("http://localhost:5000/api/flashsales/active")
+    fetch("http://localhost:5000/api/flash-sale/active")
       .then(res => res.json())
       .then(data => setFlashSales(data))
       .catch(err => console.error("Error fetching flash sales:", err));
@@ -40,21 +40,18 @@ const TrangChu = () => {
   // }, [flashSales]);
 
   // Tính giá sale nếu sản phẩm có flash sale
-  const getSalePrice = (productId, originalPrice) => {
+    const getSalePrice = (productId, originalPrice) => {
     // Lọc tất cả flash sale active áp dụng cho sản phẩm này
     const applicableSales = flashSales.filter(flash =>
       flash.products.some(p => p.product_id === productId)
     );
-
     if (applicableSales.length === 0) {
       return { price: originalPrice, isFlash: false, end_at: null };
     }
-
     // Chọn flash sale có discount_value cao nhất
     const bestSale = applicableSales.reduce((prev, curr) => {
       return prev.discount_value > curr.discount_value ? prev : curr;
     });
-
     // Tính giá theo discount_type
     let salePrice;
     if (bestSale.discount_type === "percent") {
@@ -64,10 +61,8 @@ const TrangChu = () => {
     } else {
       salePrice = originalPrice;
     }
-
-    return { price: salePrice, isFlash: true, end_at: bestSale.end_at };
+  return { price: salePrice, isFlash: true, end_at: bestSale.end_at };
   };
-
   const formatTime = (ms) => {
     const totalSeconds = Math.floor(ms / 1000);
     const h = Math.floor(totalSeconds / 3600);
@@ -75,7 +70,6 @@ const TrangChu = () => {
     const s = totalSeconds % 60;
     return `${h}h ${m}m ${s}s`;
   };
-
   return (
     <div className="content">
       <div className="poster">

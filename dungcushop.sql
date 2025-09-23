@@ -7,9 +7,16 @@
 -- Server version: 10.6.22-MariaDB
 -- PHP Version: 8.2.12
 
+-- Thiết lập SQL Mode
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+-- Bắt đầu transaction
 START TRANSACTION;
-SET time_zone = "+00:00";
+
+-- Đặt múi giờ hiện tại cho session và global về +07:00 (giờ Việt Nam)
+SET GLOBAL time_zone = '+07:00';
+SET time_zone = '+07:00';
+
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
