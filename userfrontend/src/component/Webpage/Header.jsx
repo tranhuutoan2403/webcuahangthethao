@@ -73,8 +73,8 @@ export default function Header() {
               <div className="dropdown">
                 <Link to="/categogy/vot-cau-long">Vợt Cầu Lông</Link>
                 <div className="dropdown-menu">
-                  <Link to="/VotYonex">Vợt Yonex</Link>
-                  <Link to="/VotLining">Vợt Lining</Link>
+                  <Link to="/brand/vot-yonex">Vợt Yonex</Link>
+                  <Link to="/brand/vot-lining">Vợt Lining</Link>
                 </div>
               </div>
               <div className="dropdown">

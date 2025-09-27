@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2025 at 03:46 AM
+-- Generation Time: Sep 27, 2025 at 03:43 PM
 -- Server version: 10.6.22-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,13 +42,30 @@ CREATE TABLE IF NOT EXISTS `address` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `address`
+-- Table structure for table `brands`
 --
 
-INSERT INTO `address` (`id`, `user_id`, `recipient_name`, `phone`, `address_line`, `is_default`, `created_at`) VALUES
-(1, 7, 'Trẩn Minh Tiến', '024225525', '123 Võ Văn Vân', 0, '2025-09-16 06:00:08'),
-(2, 7, 'Trẩn Minh Tiến', '024225525', '123 Võ Văn Vân', 0, '2025-09-16 06:00:14');
+DROP TABLE IF EXISTS `brands`;
+CREATE TABLE IF NOT EXISTS `brands` (
+  `brand_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  PRIMARY KEY (`brand_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
+(1, 'Yonex', 'vot-yonex'),
+(2, 'Lining', 'vot-lining'),
+(3, 'Victor', 'victor'),
+(4, 'nike', 'giay-nike');
 
 -- --------------------------------------------------------
 
@@ -148,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `materials` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`material_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `materials`
@@ -276,7 +293,7 @@ DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `product_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) DEFAULT NULL,
-  `brand_id` INT(11) DEFAULT NULL,  -- Thêm cột brand
+  `brand_id` int(11) DEFAULT NULL,
   `name` varchar(150) NOT NULL,
   `slug` varchar(200) DEFAULT NULL,
   `description` text NOT NULL,
@@ -285,40 +302,27 @@ CREATE TABLE IF NOT EXISTS `products` (
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`product_id`),
-  KEY `idx_products_category` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `idx_products_category` (`category_id`),
+  KEY `fk_products_brand` (`brand_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock`, `image`, `created_at`) VALUES
-(1, 1, 'Vợt Yonex Astrox 77 Pro Đỏ', 'axtrox-77', 'Vợt cầu lông Yonex chính hãng, nhẹ và bền', 550000, 75, 'astrox-77-pro.jpg', '2025-09-13 07:50:32'),
-(2, 1, 'Vợt Yonex Astrox 88d pro', 'axtrox-88', 'Giày thể thao nhẹ, êm ái, thích hợp cho việc chạy bộ hoặc tập gym.', 750000, 120, 'astrox-88d-pro-ch.jpg', '2025-09-13 07:50:32'),
-(3, 1, 'Vợt Axforce 100 Vàng Golden', '100-golden', 'Điện thoại thông minh với camera sắc nét, pin dung lượng lớn và thiết kế sang trọng.', 1200000, 80, 'axforce-100-vang-golden.jpg', '2025-09-13 07:50:32'),
-(9, 1, 'Vợt Yonex Nanoflare 800 Pro', 'nanaflare-800', 'Vợt rất nhẹ nhàng', 500000, 50, 'nanoflare800.jpg', '2025-09-13 21:12:07'),
-(11, 1, 'Vợt Axforce 90 Xanh Dragon', '90-dragon', 'Vợt thiên hướng tấn công toàn diện', 500000, 30, 'axforce-90-xanh-dragon-max.jpg', '2025-09-13 23:10:27'),
-(12, 2, 'Vợt Pickle Ball Head Extreme Lite', 'Extreme-Lite', 'Vợt PickelBall Tốt', 400000, 35, 'HeadExtremeElite.jpg', '2025-09-13 23:35:52'),
-(14, 2, 'Vợt Pickle Ball Head Radical Lite', 'Radical-lite', 'Vợt Pickel Ball nhẹ nhàng', 600000, 45, 'HeadRadicalElite.jpg', '2025-09-13 23:43:51'),
-(15, 2, 'Vợt PickelBall HeadSparkElite', 'Spark-elite', 'Vợt phù hợp cho người mới chơi', 550000, 35, 'HeadSparkElite.jpg', '2025-09-14 00:01:09'),
-(25, 10, 'Giày Nữ Thời Trang', 'giay-nu', 'Giày nữ dịu êm ', 750000, 40, 'btnextjx.JPG', '2025-09-17 05:56:22'),
-(33, 1, 'Vợt Canno Pro', 'cannon-pro', 'rgrrrry', 850000, 60, 'mubaohiem.JPG', '2025-09-18 07:20:13');
+INSERT INTO `products` (`product_id`, `category_id`, `brand_id`, `name`, `slug`, `description`, `price`, `stock`, `image`, `created_at`) VALUES
+(1, 1, 1, 'Vợt Yonex Astrox 77 Pro Đỏ', 'axtrox-77', 'Vợt tấn công bùng nổ', 550000, 50, 'astrox-77-pro.jpg', '2025-09-13 07:50:32'),
+(2, 1, 1, 'Vợt Yonex Astrox 88d pro', 'axtrox-88', 'Giày thể thao nhẹ, êm ái, thích hợp cho việc chạy bộ hoặc tập gym.', 750000, 120, 'astrox-88d-pro-ch.jpg', '2025-09-13 07:50:32'),
+(3, 1, 2, 'Vợt Axforce 100 Vàng Golden', '100-golden', 'Điện thoại thông minh với camera sắc nét, pin dung lượng lớn và thiết kế sang trọng.', 1200000, 80, 'axforce-100-vang-golden.jpg', '2025-09-13 07:50:32'),
+(9, 1, 1, 'Vợt Yonex Nanoflare 800 Pro', 'nanaflare-800', 'Vợt rất nhẹ nhàng', 500000, 50, 'nanoflare800.jpg', '2025-09-13 21:12:07'),
+(11, 1, 2, 'Vợt Axforce 90 Xanh Dragon', '90-dragon', 'Vợt thiên hướng tấn công toàn diện', 500000, 30, 'axforce-90-xanh-dragon-max.jpg', '2025-09-13 23:10:27'),
+(12, 2, NULL, 'Vợt Pickle Ball Head Extreme Lite', 'Extreme-Lite', 'Vợt PickelBall Tốt', 400000, 35, 'HeadExtremeElite.jpg', '2025-09-13 23:35:52'),
+(14, 2, NULL, 'Vợt Pickle Ball Head Radical Lite', 'Radical-lite', 'Vợt Pickel Ball nhẹ nhàng', 600000, 45, 'HeadRadicalElite.jpg', '2025-09-13 23:43:51'),
+(15, 2, NULL, 'Vợt PickelBall HeadSparkElite', 'Spark-elite', 'Vợt phù hợp cho người mới chơi', 550000, 35, 'HeadSparkElite.jpg', '2025-09-14 00:01:09'),
+(25, 10, NULL, 'Giày Nữ Thời Trang', 'giay-nu', 'Giày nữ dịu êm ', 750000, 40, 'btnextjx.JPG', '2025-09-17 05:56:22'),
+(33, 1, 2, 'Vợt Canno Pro', 'cannon-pro', 'rgrrrry', 850000, 60, 'mubaohiem.JPG', '2025-09-18 07:20:13');
 
 -- --------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `brands` (
-  `brand_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
-  `slug` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`brand_id`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `brands` (`name`, `slug`) VALUES
-('Yonex', 'yonex'),
-('Lining', 'lining'),
-('Victor', 'victor');
-
 
 --
 -- Table structure for table `reviews`
@@ -356,16 +360,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `address`, `role`, `status`, `created_at`) VALUES
-(2, 'Tran Thi B', 'b@example.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkAZyTt3YUMc3xHcTej8rRj4G', '0987654321', '456 Hai Bà Trưng, Hà Nội', 'user', 'active', '2025-09-13 07:50:31'),
+(2, 'Tran Thi B', 'b@example.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkAZyTt3YUMc3xHcTej8rRj4G', '0987654321', '456 Hai Bà Trưng, Hà Nội', 'admin', 'active', '2025-09-13 07:50:31'),
 (6, 'HoangPro098', 'hoangsuon012@gmail.com', '$2b$10$CUhoYMk6IUsC6.WqZgXi4uZHzx8.r9iOeTZvGr5ZkWijB4cVSPigW', '0242455231', '123 Nguyễn Cửu Phú', 'user', 'active', '2025-09-15 03:33:12'),
-(7, 'MinhTien', 'minhtien@gmail.com', '$2b$10$YETOupHgHuWVijQ0tUexke61uwfTvZtrFVApTP2Ql1qn6TJETRkO2', '0373466151', 'Trần Phú TPHCM', 'user', 'active', '2025-09-15 03:36:18'),
 (8, 'PhuocNguyen2034', 'phuoc@gmail.com', '$2b$10$0jmNkB.cE0wsWJtigJSgtOnwHtmSElDjjdiHJQO/M8D.gHFatRAEa', '02425233', 'ng3663631', 'user', 'active', '2025-09-15 03:39:59'),
 (13, 'dewq294e1', 'r224242@gmail.com', '$2b$10$ELyrC4NTJ02EbUZGNM0ZWOdykpr6DFDTCA1TG/Trf1CCFlSZ3fyMS', '024211144', 'ff33535', 'user', 'active', '2025-09-15 03:55:11'),
 (15, 'ft35352', 'wrw3@gmail.com', '$2b$10$D1A3jzllK/YTQ5dsyS7zQ.hV7.An8yFW2RtOjocbaIoS1HtX5SEpS', '024242111', 'f353535', 'user', 'inactive', '2025-09-15 04:02:39'),
@@ -374,7 +377,8 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `addre
 (19, 'HuuToan', 'huutoan@gmail.com', '$2b$10$0NxqZD6ImGVZWekDLgaA.ev1RPH65pifo2UldPnFhm2h0W.MGx98u', '045645632', 'Long An', 'admin', 'active', '2025-09-19 06:43:07'),
 (20, 'HongDuc', 'hongduc@gmail.com', '$2b$10$yjlsGm58kJmrnFNQUhtF2OqJ/xB59De/Z4lLI4doW/TVTPIIr7PYO', '0965055060', 'Thủ Đức Tphcm', 'user', 'active', '2025-09-20 06:00:18'),
 (21, 'HuyNguyen213', 'nguyenhuy9611@gmail.com', '$2b$10$wmixhMSNuKSNeSpohh5UnO.35vkKTBF/GmCMOpQ8lboEVmaaatH9m', '0965055062', 'Can Giuoc Long An', 'user', 'inactive', '2025-09-20 07:15:07'),
-(26, 'TommyTeo', 'tommy@gmail.com', '$2b$10$tJsqqYcbqqtvAXLO59HpkeucIT/CbY8bEMevJE8LMz789OGeLrD4C', '0964646242', 'Bến Lức Long An', 'admin', 'active', '2025-09-23 02:43:46');
+(26, 'TommyTeo', 'tommy@gmail.com', '$2b$10$tJsqqYcbqqtvAXLO59HpkeucIT/CbY8bEMevJE8LMz789OGeLrD4C', '0964646242', 'Bến Lức Long An', 'admin', 'active', '2025-09-23 02:43:46'),
+(27, 'MinhTien', 'minhtien@gmail.com', '$2b$10$dfIEfGH1ui1qPLwtV7f0WuYf9JtIQENJxCP.2vN/jaQBi78080ZWa', '0373466155', 'Trần Phú TPHCM', 'user', 'active', '2025-09-27 00:43:48');
 
 -- --------------------------------------------------------
 
@@ -412,8 +416,7 @@ INSERT INTO `voucher` (`voucher_id`, `code`, `description`, `discount_type`, `di
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE `products`
-ADD CONSTRAINT `fk_products_brand` FOREIGN KEY (`brand_id`) REFERENCES `brands`(`brand_id`) ON DELETE SET NULL;
+
 --
 -- Constraints for table `address`
 --
@@ -459,6 +462,7 @@ ALTER TABLE `order_details`
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
+  ADD CONSTRAINT `fk_products_brand` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_products_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL;
 

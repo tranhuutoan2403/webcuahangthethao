@@ -15,6 +15,7 @@ import OrderSuccess from './component/Webpage/Ordersucces';
 import News from './component/Webpage/News';
 import NewsDetail from './component/Webpage/NewsDetails';
 import AboutUs from './component/Webpage/AboutUs';
+import BrandPage from './component/Webpage/BrandPage';
 function App() {
     return (
         <Router>
@@ -26,6 +27,7 @@ function App() {
                 {/* Trang chi tiết sản phẩm theo slug */}
                 <Route path="/product/:slug" element={<ProductDetail />} />
                 <Route path="/categogy/:slug" element={<CategoryPage />} />
+                <Route path="/brand/:slug" element={<BrandPage />} />
                 <Route path="/Login" element={<Login/>} />
                 <Route path="/Register" element={<Register/>} />
                 <Route path="/profile" element={<Profile />} />

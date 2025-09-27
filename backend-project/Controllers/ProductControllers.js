@@ -59,7 +59,19 @@ exports.getProductsByCategorySlug = (req, res) => {
     res.json(results);
   });
 };
-
+// Lấy sản phẩm theo Brands 
+exports.getProductsByBrands = (req,res)=>{
+    const {slug} = req.params;
+    const sql = `
+    SELECT p.* FROM products p
+    JOIN brands br ON p.brand_id = br.brand_id
+    WHERE br.slug = ?
+    `
+    db.query(sql, [slug], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+}
 // ==================== CREATE / UPDATE PRODUCT ====================
 
 // Tạo sản phẩm mới (chỉ thông tin cơ bản + ảnh chính)
