@@ -1,29 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
-// 💡 SỬA: Import Controller và middleware upload đã được export
+// 💡 Import controller và middleware upload
 const materialController = require("../Controllers/MaterialProductControllers");
-const { uploadAny } = materialController; 
+const { uploadAny } = materialController;
 
 // ==========================
-// MATERIAL ROUTES
+// PRODUCT MATERIAL ROUTES
 // ==========================
 
-// 1. Thêm mới material hoặc update product + materials
-// Sử dụng uploadAny đã được import
-router.post(
-  "/",
-  uploadAny, // <-- ĐÃ SỬA: Dùng biến đã được export từ Controller
-  materialController.createOrUpdateProduct
-);
+// 1. Thêm 1 biến thể hoặc nhiều biến thể cùng lúc
+router.post("/", uploadAny, materialController.addVariants); // frontend gửi FormData + mảng variants
 
-// 2. Lấy danh sách material theo product_id
-router.get("/:productId", materialController.getMaterialsByProduct);
+// 2. Lấy tất cả biến thể
+router.get("/", materialController.getAllMaterials);
 
-// 3. Cập nhật thông tin material
-router.put("/:id", materialController.updateMaterial);
+// 3. Lấy danh sách biến thể theo product_id
+router.get("/product/:product_id", materialController.getMaterialsByProduct);
 
-// 4. Xóa material
+// 4. Lấy 1 biến thể theo material_id
+router.get("/:id", materialController.getMaterialById);
+
+// 5. Cập nhật biến thể
+router.put("/:id", uploadAny, materialController.updateMaterial);
+
+// 6. Xóa biến thể
 router.delete("/:id", materialController.deleteMaterial);
 
 module.exports = router;

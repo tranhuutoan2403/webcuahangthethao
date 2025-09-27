@@ -59,7 +59,10 @@ export default function Header() {
 
             {/* Menu chính */}
             <nav className="nav">
-              <a href="#">VỀ BITI'S</a>
+              <div className="dropdown">
+                <Link to="/news/ve-chung-toi">Về Chúng Tôi</Link>
+                
+              </div>
               <div className="dropdown">
                 <button>NHÃN HIỆU ▾</button>
                 <div className="dropdown-menu">
@@ -98,11 +101,11 @@ export default function Header() {
               </div>
               
               <div className="dropdown">
-                <button>PHỤ KIỆN ▾</button>
-                <div className="dropdown-menu">
-                  <a href="#">Túi</a>
-                  <a href="#">Vớ</a>
-                </div>
+                <Link to="/news/categogy/tin-tuc">Tin Tức</Link>
+                {/* <div className="dropdown-menu">
+                  <Link to="/VotHead">Vợt Head</Link>
+                  <Link to="/VotJoola">Vợt Joola</Link>
+                </div> */}
               </div>
             </nav>
 

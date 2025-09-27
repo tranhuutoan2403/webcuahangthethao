@@ -7,7 +7,7 @@ const CategoryPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/categogy/slug/${slug}`)
+    fetch(`http://localhost:5000/api/products/categogy/${slug}`)
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(err => console.error("Lỗi khi fetch dữ liệu:", err));

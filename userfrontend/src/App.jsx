@@ -7,9 +7,14 @@ import Register from './component/Webpage/Register';
 import Login from './component/Webpage/Login';
 import ProductDetail from './component/Webpage/ProductDetail';
 import Profile from './component/Webpage/Profile';
+import ProfileUpdate from './component/Webpage/ProfileUpdate';
+import ProfileChangePass from './component/Webpage/ProfileChangePass';
 import GioHang from './component/Webpage/GioHang';
 import Checkout from './component/Webpage/Checkout';
 import OrderSuccess from './component/Webpage/Ordersucces';
+import News from './component/Webpage/News';
+import NewsDetail from './component/Webpage/NewsDetails';
+import AboutUs from './component/Webpage/AboutUs';
 function App() {
     return (
         <Router>
@@ -24,8 +29,14 @@ function App() {
                 <Route path="/Login" element={<Login/>} />
                 <Route path="/Register" element={<Register/>} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/update" element={<ProfileUpdate />} />
+                <Route path="/profile/change-password" element={<ProfileChangePass />} />
                 <Route path="/giohang" element={<GioHang />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="news/categogy/:slug" element={<News />} />
+              {/* Chi tiết từng bài viết dựa trên slug */}
+                <Route path="news/:slug" element={<NewsDetail />} />
+                <Route path="/news/:slug" element={<AboutUs />} />
                 <Route path="/order-success/:id" element={<OrderSuccess />} />
             </Routes>
             <Footer />

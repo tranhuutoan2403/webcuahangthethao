@@ -1,0 +1,32 @@
+.news-detail-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.news-detail-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.news-detail-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.news-detail-meta {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.news-detail-content {
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+}

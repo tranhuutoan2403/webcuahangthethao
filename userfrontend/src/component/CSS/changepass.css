@@ -1,0 +1,137 @@
+/* ==================== Tổng thể ==================== */
+.update-form-container {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.update-form-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ==================== Nhóm input ==================== */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+}
+
+/* ==================== Hiển thị lỗi ==================== */
+.error-text {
+  color: #e11d48;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+/* ==================== Thông báo chung ==================== */
+.message {
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.message.success {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.message.error {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+/* ==================== Nút bấm ==================== */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.form-actions .btn-update,
+.form-actions .btn-cancel {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Nút Lưu thay đổi */
+.form-actions .btn-update {
+  background: #2563eb;
+  color: #fff;
+}
+
+.form-actions .btn-update:hover {
+  background: #1e4ed8;
+  transform: translateY(-1px);
+}
+
+/* Nút Hủy */
+.form-actions .btn-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.form-actions .btn-cancel:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 480px) {
+  .update-form-container {
+    margin: 20px;
+    padding: 18px;
+  }
+
+  .update-form-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn-update,
+  .form-actions .btn-cancel {
+    width: 100%;
+  }
+}

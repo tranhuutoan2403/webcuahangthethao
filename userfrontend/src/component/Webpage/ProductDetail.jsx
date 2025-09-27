@@ -1,17 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { colorMap } from "./ColorMap"; // Nếu có map màu tùy chỉnh
 import "../CSS/trangchitiet.css";
 
 // Hàm tiện ích để trích xuất màu sắc và kích cỡ duy nhất từ mảng materials
 const extractOptions = (materials) => {
-  if (!materials || materials.length === 0) return { availableColors: [], availableSizes: [] };
+  if (!materials || materials.length === 0)
+    return { availableColors: [], availableSizes: [] };
+
   const colors = new Set();
   const sizes = new Set();
+
   materials.forEach((m) => {
     if (m.color) colors.add(m.color);
     if (m.size) sizes.add(m.size);
   });
-  return { availableColors: Array.from(colors), availableSizes: Array.from(sizes) };
+
+  return {
+    availableColors: Array.from(colors),
+    availableSizes: Array.from(sizes),
+  };
 };
 
 function ProductDetail() {
@@ -46,7 +54,6 @@ function ProductDetail() {
             availableSizes,
           });
           setDisplayImage(data.image);
-          if (availableSizes.length > 0) setSelectedSize(availableSizes[0]);
         } else {
           setProduct(null);
         }
@@ -67,7 +74,7 @@ function ProductDetail() {
       try {
         const res = await fetch("http://localhost:5000/api/flash-sale/active");
         if (!res.ok) throw new Error("Không thể lấy flash sale");
-        const data = await res.json(); // mảng flash sale
+        const data = await res.json();
 
         // chuyển thành dạng mảng { product_id, sale_price, end_at }
         const sales = [];
@@ -119,8 +126,10 @@ function ProductDetail() {
     );
     if (sales.length === 0) return null;
 
-    // Giảm giá cao nhất = sale_price thấp nhất
-    return sales.reduce((best, curr) => (curr.sale_price < best.sale_price ? curr : best), sales[0]);
+    return sales.reduce((best, curr) =>
+      curr.sale_price < best.sale_price ? curr : best,
+      sales[0]
+    );
   };
 
   const formatTime = (ms) => {
@@ -136,14 +145,23 @@ function ProductDetail() {
   // ========================================
   const handleColorSelect = (color) => {
     if (!product) return;
+
     if (selectedColor === color) {
+      // Bỏ chọn màu
       setSelectedColor(null);
       setDisplayImage(product.image);
+      setSelectedSize(null); // reset size
       return;
     }
+
     setSelectedColor(color);
-    const found = product.materials?.find((m) => m.color === color && m.image && m.image.trim() !== "");
+
+    const found = product.materials?.find(
+      (m) => m.color === color && m.image && m.image.trim() !== ""
+    );
     setDisplayImage(found ? found.image : product.image);
+
+    setSelectedSize(null); // reset size khi đổi màu
   };
 
   // ========================================
@@ -155,9 +173,15 @@ function ProductDetail() {
       alert("Vui lòng chọn màu sắc trước khi thêm vào giỏ hàng!");
       return;
     }
+    if (product.availableSizes?.length > 0 && !selectedSize) {
+      alert("Vui lòng chọn kích cỡ trước khi thêm vào giỏ hàng!");
+      return;
+    }
 
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const variantKey = `${product.product_id}-${selectedColor || "NoColor"}-${selectedSize || "NoSize"}`;
+    const variantKey = `${product.product_id}-${selectedColor || "NoColor"}-${
+      selectedSize || "NoSize"
+    }`;
     const existingIndex = cart.findIndex((item) => item.variantKey === variantKey);
 
     const bestFlash = getBestFlashSale(product);
@@ -209,8 +233,12 @@ function ProductDetail() {
             Giá:{" "}
             {isFlashActive ? (
               <>
-                <span className="old-price">{Number(product.price).toLocaleString("vi-VN")} VNĐ</span>
-                <span className="sale-price">{Number(displayPrice).toLocaleString("vi-VN")} VNĐ</span>
+                <span className="old-price">
+                  {Number(product.price).toLocaleString("vi-VN")} VNĐ
+                </span>
+                <span className="sale-price">
+                  {Number(displayPrice).toLocaleString("vi-VN")} VNĐ
+                </span>
               </>
             ) : (
               <span>{Number(displayPrice).toLocaleString("vi-VN")} VNĐ</span>
@@ -221,8 +249,8 @@ function ProductDetail() {
 
           <p>{product.description}</p>
 
-          {/* Chọn màu */}
-          {product.availableColors?.length > 0 && (
+          {/* Chọn màu - luôn hiện tất cả màu */}
+          {product.materials?.length > 0 && (
             <div className="product-options">
               <label>Màu sắc:</label>
               <div className="option-chips">
@@ -231,8 +259,9 @@ function ProductDetail() {
                     key={color}
                     className={`color-chip ${selectedColor === color ? "active" : ""}`}
                     style={{
-                      backgroundColor: color.toLowerCase(),
-                      border: selectedColor === color ? "2px solid #000" : "1px solid #ccc",
+                      backgroundColor: colorMap[color] || "#fff",
+                      border:
+                        selectedColor === color ? "2px solid #000" : "1px solid #ccc",
                     }}
                     onClick={() => handleColorSelect(color)}
                   />
@@ -241,20 +270,39 @@ function ProductDetail() {
             </div>
           )}
 
-          {/* Chọn size */}
+          {/* Chọn size - lọc theo màu nếu đã chọn */}
           {product.availableSizes?.length > 0 && (
             <div className="product-options">
               <label>Kích cỡ:</label>
               <div className="option-chips">
-                {product.availableSizes.map((size) => (
-                  <button
-                    key={size}
-                    className={`size-chip ${selectedSize === size ? "active" : ""}`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {product.availableSizes
+                  .filter((size) => {
+                    if (selectedColor) {
+                      return product.materials.some(
+                        (m) => m.size === size && m.color === selectedColor
+                      );
+                    }
+                    return true;
+                  })
+                  .slice()
+                  .sort((a, b) => {
+                    if (!isNaN(a) && !isNaN(b)) {
+                      return Number(a) - Number(b);
+                    }
+                    const order = ["XS", "S", "M", "L", "XL", "XXL"];
+                    return order.indexOf(a) - order.indexOf(b);
+                  })
+                  .map((size) => (
+                    <button
+                      key={size}
+                      className={`size-chip ${
+                        selectedSize === size ? "active" : ""
+                      }`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
               </div>
             </div>
           )}

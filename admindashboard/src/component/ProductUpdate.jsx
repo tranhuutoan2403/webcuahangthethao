@@ -54,11 +54,11 @@ export default function ProductUpdate() {
       await axios.put(`http://localhost:5000/api/products/${id}`,data, {
        
       });
-      alert("Cập nhật thành công");
+      // alert("Cập nhật thành công");
       navigate("/product");
     } catch (err) {
       console.error("Lỗi khi cập nhật:", err);
-      alert("Cập nhật thất bại");
+      // alert("Cập nhật thất bại");
     }
   };
 

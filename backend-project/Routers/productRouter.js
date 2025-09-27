@@ -1,50 +1,30 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const productController = require('../Controllers/ProductControllers');
-const materialCtrl = require('../Controllers/MaterialProductControllers');
-
-// 💡 IMPORT middleware Multer đã được export từ Controller
-const { uploadAny, uploadSingleImage } = materialCtrl; 
+const productController = require("../Controllers/ProductControllers");
 
 // ==========================
 // PRODUCT ROUTES
 // ==========================
 
-// 1. ROUTE CHÍNH: Tạo mới sản phẩm hoặc thêm biến thể
-router.post('/createOrUpdateProduct', uploadAny, materialCtrl.createOrUpdateProduct);
+// 1. Lấy tất cả sản phẩm
+router.get("/", productController.getAllProduct);
 
-// 2. API KIỂM TRA ID (Dùng cho Frontend)
-router.get('/check/:productId', materialCtrl.checkProductExistence);
+// 3. Lấy sản phẩm theo slug
+router.get("/slug/:slug", productController.getProductBySlug);
 
-// 3. Lấy danh sách tất cả sản phẩm
-router.get('/', productController.getAllProduct);
+// 4. Lấy sản phẩm theo category slug
+router.get("/categogy/:slug", productController.getProductsByCategorySlug);
 
-// 4. Lấy danh sách categories
-router.get('/categories', productController.getAllCategories);
+// 2. Lấy sản phẩm theo ID (ĐỂ CUỐI CÙNG)
+router.get("/:id", productController.getProductById);
 
-// 5. Lấy tất cả slug của categories
-router.get('/slugs', productController.getAllCategorySlugs);
+// 5. Tạo sản phẩm mới
+router.post("/", productController.uploadSingleImage, productController.createProduct);
 
+// 6. Cập nhật sản phẩm
+router.put("/:id", productController.uploadSingleImage, productController.updateProduct);
 
-// --- CÁC ROUTE CỤ THỂ (SLUG) ---
-
-// 6. Lấy sản phẩm theo slug (Product Detail)
-router.get('/slug/:slug', productController.getProductBySlug);
-
-// 7. Lấy sản phẩm theo categogy slug (ĐÃ SỬA LỖI CHÍNH TẢ)
-router.get('/categogy/slug/:slug', productController.getProductsByCategorySlug);
-
-
-// --- CÁC ROUTE CHUNG CHUNG (ID) ---
-
-// 8. Cập nhật sản phẩm (PUT)
-router.put('/:id', uploadSingleImage, productController.updateProduct);
-
-// 9. Xóa sản phẩm (DELETE)
-router.delete('/:id', productController.deleteProduct);
-
-// 10. Lấy sản phẩm theo ID (GET)
-router.get('/:id', productController.getProductById);
-
+// 7. Xóa sản phẩm
+router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;

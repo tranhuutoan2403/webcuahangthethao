@@ -1,5 +1,5 @@
 import React from "react";
-import "../CSS/sibebar.css";
+// import "../CSS/sibebar.css";
 import { Link } from 'react-router-dom';
 const Sidebar = () => {
   return (
@@ -9,10 +9,15 @@ const Sidebar = () => {
         <li><Link to="/">🏠 Dashboard</Link></li>
         <li><Link to="/users">👥 Users</Link></li>
         <li><Link to="/product">📦 Products</Link></li>
+        <li><Link to="/product-material">📦 Materials</Link></li>
+        <li><Link to="/brand">Brand</Link></li>
         <li><Link to="/categogy"> Categories</Link></li>
         <li><Link to="/voucher">Voucher</Link></li>
         <li><Link to="/flash-sale">Flash Sales</Link></li>
         <li><Link to="/flash-sale-products">Flash Sales Products</Link></li>
+        <li><Link to="/news">News</Link></li>
+        <li><Link to="/news-categogy">News Categogy</Link></li>
+
         <li><Link to="/order">🛒 Orders</Link></li>
         <li>📊 Reports</li>
       </ul>

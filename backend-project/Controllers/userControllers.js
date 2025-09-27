@@ -39,20 +39,57 @@ exports.createUser = (req, res) => {
   });
 };
 
-// Cập nhật user
+// ==================== Cập nhật User ====================
 exports.updateUser = (req, res) => {
   const { id } = req.params;
-  const { username, email, password, phone, address } = req.body;
-  db.query(
-    'UPDATE users SET username = ?, email = ?, password = ?, phone = ?, address = ? WHERE user_id = ?', 
-    [username, email, password, phone, address, id], 
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: 'Cập nhật thành công' });
-    }
-  );
-};
+  const { username, email, password, phone, address, role } = req.body;
 
+  // Lấy dữ liệu user hiện tại
+  const sqlGetUser = "SELECT * FROM users WHERE user_id = ?";
+  db.query(sqlGetUser, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) return res.status(404).json({ error: "User không tồn tại" });
+
+    const currentUser = results[0];
+
+    // === 1. Xử lý password ===
+    let finalPassword = currentUser.password;
+    if (password && password.trim() !== "") {
+      // Nếu gửi password mới → hash lại
+      finalPassword = bcrypt.hashSync(password, 10);
+    }
+
+    // === 2. Dữ liệu update, nếu frontend không gửi trường nào thì dùng giá trị cũ ===
+    const updatedData = {
+      username: username || currentUser.username,
+      email: email || currentUser.email,
+      password: finalPassword,
+      phone: phone || currentUser.phone,
+      address: address || currentUser.address,
+      role: role || currentUser.role
+    };
+
+    // === 3. Câu lệnh SQL update ===
+    const sqlUpdate = `
+      UPDATE users 
+      SET username = ?, email = ?, password = ?, phone = ?, address = ?, role = ?
+      WHERE user_id = ?
+    `;
+
+    db.query(sqlUpdate, [
+      updatedData.username,
+      updatedData.email,
+      updatedData.password,
+      updatedData.phone,
+      updatedData.address,
+      updatedData.role,
+      id
+    ], (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Cập nhật thông tin người dùng thành công" });
+    });
+  });
+};
 // // Xóa user (xóa hẳn khỏi DB)
 // exports.deleteUser = (req, res) => {
 //   const { id } = req.params;

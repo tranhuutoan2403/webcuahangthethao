@@ -101,7 +101,7 @@ function Register() {
         alert("Đăng ký thành công!");
         navigate("/login");
       } else {
-        alert(data.message || "Đăng ký thất bại!");
+        // alert(data.message || "Đăng ký thất bại!");
       }
     } catch (error) {
       console.error("Lỗi đăng ký:", error);

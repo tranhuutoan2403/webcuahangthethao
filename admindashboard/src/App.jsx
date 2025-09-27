@@ -8,6 +8,8 @@ import UserAdd from "./component/UserAdd";
 import Product from "./component/Product";
 import ProductAdd from "./component/ProductAdd";
 import ProductUpdate from "./component/ProductUpdate";
+import ProductMaterials from "./component/ProductMaterial";
+import ProductMaterialAdd from "./component/ProductMaterialAdd";
 import AdminLogin from "./component/AdminLogin";
 import Categogy from "./component/Categogy";
 import CategogyAdd from "./component/CategogyAdd";
@@ -20,6 +22,15 @@ import FlashSaleUpdate from "./component/FlashSaleUpdate";
 import FlashSaleProduct from "./component/FlashSaleProduct";
 import FlashSaleProductAdd from "./component/FlashSaleProductAdd";
 import FlashSaleProductUpdate from "./component/FlashSaleProductUpdate";
+import NewsAdmin from "./component/NewsAdmin";
+import NewsAdminAdd from "./component/NewsAdminAdd";
+import NewsAdminUpdate from "./component/NewsAdminUpdate";
+import NewsCategogyAdmin from "./component/NewsCategogyAdmin";
+import NewsCategoryAdminAdd from "./component/NewCategogyAdminAdd";
+import NewsCategoryAdminUpdate from "./component/NewCategogyAdminUpdate";
+import Brand from "./component/Brand";
+import BrandAdd from "./component/BrandAdd";
+import BrandUpdate from "./component/BrandUpdate";
 import "./App.css";
 
 function Layout() {
@@ -52,7 +63,15 @@ function Layout() {
             <Route path="/product" element={<Product />} />
             <Route path="/product/add" element={<ProductAdd />} />
             <Route path="/product/update/:id" element={<ProductUpdate />} />
-
+            
+             {/* ProductMaterial */}
+            <Route path="/product-material" element={<ProductMaterials />} />
+            <Route path="/product-material/add" element={<ProductMaterialAdd />} />
+            {/* <Route path="/product/update/:id" element={<ProductUpdate />} /> */}
+            {/* Brand */}
+            <Route path="/brand" element={<Brand />} />
+            <Route path="/brand/add" element={<BrandAdd />} />
+            <Route path="/brand/update/:id" element={<BrandUpdate />} />
               {/* Categogy*/}
             <Route path="/categogy" element={<Categogy />} />
             <Route path="/categogy/add" element={<CategogyAdd />} />
@@ -71,6 +90,15 @@ function Layout() {
             <Route path="/flash-sale-products" element={<FlashSaleProduct/>} />
             <Route path="/flash-sale-products/add" element={<FlashSaleProductAdd />} />
             <Route path="/flash-sale-products/update/:id" element={<FlashSaleProductUpdate />} />
+            {/* News */}
+            <Route path="/news" element={<NewsAdmin/>} />
+            <Route path="/news/add" element={<NewsAdminAdd/>} />
+            <Route path="/news/update/:id" element={<NewsAdminUpdate/>} />
+
+             {/* NewsCategogy */}
+            <Route path="/news-categogy" element={<NewsCategogyAdmin/>} />
+            <Route path="/news-categogy/add" element={<NewsCategoryAdminAdd />} />
+            <Route path="/news-categogy/update/:id" element={<NewsCategoryAdminUpdate />} />
           </Routes>
         </div>
       </div>

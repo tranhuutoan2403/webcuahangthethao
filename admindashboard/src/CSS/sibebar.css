@@ -1,36 +1,174 @@
+:root{
+  --sidebar-bg: #0f1724;       /* nền sidebar */
+  --sidebar-accent: #0ea5a4;   /* màu chính (teal) */
+  --sidebar-text: #e6eef2;     /* chữ */
+  --sidebar-muted: #94a3b8;    /* chữ phụ */
+  --sidebar-hover: rgba(255,255,255,0.06);
+  --sidebar-width: 260px;
+  --sidebar-gap: 12px;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(2,6,23,0.45);
+  --transition: 180ms cubic-bezier(.2,.9,.3,1);
+  --breakpoint: 820px;
+}
+
+/* Reset nhỏ cho danh sách */
 .sidebar {
-  width: 250px;
-  background: #1e293b;
-  color: white;
-  height: 200vh;
+  box-sizing: border-box;
+  width: var(--sidebar-width);
+  min-width: 200px;
+  background: linear-gradient(180deg, var(--sidebar-bg), #071022 120%);
+  color: var(--sidebar-text);
+  padding: 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  left: -20px;
-  top:50px
+  gap: var(--sidebar-gap);
+  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Tiêu đề */
 .sidebar-title {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 20px;
-  border-bottom: 1px solid #334155;
-  text-align: center;
-  color: white;
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  color: var(--sidebar-text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+/* Menu list */
 .sidebar-menu {
   list-style: none;
-  padding: 20px 0;
-  
+  padding: 8px 0 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+/* Mỗi item */
 .sidebar-menu li {
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background 0.3s;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: background var(--transition), transform var(--transition);
+  display: block;
 }
 
+/* Link style (Link từ react-router-dom trở thành <a> nội bộ khi render) */
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--transition), padding-left var(--transition);
+}
+
+/* Icon/emoji spacing — nếu bạn thay bằng svg hãy giữ class icon bên trong Link */
+.sidebar-menu li a > svg,
+.sidebar-menu li a > .icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Hover */
 .sidebar-menu li:hover {
-  background: #334155;
+  background: var(--sidebar-hover);
+  transform: translateY(-2px);
+}
+.sidebar-menu li:hover a {
+  color: #ffffff;
+  padding-left: 16px;
+}
+
+/* Active (gắn class "active" cho <li> hoặc <Link>) */
+.sidebar-menu li.active,
+.sidebar-menu li a.active {
+  background: linear-gradient(90deg, rgba(14,165,164,0.12), rgba(14,165,164,0.06));
+  box-shadow: 0 4px 14px rgba(14,165,164,0.06) inset;
+}
+.sidebar-menu li.active a,
+.sidebar-menu li a.active {
+  color: var(--sidebar-accent);
+  font-weight: 700;
+}
+
+/* Muted / non-link items (ví dụ "Reports") */
+.sidebar-menu li:not(:has(a)) {
+  color: var(--sidebar-muted);
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Small badge (nếu cần hiển thị số lượng) */
+.sidebar-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.06);
+  color: var(--sidebar-text);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Responsive: màn hình nhỏ — biến sidebar thành thanh ngang */
+@media (max-width: var(--breakpoint)) {
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-radius: 0;
+    padding: 10px 14px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar-title {
+    display: none; /* ẩn tiêu đề để tiết kiệm không gian */
+  }
+  .sidebar-menu {
+    flex-direction: row;
+    gap: 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .sidebar-menu li {
+    flex: 0 0 auto;
+  }
+  .sidebar-menu li a {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+/* Tùy chọn: collapsed state (nếu bạn muốn thêm nút thu gọn) */
+.sidebar.collapsed {
+  width: 72px;
+  padding: 14px 10px;
+}
+.sidebar.collapsed .sidebar-title { display: none; }
+.sidebar.collapsed .sidebar-menu li a {
+  justify-content: center;
+  padding: 10px 0;
+}
+.sidebar.collapsed .sidebar-menu li a span { display: none; } /* nếu bạn bọc text trong <span> để ẩn khi collapsed */
+
+/* Accessibility: focus */
+.sidebar-menu li a:focus {
+  outline: 2px solid rgba(14,165,164,0.18);
+  outline-offset: 2px;
+  border-radius: 8px;
 }
