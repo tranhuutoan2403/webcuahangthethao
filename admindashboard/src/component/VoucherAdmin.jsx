@@ -19,7 +19,7 @@ function Voucher() {
   // Xóa voucher
   const handleDelete = (id) => {
     if (window.confirm("Bạn có chắc muốn xóa voucher này?")) {
-      fetch(`http://localhost:5000/api/voucher/${id}`, {
+      fetch(`http://localhost:5000/api/vouchers/${id}`, {
         method: "DELETE",
       })
         .then((res) => {

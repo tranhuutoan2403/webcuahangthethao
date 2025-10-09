@@ -29,4 +29,6 @@ router.put("/:id", productController.uploadSingleImage, productController.update
 // 7. Xóa sản phẩm
 router.delete("/:id", productController.deleteProduct);
 
+// router.get("/:id/stock", productController.getProductStock);
+
 module.exports = router;

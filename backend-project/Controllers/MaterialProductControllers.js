@@ -56,16 +56,13 @@ exports.addVariants = (req, res) => {
     db.query(sqlProduct, [product_id], (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
       if (!results.length) return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
-
       const { productName, categoryName } = results[0];
-
       const values = variantsArray.map(v => {
         const color = v.color ? v.color.replace(/\s+/g, '-') : '';
         const size = v.size ? `SIZE-${v.size}` : '';
         const sku = `${productName.replace(/\s+/g, '-')}-${color}-${size}`;
         return [product_id, v.color || null, v.size || null, sku, v.stock || 0, v.image || null];
       });
-
       const sqlInsert = `INSERT INTO materials (product_id, color, size, sku, stock, image) VALUES ?`;
       db.query(sqlInsert, [values], (err2, result) => {
         if (err2) return res.status(500).json({ error: err2.message });
@@ -76,8 +73,6 @@ exports.addVariants = (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
-
-
 // Lấy tất cả material
 exports.getAllMaterials = (req, res) => {
   db.query("SELECT * FROM materials ORDER BY material_id ASC", (err, results) => {
@@ -85,7 +80,6 @@ exports.getAllMaterials = (req, res) => {
     res.json(results);
   });
 };
-
 // Lấy material theo product_id
 exports.getMaterialsByProduct = (req, res) => {
   const { product_id } = req.params;
@@ -94,7 +88,6 @@ exports.getMaterialsByProduct = (req, res) => {
     res.json(results);
   });
 };
-
 // Lấy 1 material theo material_id
 exports.getMaterialById = (req, res) => {
   const { id } = req.params;
@@ -104,7 +97,6 @@ exports.getMaterialById = (req, res) => {
     res.json(results[0]);
   });
 };
-
 // Cập nhật material
 exports.updateMaterial = (req, res) => {
   const { id } = req.params;
@@ -117,12 +109,28 @@ exports.updateMaterial = (req, res) => {
     res.json({ message: "Cập nhật biến thể thành công" });
   });
 };
-
 // Xóa material
 exports.deleteMaterial = (req, res) => {
   const { id } = req.params;
   db.query("DELETE FROM materials WHERE material_id=?", [id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ message: "Xóa biến thể thành công" });
+  });
+};
+// Lấy stock của material
+// =====================
+// Lấy stock của material (chỉ cần material_id là đủ)
+exports.getStockMaterial = (req, res) => {
+  const { material_id } = req.params;
+
+  const sql = "SELECT stock FROM materials WHERE material_id = ?";
+  db.query(sql, [material_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (!results.length) {
+      return res.status(404).json({ error: `Không tìm thấy biến thể có ID = ${material_id}` });
+    }
+
+    res.json({ stock: results[0].stock });
   });
 };

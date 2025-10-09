@@ -59,36 +59,39 @@ exports.getProductsByCategorySlug = (req, res) => {
     res.json(results);
   });
 };
-// Lấy sản phẩm theo Brands 
-exports.getProductsByBrands = (req,res)=>{
-    const {slug} = req.params;
-    const sql = `
+
+// Lấy sản phẩm theo brand slug
+exports.getProductsByBrands = (req, res) => {
+  const { slug } = req.params;
+  const sql = `
     SELECT p.* FROM products p
     JOIN brands br ON p.brand_id = br.brand_id
     WHERE br.slug = ?
-    `
-    db.query(sql, [slug], (err, results) => {
+  `.replace(/\s+/g, ' ').trim();
+
+  db.query(sql, [slug], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
-}
+};
+
 // ==================== CREATE / UPDATE PRODUCT ====================
 
 // Tạo sản phẩm mới (chỉ thông tin cơ bản + ảnh chính)
 exports.createProduct = (req, res) => {
-  const { category_id, brand_id, name, slug, description, price, stock } = req.body;
+  const { category_id, brand_id, name, slug, description, price } = req.body;
   const image = req.file ? req.file.filename : null;
 
-  if (!category_id || !brand_id || !name || !slug || !price || !stock || !image) {
+  if (!category_id || !brand_id || !name || !slug || !price || !image) {
     return res.status(400).json({ error: 'Thiếu thông tin bắt buộc để tạo sản phẩm' });
   }
 
   const sql = `
-    INSERT INTO products (category_id, brand_id, name, slug, description, price, stock, image)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO products (category_id, brand_id, name, slug, description, price, image)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `.replace(/\s+/g, ' ').trim();
 
-  db.query(sql, [category_id, brand_id, name, slug, description, price, stock, image], (err, result) => {
+  db.query(sql, [category_id, brand_id, name, slug, description, price, image], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ message: 'Thêm sản phẩm thành công', product_id: result.insertId });
   });
@@ -97,16 +100,16 @@ exports.createProduct = (req, res) => {
 // Cập nhật sản phẩm (chỉ thông tin cơ bản + ảnh chính)
 exports.updateProduct = (req, res) => {
   const { id } = req.params;
-  const { category_id, brand_id, name, slug, description, price, stock } = req.body;
+  const { category_id, brand_id, name, slug, description, price } = req.body;
   const image = req.file ? req.file.filename : req.body.image;
 
   const sql = `
     UPDATE products 
-    SET category_id=?, brand_id=?, name=?, slug=?, description=?, price=?, stock=?, image=? 
+    SET category_id=?, brand_id=?, name=?, slug=?, description=?, price=?, image=? 
     WHERE product_id=?
   `.replace(/\s+/g, ' ').trim();
 
-  db.query(sql, [category_id, brand_id, name, slug, description, price, stock, image, id], (err) => {
+  db.query(sql, [category_id, brand_id, name, slug, description, price, image, id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ message: 'Cập nhật sản phẩm thành công' });
   });
@@ -123,3 +126,21 @@ exports.deleteProduct = (req, res) => {
     });
   });
 };
+
+// // ==================== GET STOCK ====================
+
+// Lấy tồn kho sản phẩm cha (products)
+// exports.getProductStock = (req, res) => {
+//   const { id } = req.params; // product_id
+
+//   db.query(
+//     "SELECT stock FROM products WHERE product_id = ?",
+//     [id],
+//     (err, results) => {
+//       if (err) return res.status(500).json({ error: err.message });
+//       if (!results.length)
+//         return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
+//       return res.json({ stock: results[0].stock });
+//     }
+//   );
+// };

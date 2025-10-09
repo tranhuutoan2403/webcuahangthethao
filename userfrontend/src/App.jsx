@@ -16,6 +16,7 @@ import News from './component/Webpage/News';
 import NewsDetail from './component/Webpage/NewsDetails';
 import AboutUs from './component/Webpage/AboutUs';
 import BrandPage from './component/Webpage/BrandPage';
+import MyOrders from './component/Webpage/MyOrder';
 function App() {
     return (
         <Router>
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/profile/change-password" element={<ProfileChangePass />} />
                 <Route path="/giohang" element={<GioHang />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/My-order" element={<MyOrders />} />
                 <Route path="news/categogy/:slug" element={<News />} />
               {/* Chi tiết từng bài viết dựa trên slug */}
                 <Route path="news/:slug" element={<NewsDetail />} />

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/about.css";
-
 const AboutUs = () => {
   const [about, setAbout] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const slug = "ve-chung-toi";
-
   useEffect(() => {
     setLoading(true);
     fetch(`http://localhost:5000/api/news/${slug}`)

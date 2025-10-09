@@ -17,7 +17,8 @@ const flashSaleProductRouter = require("./Routers/FlashSaleProductRouter");
 const newsRouter = require("./Routers/NewsRouter");
 const newsCategoryRouter = require("./Routers/NewsCategogyRouter");
 const brandRoutes = require("./Routers/BrandRouter");
-
+const pageRoutes = require("./Routers/PagesRouter");
+const preorderRoutes = require("./Routers/PreorderRouter");
 // Cho phép gọi API từ frontend
 app.use(cors());
 
@@ -51,6 +52,10 @@ app.use("/api/news", newsRouter);
 app.use("/api/news-categogy", newsCategoryRouter);
 //Routes Brands
 app.use("/api/brand", brandRoutes);
+// Routes Pages
+app.use("/api/pages", pageRoutes);
+
+app.use("/api/preorders", preorderRoutes);
 // Chạy server
 app.listen(5000, () => {
   console.log('Server đang chạy tại http://localhost:5000');

@@ -12,7 +12,6 @@ function ProductAdd() {
     slug: "",
     description: "",
     price: "",
-    stock: "",
   });
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -89,8 +88,7 @@ function ProductAdd() {
         <label>Giá *</label>
         <input type="number" name="price" value={formData.price} onChange={handleChange} required />
 
-        <label>Số lượng tồn *</label>
-        <input type="number" name="stock" value={formData.stock} onChange={handleChange} required />
+        
 
         <label>Hình ảnh chính *</label>
         <input type="file" onChange={handleFileChange} required />

@@ -1,0 +1,27 @@
+.my-orders {
+  padding: 20px;
+}
+
+.my-orders h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.my-orders table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.my-orders th, .my-orders td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.my-orders th {
+  background: #f5f5f5;
+}
+
+.my-orders td {
+  font-size: 15px;
+}

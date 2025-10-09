@@ -12,16 +12,21 @@ export default function Checkout() {
   const [finalAmount, setFinalAmount] = useState(0);
   const navigate = useNavigate();
 
-  // Load cart từ localStorage
+  // =========================================
+  // LẤY DỮ LIỆU GIỎ HÀNG
+  // =========================================
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
+
     const t = storedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotal(t);
     setFinalAmount(t);
   }, []);
 
-  // Áp dụng voucher giảm giá
+  // =========================================
+  // ÁP DỤNG VOUCHER
+  // =========================================
   const handleApplyVoucher = async () => {
     if (!voucherCode) return alert("Vui lòng nhập mã giảm giá");
     if (cart.length === 0) return alert("Giỏ hàng trống");
@@ -31,10 +36,8 @@ export default function Checkout() {
       if (!res.ok) throw new Error("Mã giảm giá không hợp lệ hoặc hết hạn");
       const voucher = await res.json();
 
-      // Ràng buộc: tổng tiền ≥ 1 triệu
-      if (total < 1000000) {
+      if (total < 1000000)
         return alert("Đơn hàng phải từ 1.000.000 VNĐ để sử dụng voucher!");
-      }
 
       let newAmount = total;
       if (voucher.discount_type === "percent") {
@@ -50,59 +53,129 @@ export default function Checkout() {
     }
   };
 
+  // =========================================
+  // XỬ LÝ THANH TOÁN
+  // =========================================
   const handleCheckout = async () => {
-  if (!recipientName || !phone || !addressLine) {
-    return alert("Vui lòng nhập đầy đủ thông tin người nhận!");
-  }
-
-  const user = JSON.parse(localStorage.getItem("user"));
-if (!user || !user.id) {  // kiểm tra id
-  alert("Vui lòng đăng nhập trước khi thanh toán!");
-  navigate("/login");
-  return;
-}
-
-
-  if (cart.length === 0) {
-    alert("Giỏ hàng trống!");
-    return;
-  }
-
-  try {
-    // Chuyển price sang number trước khi gửi
-    const cartData = cart.map(item => ({
-      ...item,
-      price: Number(item.price)
-    }));
-
-    const res = await fetch("http://localhost:5000/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_id: user.id,
-        recipient_name: recipientName,
-        phone,
-        address_line: addressLine,
-       cart: cartData,             // dùng cart đã chuẩn hóa
-        voucher_code: voucherCode || null
-      })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert("Thanh toán thành công!");
-      localStorage.removeItem("cart");
-      navigate(`/order-success/${data.order_id}`);
-    } else {
-      alert(data.error || "Lỗi khi thanh toán!");
+    if (!recipientName || !phone || !addressLine) {
+      return alert("Vui lòng nhập đầy đủ thông tin người nhận!");
     }
-  } catch (err) {
-    console.error(err);
-    alert("Lỗi kết nối đến máy chủ.");
-  }
-};
 
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.user_id) {
+      alert("Vui lòng đăng nhập trước khi thanh toán!");
+      navigate("/login");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Giỏ hàng trống!");
+      return;
+    }
+
+    try {
+      const updatedCart = [];
+
+      // =============================
+      // KIỂM TRA VÀ LẤY MATERIAL_ID
+      // =============================
+      for (let item of cart) {
+        const productId = item.productId || item.product_id;
+        let materialId = item.material_id;
+
+        if (!productId) {
+          return alert(`Sản phẩm "${item.name}" bị lỗi ID!`);
+        }
+
+        // Nếu chưa có material_id → tìm từ API product-materials/:productId
+        if (!materialId) {
+          const res = await fetch(`http://localhost:5000/api/product-materials/${productId}`);
+          if (!res.ok) {
+            return alert(`Không lấy được biến thể cho sản phẩm "${item.name}"`);
+          }
+
+          const materials = await res.json();
+          const matched = materials.find(
+            (m) =>
+              m.color === item.color &&
+              m.size === item.size
+          );
+
+          if (!matched) {
+            return alert(`Sản phẩm "${item.name}" chưa có biến thể (material) phù hợp!`);
+          }
+
+          materialId = matched.material_id;
+        }
+
+        // =============================
+        // KIỂM TRA TỒN KHO materials
+        // =============================
+        const stockRes = await fetch(`http://localhost:5000/api/product-materials/${materialId}/stock`);
+        if (!stockRes.ok) {
+          return alert(`Không kiểm tra được tồn kho cho sản phẩm "${item.name}"`);
+        }
+
+        const materialData = await stockRes.json();
+        const currentStock = materialData.stock;
+
+        if (currentStock === undefined) {
+          return alert(`Sản phẩm "${item.name}" chưa có thông tin tồn kho!`);
+        }
+
+        if (currentStock < item.quantity) {
+          return alert(
+            `Sản phẩm "${item.name}" chỉ còn ${currentStock} sản phẩm, bạn đã chọn ${item.quantity}!`
+          );
+        }
+
+        // Lưu lại item có material_id đã xác định
+        updatedCart.push({
+          product_id: productId,
+          material_id: materialId,
+          name: item.name,
+          price: Number(item.price),
+          quantity: item.quantity,
+          color: item.color || null,
+          size: item.size || null,
+          discount_amount: item.discount_amount || 0,
+        });
+      }
+
+      // =============================
+      // GỬI DỮ LIỆU LÊN BACKEND
+      // =============================
+      const res = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.user_id,
+          recipient_name: recipientName,
+          phone,
+          address_line: addressLine,
+          items: updatedCart,
+          total_amount: total,
+          final_amount: finalAmount,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Thanh toán thành công!");
+        localStorage.removeItem("cart");
+        navigate(`/order-success/${data.order_id}`);
+      } else {
+        alert(data.error || "Lỗi khi thanh toán!");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Lỗi kết nối đến máy chủ.");
+    }
+  };
+
+  // =========================================
+  // GIAO DIỆN CHECKOUT
+  // =========================================
   return (
     <div className="checkout-container">
       <h2>Thanh Toán</h2>
@@ -116,6 +189,8 @@ if (!user || !user.id) {  // kiểm tra id
             <thead>
               <tr>
                 <th>Sản phẩm</th>
+                <th>Màu</th>
+                <th>Size</th>
                 <th>Số lượng</th>
                 <th>Giá</th>
                 <th>Tạm tính</th>
@@ -125,6 +200,8 @@ if (!user || !user.id) {  // kiểm tra id
               {cart.map((item, idx) => (
                 <tr key={idx}>
                   <td>{item.name}</td>
+                  <td>{item.color || "-"}</td>
+                  <td>{item.size || "-"}</td>
                   <td>{item.quantity}</td>
                   <td>{item.price.toLocaleString("vi-VN")} VNĐ</td>
                   <td>{(item.price * item.quantity).toLocaleString("vi-VN")} VNĐ</td>
@@ -138,21 +215,29 @@ if (!user || !user.id) {  // kiểm tra id
 
         <h3>Thông tin người nhận</h3>
         <label>Họ tên:</label>
-        <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} />
+        <input type="text" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} />
 
         <label>Số điện thoại:</label>
-        <input type="text" value={phone} onChange={e => setPhone(e.target.value)} />
+        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} />
 
         <label>Địa chỉ:</label>
-        <input type="text" value={addressLine} onChange={e => setAddressLine(e.target.value)} />
+        <input type="text" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
 
         <label>Mã giảm giá:</label>
-        <input type="text" value={voucherCode} placeholder="Nhập mã giảm giá"
-          onChange={e => setVoucherCode(e.target.value)} />
-        <button onClick={handleApplyVoucher} className="apply-voucher-btn">Áp dụng</button>
+        <input
+          type="text"
+          value={voucherCode}
+          placeholder="Nhập mã giảm giá"
+          onChange={(e) => setVoucherCode(e.target.value)}
+        />
+        <button onClick={handleApplyVoucher} className="apply-voucher-btn">
+          Áp dụng
+        </button>
       </div>
 
-      <button className="checkout-btn" onClick={handleCheckout}>Thanh Toán</button>
+      <button className="checkout-btn" onClick={handleCheckout}>
+        Thanh Toán
+      </button>
     </div>
   );
 }

@@ -30,7 +30,18 @@ exports.getVoucherByCode = (req, res) => {
     res.json(results[0]);
   });
 };
+// Lấy voucher theo id
+exports.getVoucherById = (req, res) => {
+  const { id } = req.params;
 
+  const sql = `SELECT * FROM voucher WHERE voucher_id = ? LIMIT 1`;
+
+  db.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) return res.status(404).json({ message: "Không tìm thấy voucher" });
+    res.json(results[0]);
+  });
+};
 // Tạo voucher mới
 exports.createVoucher = (req, res) => {
   const {

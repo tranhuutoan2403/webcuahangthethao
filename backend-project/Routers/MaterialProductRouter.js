@@ -16,7 +16,9 @@ router.post("/", uploadAny, materialController.addVariants); // frontend gửi F
 router.get("/", materialController.getAllMaterials);
 
 // 3. Lấy danh sách biến thể theo product_id
-router.get("/product/:product_id", materialController.getMaterialsByProduct);
+router.get("/:product_id", materialController.getMaterialsByProduct);
+
+router.get("/:material_id/stock", materialController.getStockMaterial);
 
 // 4. Lấy 1 biến thể theo material_id
 router.get("/:id", materialController.getMaterialById);

@@ -15,6 +15,8 @@ import Categogy from "./component/Categogy";
 import CategogyAdd from "./component/CategogyAdd";
 import CategogyUpdate from "./component/CategogyUpdate";
 import Voucher from "./component/VoucherAdmin";
+import VoucherAdd from "./component/VoucherAdminAdd";
+import VoucherUpdate from "./component/VoucherAdminUpdate";
 import Order from "./component/Order";
 import FlashSales from "./component/FlashSale";
 import FlashSaleAdd from "./component/FlashSaleAdd";
@@ -31,6 +33,7 @@ import NewsCategoryAdminUpdate from "./component/NewCategogyAdminUpdate";
 import Brand from "./component/Brand";
 import BrandAdd from "./component/BrandAdd";
 import BrandUpdate from "./component/BrandUpdate";
+import PagesAdmin from "./component/PagesAdmin";
 import "./App.css";
 
 function Layout() {
@@ -79,7 +82,11 @@ function Layout() {
 
             {/* voucher*/}
             <Route path="/voucher" element={<Voucher />} />
-             <Route path="/order" element={<Order />} />
+            <Route path="/voucher/add" element={<VoucherAdd />} />
+            <Route path="/voucher/update/:id" element={<VoucherUpdate />} />
+
+            
+            <Route path="/order" element={<Order />} />
             {/* <Route path="/categogy/add" element={<CategogyAdd />} />
             <Route path="/categogy/update/:id" element={<CategogyUpdate />} /> */}
             {/* flashSale*/}
@@ -99,6 +106,9 @@ function Layout() {
             <Route path="/news-categogy" element={<NewsCategogyAdmin/>} />
             <Route path="/news-categogy/add" element={<NewsCategoryAdminAdd />} />
             <Route path="/news-categogy/update/:id" element={<NewsCategoryAdminUpdate />} />
+            
+             <Route path="/pages" element={<PagesAdmin/>} />
+            
           </Routes>
         </div>
       </div>

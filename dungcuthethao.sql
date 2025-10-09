@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dungcushop`
+-- Database: `dungcuthethao`
 --
-CREATE DATABASE IF NOT EXISTS `dungcushop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `dungcushop`;
+CREATE DATABASE IF NOT EXISTS `dungcuthethao` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `dungcuthethao`;
 
 -- --------------------------------------------------------
 

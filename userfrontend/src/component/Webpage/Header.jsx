@@ -138,6 +138,7 @@ export default function Header() {
                         <Link to="/profile" className="dropdown-item">
                           Trang Cá Nhân
                         </Link>
+                         <Link to="/My-order"className="dropdown-item">Đơn hàng của tôi</Link>
                         <span onClick={handleLogout} className="dropdown-item logout">
                           Đăng Xuất
                         </span>
@@ -154,7 +155,7 @@ export default function Header() {
                     )}
                   </div>
                 </div>
-
+                
                 {/* Icon Yêu thích */}
               
 
