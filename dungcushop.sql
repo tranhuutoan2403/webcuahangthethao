@@ -88,7 +88,8 @@ INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
 (2, 'Lining', 'vot-lining'),
 (3, 'Victor', 'victor'),
 (4, 'nike', 'giay-nike'),
-(5, 'Head', 'vot-pickleball');
+(5, 'Head', 'vot-head'),
+(6, 'Joola', 'vot-joola');
 
 -- --------------------------------------------------------
 
