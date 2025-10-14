@@ -60,8 +60,8 @@ function FlashSaleProduct() {
             flashProducts.map((fp) => (
               <tr key={fp.id}>
                 <td>{fp.id}</td>
-                <td>{fp.flash_sale_id}</td>
-                <td>{fp.product_id}</td>
+                <td>{fp.flash_sale_name}</td>
+                <td>{fp.name}</td>
                 <td>{fp.stock_limit}</td>
                 <td>
                   <button

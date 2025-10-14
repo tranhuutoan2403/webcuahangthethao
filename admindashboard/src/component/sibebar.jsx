@@ -15,10 +15,11 @@ const Sidebar = () => {
         <li><Link to="/voucher">Voucher</Link></li>
         <li><Link to="/flash-sale">Flash Sales</Link></li>
         <li><Link to="/flash-sale-products">Flash Sales Products</Link></li>
-         <li><Link to="/pages">Pages</Link></li>
+        <li><Link to="/pages">Pages</Link></li>
         <li><Link to="/news">News</Link></li>
         <li><Link to="/news-categogy">News Categogy</Link></li>
-
+        <li><Link to="/product-reviews">Product Review</Link></li>
+        <li><Link to="/Feedback">FeedBack</Link></li>
         <li><Link to="/order">🛒 Orders</Link></li>
         <li>📊 Reports</li>
       </ul>

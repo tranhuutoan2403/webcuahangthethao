@@ -230,6 +230,65 @@
   margin-left: 10px;
   padding: 8px 12px;
 }
+
+/* Nút mở modal */
+.btn-review {
+  padding: 10px 20px;
+  background: #ff6a00;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.overlay-review {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-review {
+  background: #fff;
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal-review h2 {
+  margin-bottom: 15px;
+}
+
+.modal-review textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-buttons button {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background: #28a745;
+  color: white;
+}
+
 /* --- RESPONSIVENESS (cho màn hình nhỏ hơn) --- */
 @media (max-width: 900px) {
     .product-align {

@@ -34,6 +34,8 @@ import Brand from "./component/Brand";
 import BrandAdd from "./component/BrandAdd";
 import BrandUpdate from "./component/BrandUpdate";
 import PagesAdmin from "./component/PagesAdmin";
+import ProductReview from "./component/ProductReview";
+import Feedback from "./component/Feedback";
 import "./App.css";
 
 function Layout() {
@@ -107,7 +109,9 @@ function Layout() {
             <Route path="/news-categogy/add" element={<NewsCategoryAdminAdd />} />
             <Route path="/news-categogy/update/:id" element={<NewsCategoryAdminUpdate />} />
             
-             <Route path="/pages" element={<PagesAdmin/>} />
+            <Route path="/product-reviews" element={<ProductReview/>} />
+            <Route path="/Feedback" element={<Feedback/>} />
+            <Route path="/pages" element={<PagesAdmin/>} />
             
           </Routes>
         </div>

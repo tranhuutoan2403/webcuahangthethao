@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { colorMap } from "./ColorMap";
 import "../CSS/trangchitiet.css";
 
+
+// ✅ Lấy user_id từ localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.user_id;
 const extractOptions = (materials) => {
   if (!materials || materials.length === 0)
     return { availableColors: [], availableSizes: [] };
@@ -25,6 +29,7 @@ function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
+  
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -35,6 +40,11 @@ function ProductDetail() {
 
   const [flashSales, setFlashSales] = useState([]);
   const [timer, setTimer] = useState(0);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviews, setReviews] = useState([]);
 
   const [showPreOrderForm, setShowPreOrderForm] = useState(false);
   const [preOrderData, setPreOrderData] = useState({
@@ -84,7 +94,7 @@ function ProductDetail() {
             setSelectedSize(defaultVariant.size || null);
             setDisplayImage(defaultVariant.image || data.image);
             setCurrentStock(defaultVariant.stock || 0);
-            setQuantity(1); // mặc định 1 lần đầu fetch
+            setQuantity(1);
           } else {
             setDisplayImage(data.image);
             setCurrentStock(data.stock || 0);
@@ -188,46 +198,6 @@ function ProductDetail() {
     return `${h}h ${m}m ${s}s`;
   };
 
-  const handleColorSelect = (color) => {
-    if (!product) return;
-    if (selectedColor === color) return;
-
-    setSelectedColor(color);
-    setSelectedSize(null); // reset size khi đổi màu
-
-    const found = product.materials?.find(
-      (m) => m.color === color && m.image && m.image.trim() !== ""
-    );
-
-    if (found) {
-      setDisplayImage(found.image);
-      setCurrentStock(found.stock || 0);
-    } else {
-      setDisplayImage((prev) => prev);
-      setCurrentStock(product.stock || 0);
-    }
-
-    setQuantity(1); // reset quantity khi đổi variant
-  };
-
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-
-    const found = product.materials?.find(
-      (m) =>
-        m.size === size &&
-        (!selectedColor || m.color === selectedColor)
-    );
-
-    if (found) {
-      setCurrentStock(found.stock);
-    } else {
-      setCurrentStock(product.stock);
-    }
-
-    setQuantity(1); // reset quantity khi đổi variant
-  };
-
   // ========================================
   // 🛒 Thêm vào giỏ
   // ========================================
@@ -320,6 +290,59 @@ function ProductDetail() {
     }
   };
 
+  // ========================================
+  // ✍️ Đánh giá sản phẩm
+  // ========================================
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/product-review/product/${product.product_id}`);
+      if (!res.ok) throw new Error("Không thể lấy review");
+      const data = await res.json();
+      setReviews(data);
+    } catch (err) {
+      console.error("Lỗi fetch review:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (product) fetchReviews();
+  }, [product]);
+
+  const handleSubmitReview = async () => {
+    if (reviewRating === 0) {
+      alert("Vui lòng chọn số sao!");
+      return;
+    }
+    if (!reviewComment.trim()) {
+      alert("Vui lòng nhập bình luận!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/product-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userId, // 👈 Quan trọng
+          product_id: product.product_id,
+          rating: reviewRating,
+          comment: reviewComment,
+          // user_id: localStorage.getItem("user_id") || 1
+        }),
+      });
+
+      if (!res.ok) throw new Error("Gửi đánh giá thất bại!");
+      alert("✅ Cảm ơn bạn đã đánh giá sản phẩm!");
+
+      setModalIsOpen(false);
+      setReviewRating(0);
+      setReviewComment("");
+      fetchReviews();
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    }
+  };
+
   if (loading) return <p>Đang tải dữ liệu...</p>;
   if (!product) return <p>Không tìm thấy sản phẩm</p>;
 
@@ -371,50 +394,30 @@ function ProductDetail() {
                       backgroundColor: colorMap[color] || "#fff",
                       border: selectedColor === color ? "2px solid #000" : "1px solid #ccc",
                     }}
-                    onClick={() => handleColorSelect(color)}
+                    onClick={() => setSelectedColor(color)}
                   />
                 ))}
               </div>
             </div>
           )}
 
-        {/* Kích cỡ */}
-        {product.availableSizes?.length > 0 && (
-          <div className="product-options">
-            <label>Kích cỡ:</label>
-            <div className="option-chips">
-              {product.availableSizes
-                .filter((size) => {
-                  if (selectedColor) {
-                    return product.materials.some(
-                      (m) => m.size === size && m.color === selectedColor
-                    );
-                  }
-                  return true;
-                })
-                .sort((a, b) => {
-                  // Nếu size là số (ví dụ 42, 43, 44...)
-                  const numA = Number(a);
-                  const numB = Number(b);
-                  if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-
-                  // Nếu size là chữ (S, M, L...) dùng orderMap
-                  const orderMap = { XS: 1, S: 2, M: 3, L: 4, XL: 5, XXL: 6 };
-                  return (orderMap[a] || 99) - (orderMap[b] || 99);
-                })
-                .map((size) => (
+          {/* Kích cỡ */}
+          {product.availableSizes?.length > 0 && (
+            <div className="product-options">
+              <label>Kích cỡ:</label>
+              <div className="option-chips">
+                {product.availableSizes.map((size) => (
                   <button
                     key={size}
                     className={`size-chip ${selectedSize === size ? "active" : ""}`}
-                    onClick={() => handleSizeSelect(size)}
+                    onClick={() => setSelectedSize(size)}
                   >
                     {size}
                   </button>
                 ))}
+              </div>
             </div>
-          </div>
-        )}
-
+          )}
 
           {/* Số lượng */}
           <div className="quantity-group">
@@ -438,6 +441,15 @@ function ProductDetail() {
               📦 Đặt hàng trước
             </button>
           )}
+
+          {/* Nút đánh giá sản phẩm */}
+          <button
+            onClick={() => setModalIsOpen(true)}
+            className="review-btn"
+            style={{ marginLeft: "10px" }}
+          >
+            ✍️ Đánh giá sản phẩm
+          </button>
         </div>
       </div>
 
@@ -499,6 +511,63 @@ function ProductDetail() {
           </div>
         </div>
       )}
+
+      {/* ✍️ Modal đánh giá sản phẩm */}
+      {modalIsOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Đánh giá sản phẩm: {product.name}</h3>
+
+            <label>Chọn số sao:</label>
+            <div className="rating-stars">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${reviewRating >= star ? "active" : ""}`}
+                  onClick={() => setReviewRating(star)}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "24px",
+                    color: reviewRating >= star ? "#FFD700" : "#ccc",
+                  }}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <label>Bình luận của bạn:</label>
+            <textarea
+              value={reviewComment}
+              onChange={(e) => setReviewComment(e.target.value)}
+              placeholder="Nhập đánh giá..."
+              required
+            />
+
+            <div className="modal-actions">
+              <button onClick={() => setModalIsOpen(false)}>❌ Hủy</button>
+              <button onClick={handleSubmitReview}>📩 Gửi đánh giá</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 📢 Danh sách đánh giá */}
+      <div className="reviews-section">
+        <h3>📢 Đánh giá sản phẩm</h3>
+        {reviews.length > 0 ? (
+          reviews.map((r) => (
+            <div key={r.review_id} className="review-item">
+              <strong>{r.username}</strong> -{" "}
+              <span>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
+              <p>{r.comment}</p>
+              <small>{new Date(r.created_at).toLocaleString()}</small>
+            </div>
+          ))
+        ) : (
+          <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+        )}
+      </div>
     </div>
   );
 }

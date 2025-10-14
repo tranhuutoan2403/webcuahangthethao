@@ -88,7 +88,8 @@ INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
 (2, 'Lining', 'vot-lining'),
 (3, 'Victor', 'victor'),
 (4, 'nike', 'giay-nike'),
-(5, 'Head', 'vot-pickleball');
+(5, 'Head', 'vot-head'),
+(6, 'Joola', 'vot-joola');
 
 -- --------------------------------------------------------
 
@@ -474,8 +475,8 @@ INSERT INTO `products`
 -- Table structure for table `reviews`
 --
 
-DROP TABLE IF EXISTS `reviews`;
-CREATE TABLE IF NOT EXISTS `reviews` (
+DROP TABLE IF EXISTS `product_reviews`;
+CREATE TABLE IF NOT EXISTS `product_reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -486,6 +487,11 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   KEY `user_id` (`user_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+INSERT INTO `product_reviews` (user_id, product_id, rating, comment, created_at) VALUES
+(6, 3, 5, 'Sản phẩm rất tốt chất lượng vượt mong đợi!', NOW());
 
 -- --------------------------------------------------------
 
@@ -562,7 +568,7 @@ INSERT INTO `voucher` (`voucher_id`, `code`, `description`, `discount_type`, `di
 
 
 DROP TABLE IF EXISTS `preorders`;
-CREATE TABLE `preorders` (
+CREATE TABLE IF NOT EXISTS `preorders` (
   `preorder_id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
   `user_id` INT DEFAULT NULL,
@@ -582,6 +588,22 @@ CREATE TABLE `preorders` (
   CONSTRAINT `fk_preorders_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `feedback_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `phone` VARCHAR(20) DEFAULT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`feedback_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `feedback` (`user_id`, `name`, `email`, `phone`, `message`, `created_at`) VALUES
+(6, 'Nguyễn Văn A', 'nguyenvana@example.com', '0905123456', 'Trang web rất dễ sử dụng, tôi rất hài lòng.', NOW());
 
 
 --
@@ -605,8 +627,8 @@ ALTER TABLE `flash_sale_products`
 -- Constraints for table `materials`
 --
 ALTER TABLE `materials`
-  ADD CONSTRAINT `fk_materials_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `materials_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_materials_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+  -- ADD CONSTRAINT `materials_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `news`
@@ -642,7 +664,7 @@ ALTER TABLE `products`
 --
 -- Constraints for table `reviews`
 --
-ALTER TABLE `reviews`
+ALTER TABLE `product_reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 COMMIT;
