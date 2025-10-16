@@ -20,6 +20,9 @@ router.get("/:product_id", materialController.getMaterialsByProduct);
 
 router.get("/:material_id/stock", materialController.getStockMaterial);
 
+router.post("/upsert/:product_id", materialController.uploadAny, materialController.upsertVariants);
+
+router.put("/upsert/:product_id", materialController.uploadAny, materialController.upsertVariants);
 // 4. Lấy 1 biến thể theo material_id
 router.get("/:id", materialController.getMaterialById);
 

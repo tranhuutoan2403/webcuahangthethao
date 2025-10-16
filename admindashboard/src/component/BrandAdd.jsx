@@ -11,9 +11,30 @@ function BrandAdd() {
 
   const navigate = useNavigate();
 
-  // Xử lý input text
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // ✅ Hàm tạo slug tự động
+  const generateSlug = (text) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "d")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
+  // Khi gõ tên → tự động sinh slug
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    const slug = generateSlug(name);
+    setFormData({ name, slug });
+  };
+
+  // Nếu người dùng muốn chỉnh sửa slug thủ công
+  const handleSlugChange = (e) => {
+    setFormData({ ...formData, slug: e.target.value });
   };
 
   // Submit form
@@ -27,11 +48,9 @@ function BrandAdd() {
 
     try {
       await axios.post("http://localhost:5000/api/brand", formData);
-    //   alert("Thêm thương hiệu thành công!");
       navigate("/brand");
     } catch (err) {
       console.error("Lỗi khi thêm thương hiệu:", err);
-    //   alert("Thêm thương hiệu thất bại!");
     }
   };
 
@@ -44,7 +63,7 @@ function BrandAdd() {
           type="text"
           name="name"
           value={formData.name}
-          onChange={handleChange}
+          onChange={handleNameChange}
           placeholder="Nhập tên thương hiệu"
           required
         />
@@ -54,8 +73,8 @@ function BrandAdd() {
           type="text"
           name="slug"
           value={formData.slug}
-          onChange={handleChange}
-          placeholder="Nhập slug"
+          onChange={handleSlugChange}
+          placeholder="Tự động sinh từ tên (có thể chỉnh)"
           required
         />
 

@@ -264,3 +264,63 @@ transition: box-shadow 0.3s ease-in-out, -webkit-box-shadow 0.3s ease-in-out;
   color: red;
   cursor: pointer;
 }
+
+/* Container bao bọc ô tìm kiếm và gợi ý (Rất quan trọng) */
+.search-box-wrapper {
+    position: relative; /* Đảm bảo .search-suggestions được định vị tương đối với nó */
+    display: flex;
+    align-items: center;
+}
+
+/* Box chứa danh sách gợi ý */
+.search-suggestions {
+    position: absolute;
+    top: 100%; /* Đặt ngay dưới đáy của .search-box-wrapper */
+    left: 0;
+    width: 100%; 
+    min-width: 250px; /* Đảm bảo độ rộng tối thiểu */
+    max-height: 250px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Thêm thanh cuộn nếu danh sách dài */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 1000; /* Rất quan trọng: Đảm bảo nó nằm trên các thành phần khác (ví dụ: menu) */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Loại bỏ dấu chấm list nếu có */
+}
+
+/* Mỗi mục gợi ý */
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm nếu tên quá dài */
+    border-bottom: 1px solid #eee;
+}
+
+/* Hiệu ứng hover */
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Mục tìm kiếm đầy đủ */
+.suggestion-item.search-full {
+    font-weight: bold;
+    color: #007bff; 
+    border-top: 1px solid #ccc;
+    font-style: italic;
+}
+.suggestion-item.search-full:hover {
+    background-color: #e9f5ff;
+}
+
+/* Tùy chỉnh nhỏ */
+.search-box-wrapper .search-box {
+    /* Nếu bạn có margin-bottom nào trên .search-box cũ, hãy đặt lại về 0 */
+    margin-bottom: 0; 
+}

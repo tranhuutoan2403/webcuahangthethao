@@ -19,7 +19,16 @@ exports.getBrandById = (req, res) => {
     res.json(results[0]);
   });
 };
-
+// ======================== LẤY THƯƠNG HIỆU THEO SLUG ========================
+exports.getBrandBySlug = (req, res) => {
+  const { slug } = req.params;
+  const sql = "SELECT * FROM brands WHERE slug = ? LIMIT 1";
+  db.query(sql, [slug], (err, results) => {
+    if (err) return res.status(500).json({ message: "Lỗi server", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "Không tìm thấy thương hiệu" });
+    res.json(results[0]);
+  });
+};
 // ======================== THÊM THƯƠNG HIỆU ========================
 exports.createBrand = (req, res) => {
   const { name, slug } = req.body;

@@ -288,7 +288,21 @@
   background: #28a745;
   color: white;
 }
-
+.product-description p {
+  text-align: justify;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+/* Css cho tên sản phẩm */
+.product-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;      /* ✅ Giới hạn 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  max-height: calc(1.4em * 2); /* 2 dòng */
+}
 /* --- RESPONSIVENESS (cho màn hình nhỏ hơn) --- */
 @media (max-width: 900px) {
     .product-align {

@@ -56,7 +56,7 @@ const Categogy = () => {
             <th>Tên</th>
           
             <th>Slug</th>
-              <th>Ảnh</th>
+              {/* <th>Ảnh</th> */}
             <th>Hành động</th>
           </tr>
         </thead>
@@ -68,7 +68,7 @@ const Categogy = () => {
                 <td>{category.name}</td>
                 
                 <td>{category.slug}</td>
-                <td>
+                {/* <td>
                   {category.HinhAnh && (
                     <img
                       src={`http://localhost:5000/images/${category.HinhAnh}`}
@@ -76,7 +76,7 @@ const Categogy = () => {
                       className="product-image"
                     />
                   )}
-                </td>
+                </td> */}
                 <td>
                   <button
                     className="edit-btn"

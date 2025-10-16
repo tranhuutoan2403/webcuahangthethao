@@ -23,6 +23,9 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<TrangChu />} />
+
+                {/* ✅ Trang tìm kiếm cũng dùng TrangChu luôn */}
+                <Route path="/tim-kiem" element={<TrangChu />} />
                 {/* Danh sách sản phẩm */}
             
                 {/* Trang chi tiết sản phẩm theo slug */}

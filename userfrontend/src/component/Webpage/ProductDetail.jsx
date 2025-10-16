@@ -379,7 +379,10 @@ function ProductDetail() {
 
           {isFlashActive && <p className="countdown">Còn lại: {formatTime(timer)}</p>}
 
-          <p>{product.description}</p>
+          <div
+            className="product-description"
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          ></div>
 
           {/* Màu sắc */}
           {product.availableColors?.length > 0 && (

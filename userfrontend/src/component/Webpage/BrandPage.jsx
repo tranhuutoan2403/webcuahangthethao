@@ -5,9 +5,23 @@ import "../CSS/trangchu.css";
 const BrandPage = () => {
   const { slug } = useParams(); // Lấy slug từ URL
   const [products, setProducts] = useState([]);
+  const [brandName, setBrandName] = useState(""); // ✅ Thêm state lưu tên brand
   const [flashSales, setFlashSales] = useState([]);
   const [timer, setTimer] = useState({});
 
+  // ✅ Lấy tên brand theo slug
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/brand/slug/${slug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.name) {
+          setBrandName(data.name);
+        } else {
+          setBrandName("Thương hiệu");
+        }
+      })
+      .catch((err) => console.error("Lỗi khi fetch tên brand:", err));
+  }, [slug]);
   // Lấy danh sách sản phẩm theo brand
   useEffect(() => {
     fetch(`http://localhost:5000/api/products/brand/${slug}`)
@@ -76,7 +90,7 @@ const BrandPage = () => {
 
   return (
     <div className="content">
-      <div className="title-head">Thương hiệu:Vợt Lining</div>
+      <div className="title-head">{brandName}</div>
 
       <div className="product-container">
         <div className="card-container">

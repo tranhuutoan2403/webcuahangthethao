@@ -5,9 +5,23 @@ import "../CSS/trangchu.css";
 const CategoryPage = () => {
   const { slug } = useParams(); // Lấy slug từ URL
   const [products, setProducts] = useState([]);
+  const[categoryName, setCategory] = useState([]);
   const [flashSales, setFlashSales] = useState([]); // danh sách flash sale đang active
   const [timer, setTimer] = useState({}); // countdown cho từng sản phẩm
 
+   // ✅ Lấy tên danh mục theo slug
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/categogy/slug/${slug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.name) {
+          setCategory(data.name);
+        } else {
+          setCategory("Danh Mục");
+        }
+      })
+      .catch((err) => console.error("Lỗi khi fetch tên brand:", err));
+  }, [slug]);
   // ===== Lấy danh sách sản phẩm theo danh mục =====
   useEffect(() => {
     fetch(`http://localhost:5000/api/products/categogy/${slug}`)
@@ -81,7 +95,7 @@ const CategoryPage = () => {
 
   return (
     <div className="content">
-      <h1 className="title-head">Danh mục:Vợt Cầu Lông</h1>
+      <h1 className="title-head">{categoryName}</h1>
 
       <div className="product-container">
         <div className="card-container">

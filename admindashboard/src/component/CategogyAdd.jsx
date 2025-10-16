@@ -9,37 +9,40 @@ function CategogyAdd() {
     slug: "",
   });
 
-  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
-  // Xử lý input text
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Hàm chuyển tên thành slug (không dấu, chữ thường, thay khoảng trắng = -)
+  const generateSlug = (text) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // tách dấu tiếng Việt
+      .replace(/[\u0300-\u036f]/g, "") // xóa dấu
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "d")
+      .replace(/\s+/g, "-") // thay khoảng trắng bằng dấu -
+      .replace(/[^a-z0-9-]/g, "") // xóa ký tự đặc biệt
+      .replace(/-+/g, "-") // gộp nhiều dấu - thành 1
+      .replace(/^-+|-+$/g, ""); // xóa dấu - đầu & cuối
   };
 
-  // Xử lý file input (ảnh category)
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  // Khi gõ tên → tự động cập nhật slug
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    const slug = generateSlug(name);
+    setFormData({ name, slug });
+  };
+
+  // Nếu muốn người dùng vẫn có thể sửa slug thủ công
+  const handleSlugChange = (e) => {
+    setFormData({ ...formData, slug: e.target.value });
   };
 
   // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      alert("Vui lòng chọn hình ảnh!");
-      return;
-    }
-
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("slug", formData.slug);
-    data.append("HinhAnh", file);
-
     try {
-      await axios.post("http://localhost:5000/api/categogy", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post("http://localhost:5000/api/categogy", formData);
       alert("Thêm loại sản phẩm thành công!");
       navigate("/categogy");
     } catch (err) {
@@ -57,7 +60,7 @@ function CategogyAdd() {
           type="text"
           name="name"
           value={formData.name}
-          onChange={handleChange}
+          onChange={handleNameChange}
           placeholder="Nhập tên loại"
           required
         />
@@ -67,13 +70,10 @@ function CategogyAdd() {
           type="text"
           name="slug"
           value={formData.slug}
-          onChange={handleChange}
-          placeholder="Nhập slug"
+          onChange={handleSlugChange}
+          placeholder="Tự động sinh từ tên (có thể chỉnh)"
           required
         />
-
-        <label>Hình ảnh</label>
-        <input type="file" name="HinhAnh" onChange={handleFileChange} required />
 
         <button type="submit">Thêm loại sản phẩm</button>
       </form>

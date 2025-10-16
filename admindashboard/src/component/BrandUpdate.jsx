@@ -13,39 +13,56 @@ export default function BrandUpdate() {
     slug: ""
   });
 
-  // Lấy dữ liệu thương hiệu ban đầu
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/brand/${id}`)
-      .then((res) => {
-        const { name, slug } = res.data;
-        setFormData({ name, slug });
-      })
-      .catch((err) => {
-        console.error("Lỗi khi lấy dữ liệu:", err);
-        // alert("Không thể tải dữ liệu thương hiệu.");
-      });
-  }, [id]);
-
-  // Xử lý input
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // ✅ Hàm tạo slug từ tên
+  const generateSlug = (text) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // bỏ dấu tiếng Việt
+      .replace(/\s+/g, "-") // thay khoảng trắng bằng dấu -
+      .replace(/[^a-z0-9-]/g, ""); // loại bỏ ký tự đặc biệt
   };
 
-  // Cập nhật thương hiệu
-  const handleUpdate = (e) => {
-    e.preventDefault();
+  // Lấy dữ liệu brand ban đầu
+  useEffect(() => {
+    const fetchBrand = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/brand/${id}`);
+        const { name, slug } = res.data;
+        setFormData({ name, slug });
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        alert("Không thể tải dữ liệu thương hiệu.");
+      }
+    };
+    fetchBrand();
+  }, [id]);
 
-    axios
-      .put(`http://localhost:5000/api/brand/${id}`, formData)
-      .then(() => {
-        // alert("Cập nhật thương hiệu thành công!");
-        navigate("/brand");
-      })
-      .catch((err) => {
-        console.error("Lỗi khi cập nhật:", err);
-        // alert("Cập nhật thương hiệu thất bại!");
+  // ✅ Xử lý input text — tự động cập nhật slug khi sửa tên
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "name") {
+      setFormData({
+        ...formData,
+        name: value,
+        slug: generateSlug(value),
       });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  // Cập nhật brand
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:5000/api/brand/${id}`, formData);
+      alert("Cập nhật thương hiệu thành công!");
+      navigate("/brand");
+    } catch (err) {
+      console.error("Lỗi khi cập nhật:", err.response || err);
+      alert("Cập nhật thất bại!");
+    }
   };
 
   return (
@@ -69,8 +86,7 @@ export default function BrandUpdate() {
             type="text"
             name="slug"
             value={formData.slug}
-            onChange={handleChange}
-            required
+            disabled // ✅ Khóa không cho người dùng chỉnh sửa slug
           />
         </div>
 
