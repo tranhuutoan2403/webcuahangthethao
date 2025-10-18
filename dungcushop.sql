@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2025 at 10:15 AM
+-- Generation Time: Oct 18, 2025 at 11:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -210,7 +210,9 @@ INSERT INTO `materials` (`material_id`, `product_id`, `color`, `size`, `sku`, `s
 (28, 77, NULL, '3U', 'PROD-77-null-3U', 0, NULL, '2025-10-18 07:53:40'),
 (29, 77, NULL, '4U', 'PROD-77-null-4U', 0, NULL, '2025-10-18 07:53:40'),
 (30, 65, NULL, '3U', 'PROD-65-null-3U', 0, NULL, '2025-10-18 07:54:04'),
-(31, 65, NULL, '4U', 'PROD-65-null-4U', 0, NULL, '2025-10-18 07:54:04');
+(31, 65, NULL, '4U', 'PROD-65-null-4U', 0, NULL, '2025-10-18 07:54:04'),
+(32, 85, NULL, '3U', 'PROD-85-null-3U', 0, NULL, '2025-10-18 09:50:24'),
+(33, 85, NULL, '4U', 'PROD-85-null-4U', 0, NULL, '2025-10-18 09:50:24');
 
 -- --------------------------------------------------------
 
@@ -454,7 +456,7 @@ INSERT INTO `products` (`product_id`, `category_id`, `brand_id`, `name`, `slug`,
 (82, 1, 1, 'Vợt cầu lông Yonex Astrox 88D Pro Blue', 'vot-cau-long-yonex-astrox-88d-pro-blue', 'Vợt cầu lông Yonex Astrox 88D Pro Blue – tối ưu cho đôi, trợ lực tốt, kiểm soát cầu chính xác.', 3989000, '41.webp', '2025-10-07 08:46:00'),
 (83, 1, 1, 'Vợt cầu lông Yonex Astrox 88S Pro Red', 'vot-cau-long-yonex-astrox-88s-pro-red', 'Vợt cầu lông Yonex Astrox 88S Pro Red – dành cho lối chơi đơn, nhấn mạnh tốc độ và chính xác.', 3989000, '42.webp', '2025-10-07 08:47:10'),
 (84, 1, 1, 'Vợt cầu lông Yonex Nanoflare 700FX Pink', 'vot-cau-long-yonex-nanoflare-700fx-pink', 'Vợt cầu lông Yonex Nanoflare 700FX Pink – nâng cấp lực phản tạt, tối ưu tốc độ và linh hoạt.', 1649000, '43.webp', '2025-10-07 08:48:20'),
-(85, 1, 1, 'Vợt cầu lông Yonex Astrox 100ZZ VA Red', 'vot-cau-long-yonex-astrox-100zz-va-red', 'Vợt cầu lông Yonex Astrox 100ZZ VA Red – phiên bản đặc biệt VA, màu đỏ, cân bằng lực đánh, tối ưu lối chơi tấn công và smash mạnh mẽ.', 5329000, '44.webp', '2025-10-07 08:49:30'),
+(85, 1, 1, 'Vợt cầu lông Yonex Astrox 100ZZ VA Red', 'vot-cau-long-yonex-astrox-100zz-va-red', '<p>Vợt cầu lông Yonex Astrox 100ZZ VA Red – phiên bản đặc biệt VA, màu đỏ, cân bằng lực đánh, tối ưu lối chơi tấn công và smash mạnh mẽ.</p>', 5329000, 'vot-cau-long-yonex-astrox-100zz-va-grayish-beige-chinh-hang_1758152558.jpg', '2025-10-07 08:49:30'),
 (86, 2, 6, 'Vợt Pickleball Joola Perseus 3S Dual 16mm chính hãng', 'vot-pickleball-joola-perseus-3s-dual-16mm-chinh-hang', '- Vợt Pickleball Joola Perseus 3S Dual 16mm được thiết kế dựa trên nền tảng của dòng sản phẩm 3S của JOOLA, Perseus 3S Dual 16mm có cùng hình dáng Perseus được yêu thích với quy trình đảm bảo chất lượng toàn diện để đáp ứng các tiêu chuẩn UPA-A và USAP hiện hành...', 5290000, '54.webp', '2025-10-14 07:01:46'),
 (87, 2, 6, 'Vợt Pickleball Joola Perseus 3S Dual 14mm chính hãng', 'vot-pickleball-joola-perseus-3s-dual-14mm-chinh-hang', '- Vợt Pickleball Joola Perseus 3S Dual 14mm được thiết kế dựa trên nền tảng của dòng sản phẩm 3S của JOOLA...', 5290000, '54.webp', '2025-10-14 07:02:31'),
 (88, 2, 6, 'Vợt Pickleball Joola Scorpeus 3S Dual 14mm chính hãng', 'vot-pickleball-joola-scorpeus-3s-dual-14mm-chinh-hang', '- Vợt Pickleball Joola Scorpeus 3S Dual 14mm chính hãng được thiết kế dựa trên nền tảng của dòng sản phẩm 3S...', 5290000, '55.webp', '2025-10-14 07:03:12'),
@@ -751,7 +753,7 @@ ALTER TABLE `flash_sale_products`
 -- AUTO_INCREMENT for table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `news`
