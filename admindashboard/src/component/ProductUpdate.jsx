@@ -52,7 +52,7 @@ export default function ProductUpdate() {
       try {
         // Tải Categories và Brands trước
         const [catRes, brandRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/categogy"),
+          axios.get("http://localhost:5000/api/category"),
           axios.get("http://localhost:5000/api/brand")
         ]);
         setCategories(catRes.data);

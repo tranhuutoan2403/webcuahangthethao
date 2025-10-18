@@ -144,35 +144,35 @@ export default function Header() {
                 </div>
               </div>
               <div className="dropdown">
-                <Link to="/categogy/vot-cau-long">Vợt Cầu Lông</Link>
+                <Link to="/category/vot-cau-long">Vợt Cầu Lông</Link>
                 <div className="dropdown-menu">
                   <Link to="/brand/vot-yonex">Vợt Yonex</Link>
                   <Link to="/brand/vot-lining">Vợt Lining</Link>
                 </div>
               </div>
               <div className="dropdown">
-                <Link to="/categogy/vot-pickle-ball">Vợt PickleBall</Link>
+                <Link to="/category/vot-pickle-ball">Vợt PickleBall</Link>
                 <div className="dropdown-menu">
                   <Link to="/brand/vot-head">Vợt Head</Link>
                   <Link to="/brand/vot-joola">Vợt Joola</Link>
                 </div>
               </div>
               <div className="dropdown">
-                <Link to="/categogy/vot-tennis">Vợt Tennis</Link>
+                <Link to="/category/vot-tennis">Vợt Tennis</Link>
                 <div className="dropdown-menu">
                   <Link to="/VotHead">Vợt Head</Link>
                   <Link to="/VotJoola">Vợt Joola</Link>
                 </div>
               </div>
               <div className="dropdown">
-                <Link to="/categogy/giay-cau-long">Giày</Link>
+                <Link to="category/giay-cau-long">Giày</Link>
                 <div className="dropdown-menu">
                   <Link to="/brand/giay-cau-long-yonex">Giày Cầu Lông Yonex</Link>
                   <Link to="/brand/giay-cau-long-lining">Giày Cầu Lông Lining</Link>
                 </div>
               </div>
               <div className="dropdown">
-                <Link to="/news/categogy/tin-tuc">Tin Tức</Link>
+                <Link to="/news/category/tin-tuc">Tin Tức</Link>
               </div>
             </nav>
 

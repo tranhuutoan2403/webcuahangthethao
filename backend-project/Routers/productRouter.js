@@ -13,7 +13,7 @@ router.get("/", productController.getAllProduct);
 router.get("/slug/:slug", productController.getProductBySlug);
 
 // 4. Lấy sản phẩm theo category slug
-router.get("/categogy/:slug", productController.getProductsByCategorySlug);
+router.get("/category/:slug", productController.getProductsByCategorySlug);
 // Lấy sản phẩm theo Brand Slug 
 router.get("/brand/:slug", productController.getProductsByBrands)
 

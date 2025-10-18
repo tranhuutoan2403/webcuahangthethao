@@ -29,7 +29,7 @@ function ProductMaterialAdd() {
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
 
-    axios.get("http://localhost:5000/api/categogy")
+    axios.get("http://localhost:5000/api/category")
       .then(res => setCategories(res.data))
       .catch(err => console.error(err));
   }, []);

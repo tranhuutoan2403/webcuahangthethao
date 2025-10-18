@@ -56,7 +56,7 @@ function ProductDetail() {
 
   // ================== Fetch Dữ liệu (Chi tiết SP, Cat, Brand) ==================
   useEffect(() => {
-    const fetchDependencies = axios.get("http://localhost:5000/api/categogy")
+    const fetchDependencies = axios.get("http://localhost:5000/api/category")
       .then(res => setCategories(res.data));
     
     const fetchBrands = axios.get("http://localhost:5000/api/brand")
