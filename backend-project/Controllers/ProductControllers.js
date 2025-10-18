@@ -60,6 +60,23 @@ exports.getProductsByCategorySlug = (req, res) => {
   });
 };
 
+// Lấy sản phẩm mới nhất theo category slug (giới hạn 10 sản phẩm mới nhất)
+exports.getNewestProductsByCategorySlug = (req, res) => {
+  const { slug } = req.params;
+  const sql = `
+    SELECT p.* FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.slug = ?
+    ORDER BY p.created_at DESC
+    LIMIT 10
+  `.replace(/\s+/g, ' ').trim();
+
+  db.query(sql, [slug], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};
+
 // Lấy sản phẩm theo brand slug
 exports.getProductsByBrands = (req, res) => {
   const { slug } = req.params;

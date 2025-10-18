@@ -9,12 +9,16 @@ const productController = require("../Controllers/ProductControllers");
 // 1. Lấy tất cả sản phẩm
 router.get("/", productController.getAllProduct);
 
-// 3. Lấy sản phẩm theo slug
+// 2. Lấy sản phẩm theo slug
 router.get("/slug/:slug", productController.getProductBySlug);
 
-// 4. Lấy sản phẩm theo category slug
+// 3. Lấy sản phẩm theo category slug
 router.get("/category/:slug", productController.getProductsByCategorySlug);
-// Lấy sản phẩm theo Brand Slug 
+
+// 4. Lấy sản phẩm mới nhất theo category slug
+router.get("/category/:slug/newest", productController.getNewestProductsByCategorySlug);
+
+// 4. Lấy sản phẩm theo Brand Slug 
 router.get("/brand/:slug", productController.getProductsByBrands)
 
 // 2. Lấy sản phẩm theo ID (ĐỂ CUỐI CÙNG)
