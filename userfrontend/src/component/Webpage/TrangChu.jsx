@@ -4,6 +4,7 @@ import '../CSS/trangchu.css';
 import BannerCarousel from "./BannerCarousel";
 import ProductFilter from './ProductFilter';
 import NewestCategorySlider from "./NewestCategorySlider";
+import CategorySelectorSlider from "./CategorySelectorSlider";
 import VoucherInput from "./VoucherInput";
 
 const normalizeText = (text) => {
@@ -15,17 +16,34 @@ const normalizeText = (text) => {
 };
 
 const TrangChu = () => {
-  const [products, setProducts] = useState([]);
-  const [flashSales, setFlashSales] = useState([]);
-  const [timer, setTimer] = useState({});
-  const [sortOption, setSortOption] = useState("default");
-  const [activeVoucher, setActiveVoucher] = useState(null);
+    // Của categories selector của sản phẩm mới nhất
+    const [categories, setCategories] = useState([]);
+    const [selectedSlug, setSelectedSlug] = useState(null);
 
-  const location = useLocation();
-  const searchQuery = useMemo(() => {
+    const [products, setProducts] = useState([]);
+    const [flashSales, setFlashSales] = useState([]);
+    const [timer, setTimer] = useState({});
+    const [sortOption, setSortOption] = useState("default");
+    const [activeVoucher, setActiveVoucher] = useState(null);
+
+    const location = useLocation();
+    const searchQuery = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return params.get('search') || '';
   }, [location.search]);
+
+  // Lấy categories cho categories selector
+  useEffect(() => {
+  fetch("http://localhost:5000/api/category")
+    .then((res) => res.json())
+    .then((data) => {
+      setCategories(data);
+      if (data.length > 0) {
+        setSelectedSlug(data[0].slug);
+      }
+    })
+    .catch((err) => console.error("Error fetching categories:", err));
+}, []);
 
   // Lấy danh sách sản phẩm
   useEffect(() => {
@@ -205,11 +223,16 @@ const TrangChu = () => {
                 )}
             </div>
         </div>
-
-        {!searchQuery && (
+        
+        {!searchQuery && selectedSlug && (
             <>
-                <div className='title-head'>SẢN PHẨM MỚI</div>
-                <NewestCategorySlider slug="vot-cau-long" />
+                <div className="title-head">SẢN PHẨM MỚI</div>
+                <CategorySelectorSlider
+                selectedSlug={selectedSlug}
+                onSelect={setSelectedSlug}
+                categories={categories}
+                />
+                <NewestCategorySlider slug={selectedSlug} />
             </>
         )}
     </div>

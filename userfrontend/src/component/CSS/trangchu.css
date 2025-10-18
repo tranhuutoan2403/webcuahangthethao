@@ -119,3 +119,30 @@ h2{
   font-size: 12px;
   margin-top: 5px;
 }
+
+/* Category slider selector */
+.category-selector-wrapper {
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.category-button {
+  padding: 10px 16px;
+  margin: 5px;
+  border: none;
+  background-color: #eee;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: #ddd;
+}
+
+.category-button.active {
+  background-color: #ff4d4f;
+  color: white;
+}
