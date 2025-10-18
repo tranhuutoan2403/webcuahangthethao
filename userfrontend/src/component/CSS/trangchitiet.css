@@ -1,6 +1,11 @@
 /* ProductDetail.css */
 
 /* --- GENERAL LAYOUT --- */
+/* trangchitiet.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+body, .container, .container * {
+  font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+}
 .container {
     max-width: 1200px; /* Giới hạn chiều rộng trang */
     margin: 0 auto;
@@ -144,42 +149,61 @@
     text-align: center;
 }
 
-/* --- ADD TO CART BUTTON --- */
-.add-to-cart-btn {
-    width: 100%;
-    padding: 15px;
-    background-color: #2a9d8f; /* Màu xanh lá/teal nổi bật */
-    color: white;
+.add-to-cart-btn,
+.preorder-btn,
+.review-btn {
+    position: relative;
+    overflow: hidden;            /* để hiệu ứng sáng không tràn ra ngoài */
+    background-color: #ff3300;
+    color: black;
     border: none;
-    border-radius: 4px;
-    font-size: 1.2em;
+    padding: 12px 30px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
 }
 
-.add-to-cart-btn:hover {
-    background-color: #264653; /* Tối hơn một chút khi hover */
+/* Tạo hiệu ứng ánh sáng bóng */
+.add-to-cart-btn::before,
+.preorder-btn::before,
+.review-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: all 0.5s;
 }
 
-.add-to-cart-btn:active {
-    transform: scale(0.99);
+.add-to-cart-btn:hover,
+.preorder-btn:hover,
+.review-btn:hover {
+    background-color: black;
+    color: white;
+    transform: translateY(-3px);
 }
 
-/* làm giao diện nút đặt trước */
-.preorder-btn {
-  background-color: #f39c12;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+.add-to-cart-btn:hover::before,
+.preorder-btn:hover::before,
+.review-btn:hover::before {
+    left: 125%;                 /* ánh sáng lướt qua */
+    transition: all 0.7s ease;  /* thời gian ánh sáng chạy */
 }
 
-.preorder-btn:hover {
-  background-color: #e67e22;
-}
 /* làm giao modal form đặt trước */
 .modal-overlay {
   position: fixed;
@@ -295,6 +319,7 @@
 }
 /* Css cho tên sản phẩm */
 .product-name {
+   color: #000 ; /* Màu đen */
   display: -webkit-box;
   -webkit-line-clamp: 2;      /* ✅ Giới hạn 2 dòng */
   -webkit-box-orient: vertical;

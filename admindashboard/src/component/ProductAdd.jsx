@@ -25,7 +25,8 @@ const colorPalette = [
   "Nâu",
   "Cam",
 ];
-
+// Danh sách nhãn sản phẩm
+const labelOptions = ["Nổi bật", "Bán chạy", "Mới"];
 function ProductAdd() {
   const navigate = useNavigate();
   const editor = useRef(null);
@@ -53,6 +54,12 @@ function ProductAdd() {
   const [colorFiles, setColorFiles] = useState({});
   const [imagePerColor, setImagePerColor] = useState(false);
 
+    // ===== Nhãn sản phẩm =====
+  const [selectedLabels, setSelectedLabels] = useState([]);
+
+  // ===== State riêng cho JoditEditor =====
+  const [editorContent, setEditorContent] = useState("");
+
   // ================== Fetch category & brand ==================
   useEffect(() => {
     axios
@@ -68,28 +75,27 @@ function ProductAdd() {
 
   // ================== Handle product input ==================
   const handleChange = useCallback((e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  if (name === "name") {
-    // ✅ Tạo slug tự động khi nhập tên sản phẩm
-    const generatedSlug = value
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")        // khoảng trắng -> gạch ngang
-      .replace(/[^\w-]+/g, "");    // xóa ký tự đặc biệt
+    if (name === "name") {
+      const generatedSlug = value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]+/g, "");
 
-    setProductData((prev) => ({
-      ...prev,
-      name: value,
-      slug: generatedSlug,
-    }));
-  } else {
-    setProductData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-}, []);
+      setProductData((prev) => ({
+        ...prev,
+        name: value,
+        slug: generatedSlug,
+      }));
+    } else {
+      setProductData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  }, []);
 
   // ✅ Hàm loại bỏ HTML
   const stripHtml = (html) => {
@@ -98,45 +104,13 @@ function ProductAdd() {
     return div.textContent || div.innerText || "";
   };
 
-  // ✅ Thêm hàm xử lý mô tả — chỉ lấy text
-  const handleDescriptionChange = useCallback((value) => {
-    const plainText = stripHtml(value);
-    setProductData((prev) => ({ ...prev, description: plainText }));
-  }, []);
-
-  const handleFileChange = useCallback((e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    const img = new Image();
-    img.src = event.target.result;
-
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // Cố định kích thước 400x400
-      canvas.width = 400;
-      canvas.height = 400;
-
-      // Vẽ ảnh lên canvas, co dãn vừa 400x400
-      ctx.drawImage(img, 0, 0, 400, 400);
-
-      // Ghi chữ 400x400 lên ảnh
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "red";
-      ctx.fillText("400x400", 10, 30);
-
-      // Chuyển canvas thành blob rồi tạo file mới
-      canvas.toBlob((blob) => {
-        setFile(new File([blob], file.name, { type: "image/jpeg" }));
-      }, "image/jpeg", 0.9);
-    };
-  };
-  reader.readAsDataURL(file);
-}, []);
+  // ================== Sync editorContent lên productData.description ==================
+  useEffect(() => {
+    setProductData((prev) => ({
+      ...prev,
+      description: stripHtml(editorContent),
+    }));
+  }, [editorContent]);
 
   // ================== Khi chọn category ==================
   useEffect(() => {
@@ -169,7 +143,12 @@ function ProductAdd() {
       );
     }
   };
-
+    // ================== Toggle nhãn ==================
+  const toggleLabel = (label) => {
+    setSelectedLabels((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
+  };
   // ================== Handle stock input ==================
   const handleStockChange = (size, color, value) => {
     const key = `${size}-${color}`;
@@ -206,8 +185,7 @@ function ProductAdd() {
       selectedSizes.forEach((size) => {
         selectedColors.forEach((color) => {
           const key = `${size}-${color}`;
-          const stockValue =
-            stockMap[key] !== undefined ? stockMap[key] : 0;
+          const stockValue = stockMap[key] !== undefined ? stockMap[key] : 0;
           variantsArray.push({
             size,
             color,
@@ -294,9 +272,18 @@ function ProductAdd() {
         <label>Mô tả</label>
         <JoditEditor
           ref={editor}
-          value={productData.description}
-          onChange={handleDescriptionChange}
-          placeholder="Nhập mô tả sản phẩm..."
+          value={editorContent}
+          onChange={setEditorContent}
+          config={{
+            readonly: false,
+            height: 200,
+            toolbarSticky: false,
+            buttons:
+              "bold,italic,underline,strikethrough,|,ul,ol,|,link,image,table,|,source",
+            showCharsCounter: true,
+            showWordsCounter: true,
+            showXPathInStatusbar: false,
+          }}
         />
 
         <label>Giá *</label>
@@ -309,7 +296,11 @@ function ProductAdd() {
         />
 
         <label>Hình ảnh chính *</label>
-        <input type="file" onChange={handleFileChange} required />
+        <input 
+          type="file" 
+          onChange={(e) => setFile(e.target.files[0])} 
+          required 
+        />
 
         {sizes.length > 0 && (
           <div>
@@ -396,8 +387,18 @@ function ProductAdd() {
               ))
             )}
           </div>
-        )}
-
+        )}  
+          {/* ===== Nhãn sản phẩm ===== */}
+        <div style={{ marginTop: "20px" }}>
+          <label>Nhãn sản phẩm:</label>
+          <div className="button-group">
+            {labelOptions.map((label) => (
+              <button type="button" key={label} 
+                      className={selectedLabels.includes(label) ? "active" : ""} 
+                      onClick={() => toggleLabel(label)}>{label}</button>
+            ))}
+          </div>
+        </div>
         <button type="submit" style={{ marginTop: "20px" }}>
           Thêm sản phẩm & biến thể
         </button>

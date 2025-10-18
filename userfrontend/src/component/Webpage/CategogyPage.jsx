@@ -3,13 +3,22 @@ import { useEffect, useState } from "react";
 import "../CSS/trangchu.css";
 
 const CategoryPage = () => {
-  const { slug } = useParams(); // Lấy slug từ URL
+  const { slug } = useParams();
   const [products, setProducts] = useState([]);
-  const[categoryName, setCategory] = useState([]);
-  const [flashSales, setFlashSales] = useState([]); // danh sách flash sale đang active
-  const [timer, setTimer] = useState({}); // countdown cho từng sản phẩm
+  const [categoryName, setCategory] = useState([]);
+  const [flashSales, setFlashSales] = useState([]);
+  const [timer, setTimer] = useState({});
+  const [activeVoucher, setActiveVoucher] = useState(null); // ✅ voucher hiện tại
 
-   // ✅ Lấy tên danh mục theo slug
+  // ✅ Khi trang load, lấy voucher đã lưu từ localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("appliedVoucher");
+    if (saved) {
+      setActiveVoucher(JSON.parse(saved));
+    }
+  }, []);
+
+  // ✅ Lấy tên danh mục theo slug
   useEffect(() => {
     fetch(`http://localhost:5000/api/categogy/slug/${slug}`)
       .then((res) => res.json())
@@ -20,9 +29,10 @@ const CategoryPage = () => {
           setCategory("Danh Mục");
         }
       })
-      .catch((err) => console.error("Lỗi khi fetch tên brand:", err));
+      .catch((err) => console.error("Lỗi khi fetch tên danh mục:", err));
   }, [slug]);
-  // ===== Lấy danh sách sản phẩm theo danh mục =====
+
+  // ✅ Lấy danh sách sản phẩm theo danh mục
   useEffect(() => {
     fetch(`http://localhost:5000/api/products/categogy/${slug}`)
       .then((res) => res.json())
@@ -30,7 +40,7 @@ const CategoryPage = () => {
       .catch((err) => console.error("Error fetching category products:", err));
   }, [slug]);
 
-  // ===== Lấy flash sale active =====
+  // ✅ Lấy flash sale active
   useEffect(() => {
     fetch("http://localhost:5000/api/flash-sale/active")
       .then((res) => res.json())
@@ -38,7 +48,7 @@ const CategoryPage = () => {
       .catch((err) => console.error("Error fetching flash sales:", err));
   }, []);
 
-  // ===== Countdown Flash Sale =====
+  // ✅ Countdown Flash Sale
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimer = {};
@@ -54,7 +64,7 @@ const CategoryPage = () => {
     return () => clearInterval(interval);
   }, [flashSales]);
 
-  // ===== Tính giá giảm khi có Flash Sale =====
+  // ✅ Tính giá flash sale
   const getSalePrice = (productId, originalPrice) => {
     const applicableSales = flashSales.filter((flash) =>
       flash.products.some((p) => p.product_id === productId)
@@ -64,12 +74,10 @@ const CategoryPage = () => {
       return { price: originalPrice, isFlash: false, end_at: null };
     }
 
-    // Chọn flash sale có discount_value cao nhất
     const bestSale = applicableSales.reduce((prev, curr) =>
       prev.discount_value > curr.discount_value ? prev : curr
     );
 
-    // Tính giá giảm
     let salePrice;
     if (bestSale.discount_type === "percent") {
       salePrice = Math.round(
@@ -84,13 +92,26 @@ const CategoryPage = () => {
     return { price: salePrice, isFlash: true, end_at: bestSale.end_at };
   };
 
-  // ===== Format thời gian countdown =====
+  // ✅ Format thời gian countdown
   const formatTime = (ms) => {
     const totalSeconds = Math.floor(ms / 1000);
     const h = Math.floor(totalSeconds / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = totalSeconds % 60;
     return `${h}h ${m}m ${s}s`;
+  };
+
+  // ✅ Tính giá sau khi áp dụng voucher
+  const applyVoucher = (price, product) => {
+    if (!activeVoucher) return price;
+    if (activeVoucher.category_id && activeVoucher.category_id !== product.category_id)
+      return price;
+
+    if (activeVoucher.discount_type === "percent") {
+      return Math.round(price * (100 - activeVoucher.discount_value) / 100);
+    } else {
+      return price - activeVoucher.discount_value;
+    }
   };
 
   return (
@@ -105,6 +126,9 @@ const CategoryPage = () => {
                 product.product_id,
                 product.price
               );
+              const finalPrice = applyVoucher(salePrice, product);
+
+              const isVoucherApplied = activeVoucher && finalPrice < salePrice;
 
               return (
                 <Link
@@ -113,28 +137,24 @@ const CategoryPage = () => {
                   className="product-link"
                 >
                   <div className="product-card">
-                    {/* Ảnh sản phẩm */}
                     <img
                       src={`http://localhost:5000/images/${product.image}`}
                       alt={product.name}
                     />
 
-                    {/* Badge Flash Sale */}
                     {isFlash && <div className="flash-badge">FLASH SALE</div>}
 
-                    {/* Thông tin sản phẩm */}
                     <div className="product-info">
                       <p className="product-name">{product.name}</p>
 
-                      {/* Giá sản phẩm */}
                       <p className="product-price">
-                        {isFlash ? (
+                        {isFlash || isVoucherApplied ? (
                           <>
                             <span className="old-price">
                               {Number(product.price).toLocaleString("vi-VN")} VNĐ
                             </span>
                             <span className="sale-price">
-                              {Number(salePrice).toLocaleString("vi-VN")} VNĐ
+                              {Number(finalPrice).toLocaleString("vi-VN")} VNĐ
                             </span>
                           </>
                         ) : (
@@ -144,7 +164,6 @@ const CategoryPage = () => {
                         )}
                       </p>
 
-                      {/* Countdown Flash Sale */}
                       {isFlash && end_at && timer[product.product_id] > 0 && (
                         <p className="countdown">
                           {formatTime(timer[product.product_id])}

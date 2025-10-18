@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../CSS/user.css"; // dùng CSS giống user, hoặc tạo riêng voucher.css
+import "../CSS/user.css";
 
 function Voucher() {
   const [vouchers, setVouchers] = useState([]);
+  const [categories, setCategories] = useState({}); // lưu dạng {id: name}
 
-  // Lấy danh sách voucher từ API
+  // Lấy danh sách voucher
   const fetchVouchers = () => {
     fetch("http://localhost:5000/api/vouchers")
       .then((res) => res.json())
@@ -12,8 +13,23 @@ function Voucher() {
       .catch((err) => console.error("Lỗi khi lấy dữ liệu:", err));
   };
 
+  // Lấy danh sách category
+  const fetchCategories = () => {
+    fetch("http://localhost:5000/api/categogy'")
+      .then((res) => res.json())
+      .then((data) => {
+        const map = {};
+        data.forEach((c) => {
+          map[c.category_id] = c.name;
+        });
+        setCategories(map);
+      })
+      .catch((err) => console.error("Lỗi khi lấy category:", err));
+  };
+
   useEffect(() => {
     fetchVouchers();
+    fetchCategories();
   }, []);
 
   // Xóa voucher
@@ -52,6 +68,7 @@ function Voucher() {
           <tr>
             <th>ID</th>
             <th>Code</th>
+            <th>Danh mục</th> {/* thêm cột hiển thị tên category */}
             <th>Loại</th>
             <th>Giá trị</th>
             <th>Đơn tối thiểu</th>
@@ -65,6 +82,7 @@ function Voucher() {
               <tr key={v.voucher_id}>
                 <td>{v.voucher_id}</td>
                 <td>{v.code}</td>
+                <td>{v.category_name}</td> {/* hiển thị tên category */}
                 <td>{v.discount_type}</td>
                 <td>{v.discount_value.toLocaleString()}</td>
                 <td>{v.min_order_amount.toLocaleString()}</td>
@@ -89,7 +107,7 @@ function Voucher() {
             ))
           ) : (
             <tr>
-              <td colSpan="7">Không có voucher nào.</td>
+              <td colSpan="8">Không có voucher nào.</td>
             </tr>
           )}
         </tbody>

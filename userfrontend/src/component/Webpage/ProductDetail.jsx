@@ -197,48 +197,85 @@ function ProductDetail() {
     const s = totalSeconds % 60;
     return `${h}h ${m}m ${s}s`;
   };
+    // ===== Voucher logic =====
+  const [activeVoucher, setActiveVoucher] = useState(null);
 
-  // ========================================
-  // 🛒 Thêm vào giỏ
+  useEffect(() => {
+    const savedVoucher = localStorage.getItem("appliedVoucher");
+    if (savedVoucher) {
+      setActiveVoucher(JSON.parse(savedVoucher));
+    }
+  }, []);
+
+  const applyVoucher = (price) => {
+    if (!activeVoucher) return price;
+
+    // nếu voucher có category_id áp dụng
+    if (activeVoucher.category_id && activeVoucher.category_id !== product.category_id) return price;
+
+    if (activeVoucher.discount_type === "percent") {
+      return Math.round(price * (100 - activeVoucher.discount_value) / 100);
+    } else {
+      return price - activeVoucher.discount_value;
+    }
+  };
+   // 🛒 Thêm vào giỏ
   // ========================================
   const handleAddToCart = () => {
-    if (!product) return;
-    if (product.availableColors?.length > 0 && !selectedColor) {
-      alert("Vui lòng chọn màu sắc trước khi thêm vào giỏ hàng!");
-      return;
-    }
-    if (product.availableSizes?.length > 0 && !selectedSize) {
-      alert("Vui lòng chọn kích cỡ trước khi thêm vào giỏ hàng!");
-      return;
-    }
+  if (!product) return;
 
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const variantKey = `${product.product_id}-${selectedColor || "NoColor"}-${selectedSize || "NoSize"}`;
-    const existingIndex = cart.findIndex((item) => item.variantKey === variantKey);
+  // Kiểm tra màu sắc và kích cỡ
+  if (product.availableColors?.length > 0 && !selectedColor) {
+    alert("Vui lòng chọn màu sắc trước khi thêm vào giỏ hàng!");
+    return;
+  }
+  if (product.availableSizes?.length > 0 && !selectedSize) {
+    alert("Vui lòng chọn kích cỡ trước khi thêm vào giỏ hàng!");
+    return;
+  }
 
-    const bestFlash = getBestFlashSale(product);
-    const price = bestFlash ? bestFlash.sale_price : Number(product.price);
+  // Lấy giỏ hàng hiện tại
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const variantKey = `${product.product_id}-${selectedColor || "NoColor"}-${selectedSize || "NoSize"}`;
+  const existingIndex = cart.findIndex((item) => item.variantKey === variantKey);
 
-    const cartItem = {
-      productId: product.product_id,
-      name: product.name,
-      price,
-      quantity,
-      image: displayImage,
-      color: selectedColor,
-      size: selectedSize,
-      variantKey,
-    };
+  // Lấy số lượng hiện có trong giỏ với variant này
+  const existingQuantity = existingIndex >= 0 ? cart[existingIndex].quantity : 0;
 
-    if (existingIndex >= 0) {
-      cart[existingIndex].quantity += quantity;
-    } else {
-      cart.push(cartItem);
-    }
+  // Tổng số lượng sau khi thêm
+  const totalQuantity = existingQuantity + quantity;
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    navigate("/giohang");
+  // Kiểm tra tồn kho trước khi thêm
+  if (totalQuantity > currentStock) {
+    alert(`Số lượng vượt quá tồn kho hiện có (${currentStock}). Vui lòng giảm số lượng.`);
+    return;
+  }
+
+  // Lấy giá (đã có flash sale nếu có)
+  const bestFlash = getBestFlashSale(product);
+  const price = bestFlash ? bestFlash.sale_price : Number(product.price);
+
+  const cartItem = {
+    productId: product.product_id,
+    name: product.name,
+    price,
+    quantity,
+    image: displayImage,
+    color: selectedColor,
+    size: selectedSize,
+    variantKey,
   };
+
+  if (existingIndex >= 0) {
+    cart[existingIndex].quantity += quantity;
+  } else {
+    cart.push(cartItem);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  navigate("/giohang");
+};
+
 
   // ========================================
   // 📦 Đặt hàng trước
@@ -361,21 +398,20 @@ function ProductDetail() {
         />
         <div className="product-info">
           <h2>{product.name}</h2>
-          <p>
-            Giá:{" "}
-            {isFlashActive ? (
+         <p className="product-price">
+            {(isFlashActive || activeVoucher) ? (
               <>
                 <span className="old-price">
                   {Number(product.price).toLocaleString("vi-VN")} VNĐ
                 </span>
                 <span className="sale-price">
-                  {Number(displayPrice).toLocaleString("vi-VN")} VNĐ
+                  {Number(applyVoucher(displayPrice)).toLocaleString("vi-VN")} VNĐ
                 </span>
               </>
             ) : (
-              <span>{Number(displayPrice).toLocaleString("vi-VN")} VNĐ</span>
+              <span>{Number(product.price).toLocaleString("vi-VN")} VNĐ</span>
             )}
-          </p>
+      </p>
 
           {isFlashActive && <p className="countdown">Còn lại: {formatTime(timer)}</p>}
 
@@ -437,11 +473,11 @@ function ProductDetail() {
 
           {currentStock > 0 ? (
             <button onClick={handleAddToCart} className="add-to-cart-btn">
-              🛒 Thêm vào giỏ
+             Thêm vào giỏ
             </button>
           ) : (
             <button onClick={handlePreOrder} className="preorder-btn">
-              📦 Đặt hàng trước
+             Đặt hàng trước
             </button>
           )}
 
@@ -451,7 +487,7 @@ function ProductDetail() {
             className="review-btn"
             style={{ marginLeft: "10px" }}
           >
-            ✍️ Đánh giá sản phẩm
+           Đánh giá sản phẩm
           </button>
         </div>
       </div>
@@ -504,10 +540,10 @@ function ProductDetail() {
 
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowPreOrderForm(false)}>
-                  ❌ Hủy
+                   Hủy
                 </button>
                 <button type="submit" disabled={preOrderLoading}>
-                  {preOrderLoading ? "Đang gửi..." : "📦 Gửi đặt hàng"}
+                  {preOrderLoading ? "Đang gửi..." : " Gửi đặt hàng"}
                 </button>
               </div>
             </form>
@@ -557,7 +593,7 @@ function ProductDetail() {
 
       {/* 📢 Danh sách đánh giá */}
       <div className="reviews-section">
-        <h3>📢 Đánh giá sản phẩm</h3>
+        <h3>Đánh giá sản phẩm</h3>
         {reviews.length > 0 ? (
           reviews.map((r) => (
             <div key={r.review_id} className="review-item">
