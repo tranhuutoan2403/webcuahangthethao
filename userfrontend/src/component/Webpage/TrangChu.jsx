@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import '../CSS/trangchu.css';
 import BannerCarousel from "./BannerCarousel";
 import ProductFilter from './ProductFilter';
-import NewestCategorySlider from "./NewestCategorySlider";
+import NewestProductsSlider from "./NewestProductsSlider";
 import CategorySelectorSlider from "./CategorySelectorSlider";
 import VoucherInput from "./VoucherInput";
 
@@ -232,7 +232,7 @@ const TrangChu = () => {
                 onSelect={setSelectedSlug}
                 categories={categories}
                 />
-                <NewestCategorySlider slug={selectedSlug} />
+                <NewestProductsSlider slug={selectedSlug} />
             </>
         )}
     </div>

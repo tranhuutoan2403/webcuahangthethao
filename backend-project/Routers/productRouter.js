@@ -15,6 +15,9 @@ router.get("/slug/:slug", productController.getProductBySlug);
 // 3. Lấy sản phẩm theo category slug
 router.get("/category/:slug", productController.getProductsByCategorySlug);
 
+// 4. Lấy sản phẩm mới nhất theo category slug
+router.get("/category/:slug/newest", productController.getNewestProductsByCategorySlug)
+
 // 4. Lấy sản phẩm theo brand slug
 router.get("/brand/:slug", productController.getProductsByBrands);
 
