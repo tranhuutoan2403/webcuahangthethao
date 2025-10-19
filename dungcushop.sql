@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2025 at 03:08 PM
+-- Generation Time: Oct 19, 2025 at 12:22 PM
 -- Server version: 10.6.22-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `address` (
 --
 
 INSERT INTO `address` (`id`, `user_id`, `recipient_name`, `phone`, `address_line`, `is_default`, `created_at`) VALUES
-(6, 2, 'Nguyen Van A', '0123456789', '123 Đường ABC', 0, '2025-10-04 14:34:34'),
+(6, 2, 'Nguyen Van Nhàn', '0123456789', '123 Đường ABC', 0, '2025-10-04 14:34:34'),
 (7, 6, 'Nguyễn Phạm Quang Dũng', '0909489611', 'TPHCM', 0, '2025-10-05 03:04:45'),
 (8, 6, 'Phạm Tấn Khang', '0395353534', 'Vũng Tàu', 0, '2025-10-05 03:07:41'),
 (9, 6, 'Trần Quang Thuận ', '035353522', 'Đà Lạt', 0, '2025-10-05 03:11:02'),
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   `slug` varchar(255) NOT NULL,
   PRIMARY KEY (`brand_id`),
   UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `brands`
@@ -90,7 +90,6 @@ INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
 (4, 'Nike', 'nike'),
 (5, 'Head', 'head'),
 (6, 'Joola', 'joola');
-
 
 -- --------------------------------------------------------
 
@@ -115,6 +114,32 @@ INSERT INTO `categories` (`category_id`, `name`, `slug`) VALUES
 (1, 'Vợt Cầu Lông', 'vot-cau-long'),
 (2, 'Vợt PickleBall', 'vot-pickle-ball'),
 (10, 'Giày Cầu Lông', 'giay-cau-long');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `feedback_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`feedback_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`feedback_id`, `user_id`, `name`, `email`, `phone`, `message`, `created_at`) VALUES
+(1, 6, 'Nguyễn Văn A', 'nguyenvana@example.com', '0905123456', 'Trang web rất dễ sử dụng, tôi rất hài lòng.', '2025-10-19 03:26:31');
 
 -- --------------------------------------------------------
 
@@ -291,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `voucher_id`, `address_id`, `total_amount`, `final_amount`, `status`, `created_at`) VALUES
-(2, 2, NULL, 6, 500000, 450000, 'pending', '2025-10-04 14:34:35'),
+(2, 2, NULL, 6, 500000, 450000, 'paid', '2025-10-04 14:34:35'),
 (3, 6, NULL, 7, 750000, 750000, 'pending', '2025-10-05 03:04:45'),
 (4, 6, NULL, 8, 3750000, 3750000, 'pending', '2025-10-05 03:07:41'),
 (5, 6, NULL, 9, 2250000, 2250000, 'pending', '2025-10-05 03:11:02'),
@@ -383,6 +408,31 @@ INSERT INTO `pages` (`page_id`, `title`, `slug`, `content`, `image`, `status`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `preorders`
+--
+
+DROP TABLE IF EXISTS `preorders`;
+CREATE TABLE IF NOT EXISTS `preorders` (
+  `preorder_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `customer_name` varchar(100) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `address` text DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `total_amount` decimal(12,2) GENERATED ALWAYS AS (`price` * `quantity`) STORED,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`preorder_id`),
+  KEY `idx_preorders_product` (`product_id`),
+  KEY `idx_preorders_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -400,14 +450,13 @@ CREATE TABLE IF NOT EXISTS `products` (
   PRIMARY KEY (`product_id`),
   KEY `idx_products_category` (`category_id`),
   KEY `fk_products_brand` (`brand_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` 
-(`product_id`, `category_id`, `brand_id`, `name`, `slug`, `description`, `price`, `image`, `created_at`) VALUES
+INSERT INTO `products` (`product_id`, `category_id`, `brand_id`, `name`, `slug`, `description`, `price`, `image`, `created_at`) VALUES
 (1, 1, 1, 'Vợt Yonex Astrox 77 Pro Đỏ', 'axtrox-77', 'Vợt tấn công bùng nổ', 550000, 'astrox-77-pro.jpg', '2025-09-13 07:50:32'),
 (2, 1, 1, 'Vợt Yonex Astrox 88d pro', 'axtrox-88', 'Giày thể thao nhẹ, êm ái, thích hợp cho việc chạy bộ hoặc tập gym.', 750000, 'astrox-88d-pro-ch.jpg', '2025-09-13 07:50:32'),
 (3, 1, 2, 'Vợt Axforce 100 Vàng Golden', '100-golden', 'Điện thoại thông minh với camera sắc nét, pin dung lượng lớn và thiết kế sang trọng.', 1200000, 'axforce-100-vang-golden.jpg', '2025-09-13 07:50:32'),
@@ -421,7 +470,7 @@ INSERT INTO `products`
 (37, 1, 1, 'Vợt cầu lông Yonex Astrox 100 Tour VA', 'vot-cau-long-yonex-astrox-100-tour-va', 'Vợt cầu lông Yonex Astrox 100 Tour VA là một trong những siêu phẩm mới nhất mà Yonex vừa giới thiệu, kế thừa trọn vẹn tinh hoa công nghệ của dòng Astrox – biểu tượng của lối chơi tấn công mạnh mẽ với những cú đập cầu uy lực và góc đánh hiểm hóc. Đây là phiên bản giới hạn với bộ nhận diện riêng về màu sắc và thương hiệu, được áp dụng cho toàn bộ dòng Astrox 100 VA. So với bản gốc, Astrox 100 Tour VA vẫn giữ trọn tinh thần của nhà vô địch nhưng ở mức giá dễ tiếp cận hơn, phù hợp cho người chơi muốn trải nghiệm hiệu suất thi đấu ở đẳng cấp cao.', 4469000, 'vot-cau-long-yonex-astrox-100-tour-va.webp', '2025-10-04 08:02:10'),
 (38, 1, 1, 'Vợt cầu lông Yonex Astrox 99 Play 2025', 'vot-cau-long-yonex-astrox-99-play-2025', '- Vợt cầu lông Yonex Astrox 99 Play 2025 dù là phiên bản tầm thấp nhất trong dòng vợt 99 2025 này, nhưng vợt vẫn được trang bị công nghệ sở hữu Rotational Generator System cải tiến, phân bổ trọng lượng trên đầu cán vợt, đỉnh khung vợt và khớp nối, mang lại những pha chuyển tiếp liền mạch và những pha tấn công liên tục.', 1769000, 'vot-cau-long-yonex-astrox-99-play-2025.webp', '2025-10-04 09:35:34'),
 (39, 1, 1, 'Vợt cầu lông Yonex Astrox 99 Tour 2025', 'vot-cau-long-yonex-astrox-99-tour-2025', '- Vợt cầu lông Yonex Astrox 99 Tour 2025 hay còn được gọi là 99 Tour Gen 3 với thiết kế lấy cảm hứng từ những thiên thạch va chạm với các hành tinh, tượng trưng cho sức mạnh áp đảo. Phần đế màu đen và xanh lá cây được điểm xuyết bằng họa tiết vân đá cẩm thạch gợi lên sức nặng và sức mạnh, trong khi những vệt màu cam kéo dài từ khung vợt đến tay cầm tượng trưng cho việc truyền tải thông tin cú đánh từ khung vợt đến tay cầm. ', 4359000, 'vot-cau-long-yonex-astrox-100-tour-va.webp', '2025-10-04 09:37:49'),
-(40, 1, 1, 'Vợt cầu lông Yonex Astrox 100ZZ VA', 'vot-cau-long-yonex-astrox-100zz-va', '- Vợt cầu lông Yonex Astrox 100ZZ VA là phiên bản đặc biệt “VA Signature” của dòng Astrox 100ZZ từ Yonex - cây vợt chuyên nghiệp này được thiết kế riêng theo phong cách cá nhân của vận động viên Viktor Axelsen. Nó thể hiện rõ phương châm "Chúng ta cùng nhau phấn đấu" của nhà vô địch Olympic. Vợt với màu sắc trắng xanh này là phiên bản giới hạn của mẫu vợt chủ lực thuộc dòng Astrox, với độ cân bằng cao ở đầu vợt và cán vợt cực kỳ cứng cáp, lý tưởng cho những người chơi tìm kiếm sức mạnh và độ chính xác tối đa.', 5329000, 'vot-cau-long-yonex-astrox-100zz-va-grayish-beige-chinh-hang_1758152558.webp', '2025-10-04 09:39:21'),
+(40, 1, 1, 'Vợt cầu lông Yonex Astrox 100ZZ VA', 'vot-cau-long-yonex-astrox-100zz-va', '- Vợt cầu lông Yonex Astrox 100ZZ VA là phiên bản đặc biệt “VA Signature” của dòng Astrox 100ZZ từ Yonex - cây vợt chuyên nghiệp này được thiết kế riêng theo phong cách cá nhân của vận động viên Viktor Axelsen. Nó thể hiện rõ phương châm \"Chúng ta cùng nhau phấn đấu\" của nhà vô địch Olympic. Vợt với màu sắc trắng xanh này là phiên bản giới hạn của mẫu vợt chủ lực thuộc dòng Astrox, với độ cân bằng cao ở đầu vợt và cán vợt cực kỳ cứng cáp, lý tưởng cho những người chơi tìm kiếm sức mạnh và độ chính xác tối đa.', 5329000, 'vot-cau-long-yonex-astrox-100zz-va-grayish-beige-chinh-hang_1758152558.webp', '2025-10-04 09:39:21'),
 (41, 1, 1, 'Vợt cầu lông Yonex Astrox 99 Game 2025', 'vot-cau-long-yonex-astrox-99-game-2025', '- Vợt cầu lông Yonex Astrox 99 Game 2025 lấy cảm hứng từ những thiên thạch va chạm với các hành tinh, tượng trưng cho sức mạnh áp đảo. Phần đế màu đen và xanh lá cây được điểm xuyết bằng họa tiết vân đá cẩm thạch gợi lên sức nặng và sức mạnh, trong khi những vệt màu cam kéo dài từ khung vợt đến tay cầm tượng trưng cho việc truyền tải thông tin cú đánh từ khung vợt đến tay cầm.', 2689000, 'vot-cau-long-yonex-astrox-99-game-2025-black-green-chinh-hang_1756252214 (1).webp', '2025-10-04 09:40:19'),
 (42, 1, 1, 'Vợt cầu lông Yonex Nanoflare Junior', 'vot-cau-long-yonex-nanoflare-junior', 'Vợt cầu lông Yonex Nanoflare Junior được thiết kế cho lối chơi tốc độ, linh hoạt giữa công và thủ với điểm cân bằng ở mức cân bằng. Đũa vợt siêu dẻo mang lại khả năng trợ lực một cách tối ưu, trọng lượng 4U không quá nặng, thích hợp cho những người mới bắt đầu tập làm quen với bộ môn này hoặc các lông thủ nhí.', 1639000, '1.webp', '2025-10-04 09:42:20'),
 (43, 1, 1, 'Vợt cầu lông Yonex Astrox 100ZZ Kurenai', 'vot-cau-long-yonex-astrox-100zz-kurenai', 'Vợt cầu lông Yonex Astrox 100ZZ Kurenai nổi trội không chỉ là cây vợt cầu lông cao cấp nhất của nhà Yonex mà em nó còn là một trong những siêu phẩm vợt được sử dụng thành công nhất trên thế giới. Đồng hành cùng Victor Axelsen đăng quang rất nhiều ngôi vô địch trong đó có cả chiếc Huy chương Vàng _Olympic Tokyo 2020. Bên cạnh đó, các tay vợt hàng đầu hiện nay như Akane Yamaguchi, Takuro Hoki, Lakshya Sen cũng đang sử dụng cây vợt này.', 5169000, '2.webp', '2025-10-07 08:01:28'),
@@ -477,7 +526,6 @@ INSERT INTO `products`
 (93, 2, 6, 'Vợt Pickleball Joola Perseus Pro IV 14mm - Asia Colorway chính hãng', 'vot-pickleball-joola-perseus-pro-iv-14mm-asia-colorway-chinh-hang', '- Vợt Pickleball Joola Perseus Pro IV 14mm - Asia Colorway đã nhanh chóng...', 7900000, '60.webp', '2025-10-14 07:07:15'),
 (94, 2, 6, 'Vợt Pickleball Joola Perseus Pro IV 16mm - Asia Colorway chính hãng', 'vot-pickleball-joola-perseus-pro-iv-16mm-asia-colorway-chinh-hang', '- Vợt Pickleball Joola Perseus Pro IV 16mm - Asia Colorway chính hãng...', 7990000, '60.webp', '2025-10-14 07:08:17'),
 (95, 2, 6, 'Vợt Pickleball Joola Hyperion Pro IV 16mm - Asia Colorway chính hãng', 'vot-pickleball-joola-hyperion-pro-iv-16mm-asia-colorway-chinh-hang', '- Vợt Pickleball Joola Hyperion Pro IV 16mm - Asia Colorway đây là một thiết kế ấn tượng...', 7990000, '61.webp', '2025-10-14 07:08:57'),
-
 (96, 10, 1, 'Giày cầu lông Yonex SHB 65X VA - Grayish Beige chính hãng', 'giay-cau-long-yonex-shb-65x-va-grayish-beige-chinh-hang', '- Giày cầu lông Yonex SHB 65X VA - Grayish Beige mang đậm dấu ấn...', 1809000, '62.webp', '2025-10-14 07:25:08'),
 (97, 10, 1, 'Giày cầu lông Yonex Hexis', 'giay-cau-long-yonex-hexis', '- Giày cầu lông Yonex Hexis là mẫu giày mới được Yonex ra mắt...', 699000, '63.webp', '2025-10-14 07:27:50'),
 (98, 10, 1, 'Giày cầu lông Yonex Voltrex', 'giay-cau-long-yonex-voltrex', '- Giày cầu lông Yonex Voltrex ghi điểm thực sự lại nằm ở trọng lượng nhẹ...', 699000, '64.webp', '2025-10-14 07:28:33'),
@@ -486,7 +534,6 @@ INSERT INTO `products`
 (101, 10, 1, 'Giày cầu lông Yonex 88 Dial 3 Wide 2025', 'giay-cau-long-yonex-88-dial-3-wide-2025', '- Giày cầu lông Yonex 88 Dial 3 Wide 2025 với công nghệ khóa BOA Fit...', 2790000, '67.webp', '2025-10-14 07:30:55'),
 (102, 10, 1, 'Giày cầu lông Yonex Pyro', 'giay-cau-long-yonex-pyro', '- Giày cầu lông Yonex Pyro là lựa chọn mới mẻ và đầy đột phá...', 686920, '68.webp', '2025-10-14 07:31:42'),
 (103, 10, 1, 'Giày cầu lông Yonex Atlas 4', 'giay-cau-long-yonex-atlas-4', '- Giày cầu lông Yonex Atlas 4 là dòng giày cầu lông của Yonex...', 690000, '69.webp', '2025-10-14 07:32:50'),
-
 (104, 10, 2, 'Giày cầu lông Lining AYTV029-1 chính hãng', 'giay-cau-long-lining-aytv029-1-chinh-hang', '- Giày cầu lông Lining AYTV029-1 được thiết kế theo phong cách thể thao...', 1130000, '70.webp', '2025-10-14 07:34:23'),
 (105, 10, 2, 'Giày cầu lông Lining AYTU001-7 chính hãng', 'giay-cau-long-lining-aytu001-7-chinh-hang', '- Giày cầu lông Lining AYTU001-7 là sản phẩm trung cấp của thương hiệu Lining...', 1200000, '72.webp', '2025-10-14 07:35:05'),
 (106, 10, 2, 'Giày cầu lông Lining AYTU025-1 chính hãng', 'giay-cau-long-lining-aytu025-1-chinh-hang', '- Giày cầu lông Lining AYTU025-1 sử dụng màu sắc đơn giản và giản dị...', 1200000, '73.webp', '2025-10-14 07:35:48'),
@@ -498,13 +545,10 @@ INSERT INTO `products`
 (112, 10, 2, 'Giày cầu lông Lining AYTU001-8 chính hãng', 'giay-cau-long-lining-aytu001-8-chinh-hang', '- Giày cầu lông Lining AYTU001-8 là phiên bản nâng cấp vượt trội...', 1200000, '79.webp', '2025-10-14 07:41:16'),
 (113, 10, 2, 'Giày cầu lông Lining AYTV027-1 chính hãng', 'giay-cau-long-lining-aytv027-1-chinh-hang', '- Giày cầu lông Lining AYTV027-1 chính hãng là phiên bản nâng cấp vượt trội...', 1200000, '80.webp', '2025-10-14 07:42:02');
 
-
--- --------------------------------------------------------
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reviews`
+-- Table structure for table `product_reviews`
 --
 
 DROP TABLE IF EXISTS `product_reviews`;
@@ -518,12 +562,14 @@ CREATE TABLE IF NOT EXISTS `product_reviews` (
   PRIMARY KEY (`review_id`),
   KEY `user_id` (`user_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `product_reviews`
+--
 
-
-INSERT INTO `product_reviews` (user_id, product_id, rating, comment, created_at) VALUES
-(6, 3, 5, 'Sản phẩm rất tốt chất lượng vượt mong đợi!', NOW());
+INSERT INTO `product_reviews` (`review_id`, `user_id`, `product_id`, `rating`, `comment`, `created_at`) VALUES
+(1, 6, 3, 5, 'Sản phẩm rất tốt chất lượng vượt mong đợi!', '2025-10-19 03:26:30');
 
 -- --------------------------------------------------------
 
@@ -551,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `address`, `role`, `status`, `created_at`) VALUES
-(2, 'Tran Thi B', 'b@example.com', '$2b$10$Q9E3hX9M8kKPejNKvR.Yc.1SgDNYDkAZyTt3YUMc3xHcTej8rRj4G', '0987654321', '456 Hai Bà Trưng, Hà Nội', 'admin', 'active', '2025-09-13 07:50:31'),
+(2, 'Tran Thi B', 'b@example.com', '$2b$10$u4Ne8lT8RZky3pGzJsygaOFnXoSXgjnBvwmE0vUjqoOc/kH42W81G', '0987654321', '456 Hai Bà Trưng, Hà Nội', 'user', 'active', '2025-09-13 07:50:31'),
 (6, 'HoangPro098', 'hoangsuon012@gmail.com', '$2b$10$CUhoYMk6IUsC6.WqZgXi4uZHzx8.r9iOeTZvGr5ZkWijB4cVSPigW', '0242455231', '123 Nguyễn Cửu Phú', 'user', 'active', '2025-09-15 03:33:12'),
 (8, 'PhuocNguyen2034', 'phuoc@gmail.com', '$2b$10$0jmNkB.cE0wsWJtigJSgtOnwHtmSElDjjdiHJQO/M8D.gHFatRAEa', '02425233', 'ng3663631', 'user', 'active', '2025-09-15 03:39:59'),
 (13, 'dewq294e1', 'r224242@gmail.com', '$2b$10$ELyrC4NTJ02EbUZGNM0ZWOdykpr6DFDTCA1TG/Trf1CCFlSZ3fyMS', '024211144', 'ff33535', 'user', 'active', '2025-09-15 03:55:11'),
@@ -573,7 +619,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `addre
 DROP TABLE IF EXISTS `voucher`;
 CREATE TABLE IF NOT EXISTS `voucher` (
   `voucher_id` int(11) NOT NULL AUTO_INCREMENT,
-  `category_id` int(11) NOT NULL,  -- <-- phải có dấu phẩy
+  `category_id` int(11) NOT NULL,
   `code` varchar(50) NOT NULL,
   `description` text DEFAULT NULL,
   `discount_type` enum('percent','fixed') NOT NULL,
@@ -588,61 +634,17 @@ CREATE TABLE IF NOT EXISTS `voucher` (
   PRIMARY KEY (`voucher_id`),
   UNIQUE KEY `code` (`code`),
   KEY `idx_voucher_status` (`status`),
-  CONSTRAINT `fk_voucher_category` FOREIGN KEY (`category_id`) REFERENCES `categories`(`category_id`) ON DELETE CASCADE
+  KEY `fk_voucher_category` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 --
 -- Dumping data for table `voucher`
 --
 
-INSERT INTO `voucher` 
-(`voucher_id`,`category_id`,`code`, `description`, `discount_type`, `discount_value`, `min_order_amount`, `usage_limit`, `used_count`, `start_date`, `end_date`, `status`, `created_at`) 
-VALUES
+INSERT INTO `voucher` (`voucher_id`, `category_id`, `code`, `description`, `discount_type`, `discount_value`, `min_order_amount`, `usage_limit`, `used_count`, `start_date`, `end_date`, `status`, `created_at`) VALUES
 (1, 1, 'SALE10', 'Giảm 10% cho đơn hàng từ 1.000.000 VNĐ trở lên', 'percent', 10, 1000000, 100, 0, '2025-08-28', '2025-09-26', 'active', '2025-09-13 07:50:32'),
 (2, 1, 'GIAM50K', 'Giảm 50.000 VNĐ cho đơn từ 200.000 VNĐ', 'fixed', 50000, 200000, 200, 0, '2025-08-30', '2025-09-13', 'active', '2025-09-13 07:50:32'),
 (3, 1, 'FLASH12', 'Đại Tiệc Bùng nổ', 'percent', 20, 700000, 4, 0, '2025-10-14', '2025-10-21', 'active', '2025-10-07 02:04:56');
-
-
-
-DROP TABLE IF EXISTS `preorders`;
-CREATE TABLE IF NOT EXISTS `preorders` (
-  `preorder_id` INT NOT NULL AUTO_INCREMENT,
-  `product_id` INT NOT NULL,
-  `user_id` INT DEFAULT NULL,
-  `product_name` VARCHAR(255) NOT NULL,
-  `customer_name` VARCHAR(100) NOT NULL,
-  `phone` VARCHAR(20) NOT NULL,
-  `address` TEXT DEFAULT NULL,
-  `note` TEXT DEFAULT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  `quantity` INT NOT NULL DEFAULT 1,
-  `total_amount` DECIMAL(12,2) GENERATED ALWAYS AS (`price` * `quantity`) STORED,
-  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`preorder_id`),
-  KEY `idx_preorders_product` (`product_id`),
-  KEY `idx_preorders_user` (`user_id`),
-  CONSTRAINT `fk_preorders_product` FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_preorders_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-DROP TABLE IF EXISTS `feedback`;
-CREATE TABLE IF NOT EXISTS `feedback` (
-  `feedback_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `user_id` INT(11) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `email` VARCHAR(100) NOT NULL,
-  `phone` VARCHAR(20) DEFAULT NULL,
-  `message` TEXT NOT NULL,
-  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`feedback_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `feedback` (`user_id`, `name`, `email`, `phone`, `message`, `created_at`) VALUES
-(6, 'Nguyễn Văn A', 'nguyenvana@example.com', '0905123456', 'Trang web rất dễ sử dụng, tôi rất hài lòng.', NOW());
-
 
 --
 -- Constraints for dumped tables
@@ -653,6 +655,12 @@ INSERT INTO `feedback` (`user_id`, `name`, `email`, `phone`, `message`, `created
 --
 ALTER TABLE `address`
   ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `flash_sale_products`
@@ -666,7 +674,6 @@ ALTER TABLE `flash_sale_products`
 --
 ALTER TABLE `materials`
   ADD CONSTRAINT `fk_materials_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
-  -- ADD CONSTRAINT `materials_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `news`
@@ -692,6 +699,13 @@ ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`material_id`) REFERENCES `materials` (`material_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `preorders`
+--
+ALTER TABLE `preorders`
+  ADD CONSTRAINT `fk_preorders_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_preorders_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
@@ -700,11 +714,17 @@ ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `reviews`
+-- Constraints for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `voucher`
+--
+ALTER TABLE `voucher`
+  ADD CONSTRAINT `fk_voucher_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

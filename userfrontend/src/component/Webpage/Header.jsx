@@ -179,7 +179,7 @@ export default function Header() {
               </div>
 
               <div className="dropdown">
-                <Link to="/news/categogy/tin-tuc">Tin Tức</Link>
+                <Link to="/news/category/tin-tuc">Tin Tức</Link>
               </div>
             </nav>
 

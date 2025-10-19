@@ -13,7 +13,7 @@ const News = () => {
       if (!slug) return;
 
       setLoading(true);
-      fetch(`http://localhost:5000/api/news/categogy/${slug}`)
+      fetch(`http://localhost:5000/api/news/category/${slug}`)
         .then((res) => {
           if (!res.ok) throw new Error("Lỗi khi fetch dữ liệu");
           return res.json();

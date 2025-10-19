@@ -7,7 +7,7 @@ const db = require('./db');
 const productRoutes = require('./Routers/productRouter');
 const userRoutes = require('./Routers/userRouter');
 const authRoutes = require('./Routers/authRouter');
-const categogyRoutes = require('./Routers/CategoryRouter');
+const categoryRoutes = require('./Routers/CategoryRouter');
 const voucherRoutes = require("./Routers/voucherRouter");
 const checkoutRoutes = require("./Routers/CheckoutRouter");
 const orderRoutes = require('./Routers/orderRouter');
@@ -15,7 +15,7 @@ const productMaterialRouter = require("./Routers/MaterialProductRouter");
 const flashSaleRouter = require("./Routers/flashSaleRouter");
 const flashSaleProductRouter = require("./Routers/FlashSaleProductRouter");
 const newsRouter = require("./Routers/NewsRouter");
-const newsCategoryRouter = require("./Routers/NewsCategogyRouter");
+const newsCategoryRouter = require("./Routers/NewsCategoryRouter");
 const brandRoutes = require("./Routers/BrandRouter");
 const pageRoutes = require("./Routers/PagesRouter");
 const preorderRoutes = require("./Routers/PreorderRouter");
@@ -39,7 +39,7 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/category', categogyRoutes);
+app.use('/api/category', categoryRoutes);
 app.use("/api/vouchers", voucherRoutes);
 app.use("/api/checkout", checkoutRoutes);
 // Routes order

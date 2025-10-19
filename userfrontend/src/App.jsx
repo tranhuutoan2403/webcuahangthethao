@@ -42,7 +42,7 @@ function App() {
                 <Route path="/giohang" element={<GioHang />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/My-order" element={<MyOrders />} />
-                <Route path="news/categogy/:slug" element={<News />} />
+                <Route path="news/category/:slug" element={<News />} />
               {/* Chi tiết từng bài viết dựa trên slug */}
                 <Route path="news/:slug" element={<NewsDetail />} />
                 <Route path="/news/:slug" element={<AboutUs />} />
