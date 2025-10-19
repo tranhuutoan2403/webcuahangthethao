@@ -149,6 +149,25 @@ const TrangChu = () => {
   return (
     <div className="content">
         <BannerCarousel />
+        
+        <div className="customer-benefits-wrapper">
+            <div className="customer-benefit-box">
+                <img src={`http://localhost:5000/images/benefit1.png`} alt="Nationwide Delivery" className="benefit-icon" />
+                <p>Vận chuyển <strong>TOÀN QUỐC</strong><br />Thanh toán khi nhận hàng</p>
+            </div>
+            <div className="customer-benefit-box">
+                <img src={`http://localhost:5000/images/benefit2.png`} alt="Quality Assurance" className="benefit-icon" />
+                <p><strong>Bảo đảm chất lượng</strong><br />Sản phẩm hoàn toàn chính hãng</p>
+            </div>
+            <div className="customer-benefit-box">
+                <img src={`http://localhost:5000/images/benefit3.png`} alt="Fast Payment" className="benefit-icon" />
+                <p>Tiết kiệm <strong>THỜI GIAN</strong><br />Với nhiều PHƯƠNG THỨC</p>
+            </div>
+            <div className="customer-benefit-box">
+                <img src={`http://localhost:5000/images/benefit4.png`} alt="Product Exchange" className="benefit-icon" />
+                <p><strong>Đổi sản phẩm mới</strong><br />Nếu sản phẩm lỗi</p>
+            </div>
+        </div>
 
         {/* Ô nhập voucher */}
         <VoucherInput onVoucherApplied={setActiveVoucher} />
