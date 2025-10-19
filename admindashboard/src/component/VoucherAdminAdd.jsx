@@ -22,7 +22,7 @@ function VoucherAdd() {
 
   // Lấy danh sách category
   useEffect(() => {
-    fetch("http://localhost:5000/api/categogy")
+    fetch("http://localhost:5000/api/category")
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((err) => console.error("Lỗi khi lấy category:", err));

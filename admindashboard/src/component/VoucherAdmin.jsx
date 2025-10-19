@@ -15,7 +15,7 @@ function Voucher() {
 
   // Lấy danh sách category
   const fetchCategories = () => {
-    fetch("http://localhost:5000/api/categogy'")
+    fetch("http://localhost:5000/api/category'")
       .then((res) => res.json())
       .then((data) => {
         const map = {};

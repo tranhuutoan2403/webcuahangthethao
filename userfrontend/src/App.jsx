@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './component/Webpage/Header';
-import CategoryPage from './component/Webpage/CategogyPage';
+import CategoryPage from './component/Webpage/CategoryPage';
+import CategoryBrandPage from './component/Webpage/CategoryBrandPage';
 import Footer from './component/Webpage/Footer';
 import TrangChu from './component/Webpage/TrangChu';
 import Register from './component/Webpage/Register';
@@ -30,8 +31,9 @@ function App() {
             
                 {/* Trang chi tiết sản phẩm theo slug */}
                 <Route path="/product/:slug" element={<ProductDetail />} />
-                <Route path="/categogy/:slug" element={<CategoryPage />} />
+                <Route path="/category/:slug" element={<CategoryPage />} />
                 <Route path="/brand/:slug" element={<BrandPage />} />
+                <Route path="/:categorySlug/:brandSlug" element={<CategoryBrandPage />} />
                 <Route path="/Login" element={<Login/>} />
                 <Route path="/Register" element={<Register/>} />
                 <Route path="/profile" element={<Profile />} />

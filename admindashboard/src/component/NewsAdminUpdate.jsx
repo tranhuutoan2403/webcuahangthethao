@@ -39,7 +39,7 @@ export default function NewsAdminUpdate() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/news-categogy");
+        const res = await axios.get("http://localhost:5000/api/news-category");
         setCategories(res.data);
       } catch (err) {
         console.error("Lỗi khi tải danh mục:", err);

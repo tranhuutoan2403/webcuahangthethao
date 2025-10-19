@@ -63,7 +63,7 @@ function ProductAdd() {
   // ================== Fetch category & brand ==================
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/categogy")
+      .get("http://localhost:5000/api/category")
       .then((res) => setCategories(res.data))
       .catch((err) => console.error(err));
 

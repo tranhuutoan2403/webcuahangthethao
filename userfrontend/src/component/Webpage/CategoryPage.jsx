@@ -20,7 +20,7 @@ const CategoryPage = () => {
 
   // ✅ Lấy tên danh mục theo slug
   useEffect(() => {
-    fetch(`http://localhost:5000/api/categogy/slug/${slug}`)
+    fetch(`http://localhost:5000/api/category/slug/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.name) {
@@ -34,7 +34,7 @@ const CategoryPage = () => {
 
   // ✅ Lấy danh sách sản phẩm theo danh mục
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/categogy/${slug}`)
+    fetch(`http://localhost:5000/api/products/category/${slug}`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching category products:", err));

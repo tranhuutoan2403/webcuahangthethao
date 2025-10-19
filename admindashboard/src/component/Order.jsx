@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // ✅ Thêm dòng này
+
 import "../CSS/orderadmin.css";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [expandedOrder, setExpandedOrder] = useState(null); // để mở rộng chi tiết đơn hàng
+  const [expandedOrder, setExpandedOrder] = useState(null);
+  const navigate = useNavigate(); // ✅ Khai báo navigate
 
-  // Fetch dữ liệu đơn hàng
+  // ✅ Fetch dữ liệu đơn hàng
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -47,7 +50,6 @@ const Order = () => {
         <tbody>
           {orders.map((order) => (
             <React.Fragment key={order.order_id}>
-              {/* Hàng chính */}
               <tr>
                 <td>#{order.order_id}</td>
                 <td>{order.receiver.name}</td>
@@ -58,10 +60,8 @@ const Order = () => {
                     {order.status}
                   </span>
                 </td>
-                <td>{order.final_amount.toLocaleString()} VND</td>
-                <td>
-                  {new Date(order.created_at).toLocaleString("vi-VN")}
-                </td>
+                <td>{Number(order.final_amount).toLocaleString()} VND</td>
+                <td>{new Date(order.created_at).toLocaleString("vi-VN")}</td>
                 <td>
                   <button
                     className="btn-detail"
@@ -69,10 +69,15 @@ const Order = () => {
                   >
                     {expandedOrder === order.order_id ? "Ẩn" : "Xem"}
                   </button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => navigate(`/order/update/${order.order_id}`)} // ✅ Sửa lại đúng đường dẫn
+                  >
+                    Sửa
+                  </button>
                 </td>
               </tr>
 
-              {/* Chi tiết sản phẩm */}
               {expandedOrder === order.order_id && (
                 <tr className="order-details">
                   <td colSpan="8">
@@ -92,9 +97,9 @@ const Order = () => {
                           <tr key={idx}>
                             <td>{item.product_name}</td>
                             <td>{item.quantity}</td>
-                            <td>{item.price.toLocaleString()} VND</td>
-                            <td>{item.discount_amount.toLocaleString()} VND</td>
-                            <td>{item.subtotal.toLocaleString()} VND</td>
+                            <td>{Number(item.price).toLocaleString()} VND</td>
+                            <td>{Number(item.discount_amount).toLocaleString()} VND</td>
+                            <td>{Number(item.subtotal).toLocaleString()} VND</td>
                           </tr>
                         ))}
                       </tbody>

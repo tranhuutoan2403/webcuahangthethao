@@ -11,13 +11,14 @@ import ProductUpdate from "./component/ProductUpdate";
 import ProductMaterials from "./component/ProductMaterial";
 import ProductMaterialAdd from "./component/ProductMaterialAdd";
 import AdminLogin from "./component/AdminLogin";
-import Categogy from "./component/Categogy";
-import CategogyAdd from "./component/CategogyAdd";
-import CategogyUpdate from "./component/CategogyUpdate";
+import Category from "./component/Category";
+import CategoryAdd from "./component/CategoryAdd";
+import CategoryUpdate from "./component/CategoryUpdate";
 import Voucher from "./component/VoucherAdmin";
 import VoucherAdd from "./component/VoucherAdminAdd";
 import VoucherUpdate from "./component/VoucherAdminUpdate";
 import Order from "./component/Order";
+import OrderUpdate from "./component/OrderUpdate";
 import FlashSales from "./component/FlashSale";
 import FlashSaleAdd from "./component/FlashSaleAdd";
 import FlashSaleUpdate from "./component/FlashSaleUpdate";
@@ -27,9 +28,9 @@ import FlashSaleProductUpdate from "./component/FlashSaleProductUpdate";
 import NewsAdmin from "./component/NewsAdmin";
 import NewsAdminAdd from "./component/NewsAdminAdd";
 import NewsAdminUpdate from "./component/NewsAdminUpdate";
-import NewsCategogyAdmin from "./component/NewsCategogyAdmin";
-import NewsCategoryAdminAdd from "./component/NewCategogyAdminAdd";
-import NewsCategoryAdminUpdate from "./component/NewCategogyAdminUpdate";
+import NewsCategoryAdmin from "./component/NewsCategoryAdmin";
+import NewsCategoryAdminAdd from "./component/NewCategoryAdminAdd";
+import NewsCategoryAdminUpdate from "./component/NewCategoryAdminUpdate";
 import Brand from "./component/Brand";
 import BrandAdd from "./component/BrandAdd";
 import BrandUpdate from "./component/BrandUpdate";
@@ -77,10 +78,10 @@ function Layout() {
             <Route path="/brand" element={<Brand />} />
             <Route path="/brand/add" element={<BrandAdd />} />
             <Route path="/brand/update/:id" element={<BrandUpdate />} />
-              {/* Categogy*/}
-            <Route path="/categogy" element={<Categogy />} />
-            <Route path="/categogy/add" element={<CategogyAdd />} />
-            <Route path="/categogy/update/:id" element={<CategogyUpdate />} />
+              {/* Category*/}
+            <Route path="/category" element={<Category />} />
+            <Route path="/category/add" element={<CategoryAdd />} />
+            <Route path="/category/update/:id" element={<CategoryUpdate />} />
 
             {/* voucher*/}
             <Route path="/voucher" element={<Voucher />} />
@@ -89,8 +90,9 @@ function Layout() {
 
             
             <Route path="/order" element={<Order />} />
-            {/* <Route path="/categogy/add" element={<CategogyAdd />} />
-            <Route path="/categogy/update/:id" element={<CategogyUpdate />} /> */}
+            <Route path="/order/update/:id" element={<OrderUpdate />} />
+            {/* <Route path="/category/add" element={<CategoryAdd />} />
+            <Route path="/category/update/:id" element={<CategoryUpdate />} /> */}
             {/* flashSale*/}
             <Route path="/flash-sale" element={<FlashSales />} />
             <Route path="/flash-sale/add" element={<FlashSaleAdd />} />
@@ -104,10 +106,10 @@ function Layout() {
             <Route path="/news/add" element={<NewsAdminAdd/>} />
             <Route path="/news/update/:id" element={<NewsAdminUpdate/>} />
 
-             {/* NewsCategogy */}
-            <Route path="/news-categogy" element={<NewsCategogyAdmin/>} />
-            <Route path="/news-categogy/add" element={<NewsCategoryAdminAdd />} />
-            <Route path="/news-categogy/update/:id" element={<NewsCategoryAdminUpdate />} />
+             {/* NewsCategory */}
+            <Route path="/news-category" element={<NewsCategoryAdmin/>} />
+            <Route path="/news-category/add" element={<NewsCategoryAdminAdd />} />
+            <Route path="/news-category/update/:id" element={<NewsCategoryAdminUpdate />} />
             
             <Route path="/product-reviews" element={<ProductReview/>} />
             <Route path="/Feedback" element={<Feedback/>} />

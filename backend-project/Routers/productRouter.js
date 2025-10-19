@@ -3,32 +3,34 @@ const router = express.Router();
 const productController = require("../Controllers/ProductControllers");
 
 // ==========================
-// PRODUCT ROUTES
+// PRODUCT ROUTES (Đặt route cụ thể trước, động sau)
 // ==========================
 
 // 1. Lấy tất cả sản phẩm
 router.get("/", productController.getAllProduct);
 
-// 3. Lấy sản phẩm theo slug
+// 2. Lấy sản phẩm theo slug (phải đặt sớm để không bị nuốt)
 router.get("/slug/:slug", productController.getProductBySlug);
 
-// 4. Lấy sản phẩm theo category slug
-router.get("/categogy/:slug", productController.getProductsByCategorySlug);
-// Lấy sản phẩm theo Brand Slug 
-router.get("/brand/:slug", productController.getProductsByBrands)
+// 3. Lấy sản phẩm theo category slug
+router.get("/category/:slug", productController.getProductsByCategorySlug);
 
-// 2. Lấy sản phẩm theo ID (ĐỂ CUỐI CÙNG)
+// 4. Lấy sản phẩm theo brand slug
+router.get("/brand/:slug", productController.getProductsByBrands);
+
+// 5. Lấy sản phẩm theo category + brand
+router.get("/:categorySlug/:brandSlug", productController.getProductsByCategoryAndBrand);
+
+// 6. Lấy sản phẩm theo ID (đặt cuối)
 router.get("/:id", productController.getProductById);
 
-// 5. Tạo sản phẩm mới
+// 7. Tạo sản phẩm mới
 router.post("/", productController.uploadSingleImage, productController.createProduct);
 
-// 6. Cập nhật sản phẩm
+// 8. Cập nhật sản phẩm
 router.put("/:id", productController.uploadSingleImage, productController.updateProduct);
 
-// 7. Xóa sản phẩm
+// 9. Xóa sản phẩm
 router.delete("/:id", productController.deleteProduct);
-
-// router.get("/:id/stock", productController.getProductStock);
 
 module.exports = router;

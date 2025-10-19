@@ -84,14 +84,13 @@ CREATE TABLE IF NOT EXISTS `brands` (
 --
 
 INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
-(1, 'Yonex', 'vot-yonex'),
-(2, 'Lining', 'vot-lining'),
+(1, 'Yonex', 'yonex'),
+(2, 'Lining', 'lining'),
 (3, 'Victor', 'victor'),
-(4, 'nike', 'giay-nike'),
-(5, 'Head', 'vot-head'),
-(6, 'Joola', 'vot-joola'),
-(7, 'giày cầu lông yonex', 'giay-cau-long-yonex'),
-(8, 'giày cầu lông lining', 'giay-cau-long-lining');
+(4, 'Nike', 'nike'),
+(5, 'Head', 'head'),
+(6, 'Joola', 'joola');
+
 
 -- --------------------------------------------------------
 
@@ -479,25 +478,25 @@ INSERT INTO `products`
 (94, 2, 6, 'Vợt Pickleball Joola Perseus Pro IV 16mm - Asia Colorway chính hãng', 'vot-pickleball-joola-perseus-pro-iv-16mm-asia-colorway-chinh-hang', '- Vợt Pickleball Joola Perseus Pro IV 16mm - Asia Colorway chính hãng...', 7990000, '60.webp', '2025-10-14 07:08:17'),
 (95, 2, 6, 'Vợt Pickleball Joola Hyperion Pro IV 16mm - Asia Colorway chính hãng', 'vot-pickleball-joola-hyperion-pro-iv-16mm-asia-colorway-chinh-hang', '- Vợt Pickleball Joola Hyperion Pro IV 16mm - Asia Colorway đây là một thiết kế ấn tượng...', 7990000, '61.webp', '2025-10-14 07:08:57'),
 
-(96, 10, 7, 'Giày cầu lông Yonex SHB 65X VA - Grayish Beige chính hãng', 'giay-cau-long-yonex-shb-65x-va-grayish-beige-chinh-hang', '- Giày cầu lông Yonex SHB 65X VA - Grayish Beige mang đậm dấu ấn...', 1809000, '62.webp', '2025-10-14 07:25:08'),
-(97, 10, 7, 'Giày cầu lông Yonex Hexis', 'giay-cau-long-yonex-hexis', '- Giày cầu lông Yonex Hexis là mẫu giày mới được Yonex ra mắt...', 699000, '63.webp', '2025-10-14 07:27:50'),
-(98, 10, 7, 'Giày cầu lông Yonex Voltrex', 'giay-cau-long-yonex-voltrex', '- Giày cầu lông Yonex Voltrex ghi điểm thực sự lại nằm ở trọng lượng nhẹ...', 699000, '64.webp', '2025-10-14 07:28:33'),
-(99, 10, 7, 'Giày cầu lông Yonex SHB 470CR', 'giay-cau-long-yonex-shb-470cr', '- Giày cầu lông Yonex SHB 470CR là dòng giày của Yonex luôn nổi tiếng...', 1699000, '65.webp', '2025-10-14 07:29:16'),
-(100, 10, 7, 'Giày cầu lông Yonex 88 Dial 3 2025', 'giay-cau-long-yonex-88-dial-3-2025', '- Giày cầu lông Yonex 88 Dial 3 2025 với công nghệ khóa BOA Fit độc quyền...', 2790000, '66.webp', '2025-10-14 07:30:12'),
-(101, 10, 7, 'Giày cầu lông Yonex 88 Dial 3 Wide 2025', 'giay-cau-long-yonex-88-dial-3-wide-2025', '- Giày cầu lông Yonex 88 Dial 3 Wide 2025 với công nghệ khóa BOA Fit...', 2790000, '67.webp', '2025-10-14 07:30:55'),
-(102, 10, 7, 'Giày cầu lông Yonex Pyro', 'giay-cau-long-yonex-pyro', '- Giày cầu lông Yonex Pyro là lựa chọn mới mẻ và đầy đột phá...', 686920, '68.webp', '2025-10-14 07:31:42'),
-(103, 10, 7, 'Giày cầu lông Yonex Atlas 4', 'giay-cau-long-yonex-atlas-4', '- Giày cầu lông Yonex Atlas 4 là dòng giày cầu lông của Yonex...', 690000, '69.webp', '2025-10-14 07:32:50'),
+(96, 10, 1, 'Giày cầu lông Yonex SHB 65X VA - Grayish Beige chính hãng', 'giay-cau-long-yonex-shb-65x-va-grayish-beige-chinh-hang', '- Giày cầu lông Yonex SHB 65X VA - Grayish Beige mang đậm dấu ấn...', 1809000, '62.webp', '2025-10-14 07:25:08'),
+(97, 10, 1, 'Giày cầu lông Yonex Hexis', 'giay-cau-long-yonex-hexis', '- Giày cầu lông Yonex Hexis là mẫu giày mới được Yonex ra mắt...', 699000, '63.webp', '2025-10-14 07:27:50'),
+(98, 10, 1, 'Giày cầu lông Yonex Voltrex', 'giay-cau-long-yonex-voltrex', '- Giày cầu lông Yonex Voltrex ghi điểm thực sự lại nằm ở trọng lượng nhẹ...', 699000, '64.webp', '2025-10-14 07:28:33'),
+(99, 10, 1, 'Giày cầu lông Yonex SHB 470CR', 'giay-cau-long-yonex-shb-470cr', '- Giày cầu lông Yonex SHB 470CR là dòng giày của Yonex luôn nổi tiếng...', 1699000, '65.webp', '2025-10-14 07:29:16'),
+(100, 10, 1, 'Giày cầu lông Yonex 88 Dial 3 2025', 'giay-cau-long-yonex-88-dial-3-2025', '- Giày cầu lông Yonex 88 Dial 3 2025 với công nghệ khóa BOA Fit độc quyền...', 2790000, '66.webp', '2025-10-14 07:30:12'),
+(101, 10, 1, 'Giày cầu lông Yonex 88 Dial 3 Wide 2025', 'giay-cau-long-yonex-88-dial-3-wide-2025', '- Giày cầu lông Yonex 88 Dial 3 Wide 2025 với công nghệ khóa BOA Fit...', 2790000, '67.webp', '2025-10-14 07:30:55'),
+(102, 10, 1, 'Giày cầu lông Yonex Pyro', 'giay-cau-long-yonex-pyro', '- Giày cầu lông Yonex Pyro là lựa chọn mới mẻ và đầy đột phá...', 686920, '68.webp', '2025-10-14 07:31:42'),
+(103, 10, 1, 'Giày cầu lông Yonex Atlas 4', 'giay-cau-long-yonex-atlas-4', '- Giày cầu lông Yonex Atlas 4 là dòng giày cầu lông của Yonex...', 690000, '69.webp', '2025-10-14 07:32:50'),
 
-(104, 10, 8, 'Giày cầu lông Lining AYTV029-1 chính hãng', 'giay-cau-long-lining-aytv029-1-chinh-hang', '- Giày cầu lông Lining AYTV029-1 được thiết kế theo phong cách thể thao...', 1130000, '70.webp', '2025-10-14 07:34:23'),
-(105, 10, 8, 'Giày cầu lông Lining AYTU001-7 chính hãng', 'giay-cau-long-lining-aytu001-7-chinh-hang', '- Giày cầu lông Lining AYTU001-7 là sản phẩm trung cấp của thương hiệu Lining...', 1200000, '72.webp', '2025-10-14 07:35:05'),
-(106, 10, 8, 'Giày cầu lông Lining AYTU025-1 chính hãng', 'giay-cau-long-lining-aytu025-1-chinh-hang', '- Giày cầu lông Lining AYTU025-1 sử dụng màu sắc đơn giản và giản dị...', 1200000, '73.webp', '2025-10-14 07:35:48'),
-(107, 10, 8, 'Giày cầu lông Lining AYTV003-1', 'giay-cau-long-lining-aytv003-1', '- Giày cầu lông Lining AYTV003-1 là một trong những mẫu giày tầm trung nổi bật...', 1500000, '74.webp', '2025-10-14 07:36:35'),
-(108, 10, 8, 'Giày cầu lông Lining AYTV003-1', 'giay-cau-long-lining-aytv003-1-2', '- Giày cầu lông Lining AYTV003-1 là một trong những mẫu giày tầm trung nổi bật...', 1500000, '75.webp', '2025-10-14 07:37:34'),
-(109, 10, 8, 'Giày cầu lông Lining AYZV001-2 chính hãng', 'giay-cau-long-lining-ayzv001-2-chinh-hang', '- Giày cầu lông Lining AYZV001-2 chính hãng là một trong những mẫu giày tầm trung...', 2119000, '76.webp', '2025-10-14 07:38:21'),
-(110, 10, 8, 'Giày cầu lông Lining AYTV015-3 chính hãng', 'giay-cau-long-lining-aytv015-3-chinh-hang', '- Giày cầu lông Lining AYTV015-3 là một đôi giày tập luyện cầu lông đa năng...', 1690000, '77.webp', '2025-10-14 07:39:08'),
-(111, 10, 8, 'Giày cầu lông Lining AYTU001-9 chính hãng', 'giay-cau-long-lining-aytu001-9-chinh-hang', '- Giày cầu lông Lining AYTU001-9 được thiết kế với tông màu đơn giản...', 1200000, '78.webp', '2025-10-14 07:40:28'),
-(112, 10, 8, 'Giày cầu lông Lining AYTU001-8 chính hãng', 'giay-cau-long-lining-aytu001-8-chinh-hang', '- Giày cầu lông Lining AYTU001-8 là phiên bản nâng cấp vượt trội...', 1200000, '79.webp', '2025-10-14 07:41:16'),
-(113, 10, 8, 'Giày cầu lông Lining AYTV027-1 chính hãng', 'giay-cau-long-lining-aytv027-1-chinh-hang', '- Giày cầu lông Lining AYTV027-1 chính hãng là phiên bản nâng cấp vượt trội...', 1200000, '80.webp', '2025-10-14 07:42:02');
+(104, 10, 2, 'Giày cầu lông Lining AYTV029-1 chính hãng', 'giay-cau-long-lining-aytv029-1-chinh-hang', '- Giày cầu lông Lining AYTV029-1 được thiết kế theo phong cách thể thao...', 1130000, '70.webp', '2025-10-14 07:34:23'),
+(105, 10, 2, 'Giày cầu lông Lining AYTU001-7 chính hãng', 'giay-cau-long-lining-aytu001-7-chinh-hang', '- Giày cầu lông Lining AYTU001-7 là sản phẩm trung cấp của thương hiệu Lining...', 1200000, '72.webp', '2025-10-14 07:35:05'),
+(106, 10, 2, 'Giày cầu lông Lining AYTU025-1 chính hãng', 'giay-cau-long-lining-aytu025-1-chinh-hang', '- Giày cầu lông Lining AYTU025-1 sử dụng màu sắc đơn giản và giản dị...', 1200000, '73.webp', '2025-10-14 07:35:48'),
+(107, 10, 2, 'Giày cầu lông Lining AYTV003-1', 'giay-cau-long-lining-aytv003-1', '- Giày cầu lông Lining AYTV003-1 là một trong những mẫu giày tầm trung nổi bật...', 1500000, '74.webp', '2025-10-14 07:36:35'),
+(108, 10, 2, 'Giày cầu lông Lining AYTV003-1', 'giay-cau-long-lining-aytv003-1-2', '- Giày cầu lông Lining AYTV003-1 là một trong những mẫu giày tầm trung nổi bật...', 1500000, '75.webp', '2025-10-14 07:37:34'),
+(109, 10, 2, 'Giày cầu lông Lining AYZV001-2 chính hãng', 'giay-cau-long-lining-ayzv001-2-chinh-hang', '- Giày cầu lông Lining AYZV001-2 chính hãng là một trong những mẫu giày tầm trung...', 2119000, '76.webp', '2025-10-14 07:38:21'),
+(110, 10, 2, 'Giày cầu lông Lining AYTV015-3 chính hãng', 'giay-cau-long-lining-aytv015-3-chinh-hang', '- Giày cầu lông Lining AYTV015-3 là một đôi giày tập luyện cầu lông đa năng...', 1690000, '77.webp', '2025-10-14 07:39:08'),
+(111, 10, 2, 'Giày cầu lông Lining AYTU001-9 chính hãng', 'giay-cau-long-lining-aytu001-9-chinh-hang', '- Giày cầu lông Lining AYTU001-9 được thiết kế với tông màu đơn giản...', 1200000, '78.webp', '2025-10-14 07:40:28'),
+(112, 10, 2, 'Giày cầu lông Lining AYTU001-8 chính hãng', 'giay-cau-long-lining-aytu001-8-chinh-hang', '- Giày cầu lông Lining AYTU001-8 là phiên bản nâng cấp vượt trội...', 1200000, '79.webp', '2025-10-14 07:41:16'),
+(113, 10, 2, 'Giày cầu lông Lining AYTV027-1 chính hãng', 'giay-cau-long-lining-aytv027-1-chinh-hang', '- Giày cầu lông Lining AYTV027-1 chính hãng là phiên bản nâng cấp vượt trội...', 1200000, '80.webp', '2025-10-14 07:42:02');
 
 
 -- --------------------------------------------------------
@@ -689,8 +688,8 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
-  ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`material_id`) REFERENCES `materials` (`material_id`);
+  ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`material_id`) REFERENCES `materials` (`material_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `products`

@@ -91,9 +91,9 @@ SELECT
   o.user_id,
   u.username,
   u.email,
-  o.recipient_name,
-  o.phone AS receiver_phone,
-  o.address_line,
+  a.recipient_name,
+  a.phone AS receiver_phone,
+  a.address_line,
   o.total_amount,
   o.final_amount,
   o.status,
@@ -110,6 +110,7 @@ SELECT
   m.size AS material_size
 FROM orders o
 JOIN users u ON o.user_id = u.user_id
+JOIN address a ON o.address_id = a.id
 JOIN order_details od ON o.order_id = od.order_id
 JOIN products p ON od.product_id = p.product_id
 LEFT JOIN materials m ON od.material_id = m.material_id
@@ -159,7 +160,7 @@ WHERE o.order_id = ?
   });
 };
 
-// ==================== CREATE ORDER ====================
+// ==================== TẠO ĐƠN HÀNG ====================
 exports.createOrder = (req, res) => {
   const {
     user_id,
@@ -178,7 +179,7 @@ exports.createOrder = (req, res) => {
   if (!recipient_name || !phone || !address_line)
     return res.status(400).json({ error: "Vui lòng nhập đầy đủ thông tin người nhận" });
 
-  // ✅ Kiểm tra tồn kho trong materials
+  // ✅ Kiểm tra tồn kho
   let checkedCount = 0;
   let isErrorSent = false;
 
@@ -225,7 +226,7 @@ exports.createOrder = (req, res) => {
   });
 };
 
-// ==================== INSERT ORDER ====================
+// ==================== HÀM TẠO ĐƠN ====================
 function insertOrder(
   user_id,
   recipient_name,
@@ -271,7 +272,7 @@ VALUES ?
       db.query(detailsSql, [values], (err3) => {
         if (err3) return res.status(500).json({ error: err3.message });
 
-        // ✅ Giảm stock trong bảng materials
+        // ✅ Giảm stock
         let updatedCount = 0;
         items.forEach((item) => {
           const updateStockSql = `
@@ -295,7 +296,9 @@ WHERE material_id = ?
     });
   });
 }
-// LẤY ĐƠN HÀNG THEO USER ID
+
+// =============================
+// LẤY ĐƠN HÀNG THEO USER
 // =============================
 exports.getOrdersByUser = (req, res) => {
   const userId = req.params.user_id;
@@ -310,5 +313,123 @@ exports.getOrdersByUser = (req, res) => {
   db.query(sql, [userId], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
+  });
+};
+
+// ✅ Cập nhật trạng thái và thông tin người nhận đơn hàng
+exports.updateOrder = (req, res) => {
+  const orderId = req.params.id;
+  const { status, receiver } = req.body; // 👈 thêm receiver
+
+  if (!status) {
+    return res.status(400).json({ error: "Thiếu trạng thái đơn hàng" });
+  }
+
+  // 🪄 1. Lấy address_id từ đơn hàng
+  const getAddressSql = `SELECT address_id FROM orders WHERE order_id = ?`;
+  db.query(getAddressSql, [orderId], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!result.length) return res.status(404).json({ error: "Không tìm thấy đơn hàng" });
+
+    const addressId = result[0].address_id;
+
+    // 🪄 2. Cập nhật thông tin người nhận trong bảng address
+    const updateAddressSql = `
+      UPDATE address
+      SET recipient_name = ?, phone = ?, address_line = ?
+      WHERE id = ?
+    `;
+    db.query(
+      updateAddressSql,
+      [receiver.name, receiver.phone, receiver.address, addressId],
+      (err2) => {
+        if (err2) return res.status(500).json({ error: err2.message });
+
+        // 🪄 3. Cập nhật trạng thái đơn hàng
+        const updateOrderSql = `
+          UPDATE orders
+          SET status = ?
+          WHERE order_id = ?
+        `;
+        db.query(updateOrderSql, [status, orderId], (err3) => {
+          if (err3) return res.status(500).json({ error: err3.message });
+
+          // 🪄 4. Trả về dữ liệu đơn hàng sau khi cập nhật
+          const getSql = `
+            SELECT 
+              o.order_id,
+              o.user_id,
+              u.username,
+              u.email,
+              a.recipient_name,
+              a.phone AS receiver_phone,
+              a.address_line,
+              o.total_amount,
+              o.final_amount,
+              o.status,
+              o.created_at,
+              od.order_item_id,
+              od.product_id,
+              od.material_id,
+              od.quantity,
+              od.price AS product_price,
+              od.discount_amount,
+              (od.quantity * od.price - od.discount_amount) AS subtotal,
+              p.name AS product_name,
+              m.color AS material_color,
+              m.size AS material_size
+            FROM orders o
+            JOIN users u ON o.user_id = u.user_id
+            JOIN address a ON o.address_id = a.id
+            JOIN order_details od ON o.order_id = od.order_id
+            JOIN products p ON od.product_id = p.product_id
+            LEFT JOIN materials m ON od.material_id = m.material_id
+            WHERE o.order_id = ?
+          `;
+
+          db.query(getSql, [orderId], (err4, results) => {
+            if (err4) return res.status(500).json({ error: err4.message });
+            if (!results.length)
+              return res.status(404).json({ error: "Không tìm thấy đơn hàng sau khi cập nhật" });
+
+            const order = {
+              order_id: results[0].order_id,
+              user: {
+                id: results[0].user_id,
+                username: results[0].username,
+                email: results[0].email,
+              },
+              receiver: {
+                name: results[0].recipient_name,
+                phone: results[0].receiver_phone,
+                address: results[0].address_line,
+              },
+              total_amount: results[0].total_amount,
+              final_amount: results[0].final_amount,
+              status: results[0].status,
+              created_at: results[0].created_at,
+              items: [],
+            };
+
+            results.forEach((row) => {
+              order.items.push({
+                order_item_id: row.order_item_id,
+                product_id: row.product_id,
+                product_name: row.product_name,
+                material_id: row.material_id,
+                material_color: row.material_color,
+                material_size: row.material_size,
+                quantity: row.quantity,
+                price: row.product_price,
+                discount_amount: row.discount_amount,
+                subtotal: row.subtotal,
+              });
+            });
+
+            res.json(order);
+          });
+        });
+      }
+    );
   });
 };

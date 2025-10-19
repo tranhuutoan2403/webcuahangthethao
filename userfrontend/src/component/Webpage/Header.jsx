@@ -30,7 +30,7 @@ export default function Header() {
   const navigate = useNavigate();
   const searchRef = useRef(null);
 
-  // ✅ Lấy user từ localStorage (không đổi)
+  // ✅ Lấy user từ localStorage
   useEffect(() => {
     const updateUser = () => {
       const storedUser = localStorage.getItem('user');
@@ -131,55 +131,62 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Menu chính (giữ nguyên) */}
+            {/* MENU CHÍNH */}
             <nav className="nav">
               <div className="dropdown">
                 <Link to="/news/ve-chung-toi">Về Chúng Tôi</Link>
               </div>
-              <div className="dropdown">
+
+              {/* <div className="dropdown">
                 <button>NHÃN HIỆU ▾</button>
                 <div className="dropdown-menu">
-                  <a href="#">Nhãn hiệu A</a>
-                  <a href="#">Nhãn hiệu B</a>
+                  <Link to="/category/yonex">Yonex</Link>
+                  <Link to="/category/lining">Lining</Link>
                 </div>
-              </div>
+              </div> */}
+
+              {/* ✅ Menu category + brand */}
               <div className="dropdown">
-                <Link to="/categogy/vot-cau-long">Vợt Cầu Lông</Link>
+                <Link to="/category/vot-cau-long">Vợt Cầu Lông</Link>
                 <div className="dropdown-menu">
-                  <Link to="/brand/vot-yonex">Vợt Yonex</Link>
-                  <Link to="/brand/vot-lining">Vợt Lining</Link>
+                  <Link to="/vot-cau-long/yonex">Yonex</Link>
+                  <Link to="/vot-cau-long/lining">Lining</Link>
                 </div>
               </div>
+
               <div className="dropdown">
-                <Link to="/categogy/vot-pickle-ball">Vợt PickleBall</Link>
+                <Link to="/category/vot-pickle-ball">Vợt PickleBall</Link>
                 <div className="dropdown-menu">
-                  <Link to="/brand/vot-head">Vợt Head</Link>
-                  <Link to="/brand/vot-joola">Vợt Joola</Link>
+                  <Link to="/vot-pickle-ball/head">Head</Link>
+                  <Link to="/vot-pickle-ball/joola">Joola</Link>
                 </div>
               </div>
+
               <div className="dropdown">
-                <Link to="/categogy/vot-tennis">Vợt Tennis</Link>
+                <Link to="/vot-tennis">Vợt Tennis</Link>
                 <div className="dropdown-menu">
-                  <Link to="/VotHead">Vợt Head</Link>
-                  <Link to="/VotJoola">Vợt Joola</Link>
+                  <Link to="/vot-tennis/head">Head</Link>
+                  <Link to="/vot-tennis/joola">Joola</Link>
                 </div>
               </div>
+
               <div className="dropdown">
-                <Link to="/categogy/giay-cau-long">Giày</Link>
+                <Link to="/category/giay-cau-long">Giày</Link>
                 <div className="dropdown-menu">
-                  <Link to="/brand/giay-cau-long-yonex">Giày Cầu Lông Yonex</Link>
-                  <Link to="/brand/giay-cau-long-lining">Giày Cầu Lông Lining</Link>
+                  <Link to="/giay-cau-long/yonex">Yonex</Link>
+                  <Link to="/giay-cau-long/lining">Lining</Link>
                 </div>
               </div>
+
               <div className="dropdown">
                 <Link to="/news/categogy/tin-tuc">Tin Tức</Link>
               </div>
             </nav>
 
-            {/* Phần bên phải */}
+            {/* PHẦN BÊN PHẢI */}
             <div className="right-section">
 
-              {/* Ô tìm kiếm + gợi ý */}
+              {/* Ô tìm kiếm */}
               <div className="search-box-wrapper" ref={searchRef}>
                 <form className="search-box" onSubmit={handleSearchSubmit}>
                   <input
