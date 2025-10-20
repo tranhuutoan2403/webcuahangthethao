@@ -225,7 +225,9 @@ export default function Header() {
               {/* Tài khoản */}
               <div className="account-dropdown">
                 <div className="user-info">
-                  <i className="fa-regular fa-user user-icon"></i>
+                  <span id="user-login-register-icon">
+                    <img src="http://localhost:5000/images/user-login-register-icon.png" alt="user-icon" />
+                  </span>
                   {user && <span className="username"><strong>{user.username}</strong></span>}
                 </div>
                 <div className="dropdown-menu1">

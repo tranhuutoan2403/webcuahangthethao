@@ -2,37 +2,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
 /* Toàn bộ nội dung app */
-body, .content, .product-card, .product-info, h2, h3, p, span, label, button {
-    font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+body,
+.content,
+.product-card,
+.product-info,
+h2,
+h3,
+p,
+span,
+label,
+button {
+  font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
 }
 
 /* Menu & poster */
-.menu-container{
-    max-width: 1200px;
-    margin: 0px auto;
+.menu-container {
+  max-width: 1200px;
+  margin: 0px auto;
 }
-.poster{
-    margin-top: -16px;
+
+.poster {
+  margin-top: -16px;
 }
-.poster img{
+
+.poster img {
   width: 100%;
 }
-.title-head{
-    margin-top: 10px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 30px;
-    color: #333;
-    box-shadow: 0 2px 4px rgba(249, 191, 130, 0.98);
+
+.title-head {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 30px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(249, 191, 130, 0.98);
 }
-.row{
-    margin-top: 20px;
+
+.row {
+  margin-top: 20px;
 }
-h2{
-    text-align: center;
-    margin-top: 10px;
-    font-weight: 700;
-    color: #333;
+
+h2 {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 700;
+  color: #333;
 }
 
 /* Product Card */
@@ -40,6 +54,7 @@ h2{
   max-width: 1200px;
   margin: 20px auto 0 auto;
 }
+
 .card-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -62,18 +77,22 @@ h2{
 }
 
 .product-info {
-  color: #000 !important; /* Này sửa lại màu cho productname khi bị ghi đè file khác dùng thuộc tính important */
+  color: #000 !important;
+  /* Này sửa lại màu cho productname khi bị ghi đè file khác dùng thuộc tính important */
   padding: 10px;
 }
 
 .product-name {
-  color: #000 !important;; /* Màu đen */
+  color: #000 !important;
+  ;
+  /* Màu đen */
   font-weight: 600;
   font-size: 16px;
 }
 
 .product-price {
-  color: #000; /* Màu đen */
+  color: #000;
+  /* Màu đen */
   font-weight: 700;
   font-size: 16px;
 }
@@ -103,13 +122,15 @@ h2{
 
 .old-price {
   text-decoration: line-through;
-  color: #000; /* đổi thành đen */
+  color: #000;
+  /* đổi thành đen */
   margin-right: 5px;
   font-size: 14px;
 }
 
 .sale-price {
-  color: red; /* đổi thành đen */
+  color: red;
+  /* đổi thành đen */
   font-weight: 700;
   font-size: 16px;
 }
@@ -132,13 +153,14 @@ h2{
 
 .customer-benefit-box {
   display: grid;
-  grid-template-columns: 25% 75%; /* ✅ Icon column + content column */
+  grid-template-columns: 25% 75%;
+  /* ✅ Icon column + content column */
   align-items: center;
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   flex: 1;
 }
 
@@ -153,4 +175,104 @@ h2{
   line-height: 1.5;
   margin: 0;
   color: #ff4d4f;
+}
+
+/* CSS cho News tại trang chủ */
+#latest-news {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.news-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.news-box {
+  width: calc(25% - 20px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.thumbnail-frame {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  margin-top: -20px;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-frame:hover .thumbnail-img {
+  transform: scale(1.1);
+}
+
+.news-content {
+  padding: 15px;
+}
+
+.news-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4em;
+  max-height: 2.8em;
+}
+
+.news-published {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.time-label {
+  background-color: #ff4d4f;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background-color: #ff4d4f;
+  margin: 0 8px;
+}
+
+.news-snippet {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5em;
+  max-height: 4.5em;
+  /* 3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }

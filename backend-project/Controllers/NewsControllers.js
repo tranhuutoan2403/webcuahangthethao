@@ -46,6 +46,25 @@ const getNewsById = (req, res) => {
   });
 };
 
+// ==================== LẤY 4 BÀI VIẾT MỚI NHẤT THEO published_at ====================
+const getLatestPublishedNews = (req, res) => {
+  const sql = `
+    SELECT news_id, title, slug, image, content, published_at
+    FROM news
+    WHERE status = 'published'
+    ORDER BY published_at DESC
+    LIMIT 4
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Lỗi khi lấy tin tức mới nhất:", err);
+      return res.status(500).json({ message: "Lỗi server" });
+    }
+    res.json(results);
+  });
+};
+
 // ==================== TẠO NEWS MỚI ====================
 const createNews = (req, res) => {
   const { title, slug, content, status, published_at, category_id } = req.body;
@@ -164,6 +183,10 @@ const getNewsBySlug = (req, res) => {
     res.json(result[0]);
   });
 };
+
+// Lấy 4 bài viết mới nhất tính bằng cột created_at
+
+
 module.exports = {
   uploadImage,
   getAllNews,
@@ -172,5 +195,6 @@ module.exports = {
   updateNews,
   deleteNews,
   getNewsByCategorySlug,
-  getNewsBySlug, //thêm hàm mới
+  getNewsBySlug,
+  getLatestPublishedNews,
 };
