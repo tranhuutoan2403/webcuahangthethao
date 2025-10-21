@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2025 at 12:22 PM
--- Server version: 10.6.22-MariaDB
+-- Generation Time: Oct 21, 2025 at 11:09 AM
+-- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dungcushop`
 --
-CREATE DATABASE IF NOT EXISTS `dungcushop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `dungcushop`;
 
 -- --------------------------------------------------------
 
@@ -29,18 +27,15 @@ USE `dungcushop`;
 -- Table structure for table `address`
 --
 
-DROP TABLE IF EXISTS `address`;
-CREATE TABLE IF NOT EXISTS `address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `address` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `recipient_name` varchar(100) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `address_line` varchar(255) NOT NULL,
   `is_default` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `address`
@@ -70,14 +65,11 @@ INSERT INTO `address` (`id`, `user_id`, `recipient_name`, `phone`, `address_line
 -- Table structure for table `brands`
 --
 
-DROP TABLE IF EXISTS `brands`;
-CREATE TABLE IF NOT EXISTS `brands` (
-  `brand_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `brands` (
+  `brand_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `slug` varchar(255) NOT NULL,
-  PRIMARY KEY (`brand_id`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `slug` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `brands`
@@ -97,14 +89,11 @@ INSERT INTO `brands` (`brand_id`, `name`, `slug`) VALUES
 -- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categories` (
+  `category_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `slug` varchar(255) NOT NULL,
-  PRIMARY KEY (`category_id`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `slug` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `categories`
@@ -121,18 +110,15 @@ INSERT INTO `categories` (`category_id`, `name`, `slug`) VALUES
 -- Table structure for table `feedback`
 --
 
-DROP TABLE IF EXISTS `feedback`;
-CREATE TABLE IF NOT EXISTS `feedback` (
-  `feedback_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback` (
+  `feedback_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `message` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`feedback_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `feedback`
@@ -147,9 +133,8 @@ INSERT INTO `feedback` (`feedback_id`, `user_id`, `name`, `email`, `phone`, `mes
 -- Table structure for table `flash_sales`
 --
 
-DROP TABLE IF EXISTS `flash_sales`;
-CREATE TABLE IF NOT EXISTS `flash_sales` (
-  `flash_sale_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `flash_sales` (
+  `flash_sale_id` int(11) NOT NULL,
   `name` varchar(180) NOT NULL,
   `description` text DEFAULT NULL,
   `discount_type` enum('percent','fixed') NOT NULL,
@@ -157,9 +142,8 @@ CREATE TABLE IF NOT EXISTS `flash_sales` (
   `start_at` datetime NOT NULL,
   `end_at` datetime NOT NULL,
   `status` enum('scheduled','active','ended','cancelled') DEFAULT 'scheduled',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`flash_sale_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `flash_sales`
@@ -175,17 +159,13 @@ INSERT INTO `flash_sales` (`flash_sale_id`, `name`, `description`, `discount_typ
 -- Table structure for table `flash_sale_products`
 --
 
-DROP TABLE IF EXISTS `flash_sale_products`;
-CREATE TABLE IF NOT EXISTS `flash_sale_products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `flash_sale_products` (
+  `id` int(11) NOT NULL,
   `flash_sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `stock_limit` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `flash_sale_id` (`flash_sale_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `flash_sale_products`
@@ -202,19 +182,16 @@ INSERT INTO `flash_sale_products` (`id`, `flash_sale_id`, `product_id`, `stock_l
 -- Table structure for table `materials`
 --
 
-DROP TABLE IF EXISTS `materials`;
-CREATE TABLE IF NOT EXISTS `materials` (
-  `material_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `materials` (
+  `material_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `color` varchar(50) DEFAULT NULL,
   `size` varchar(20) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
   `stock` int(11) DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`material_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `materials`
@@ -235,9 +212,8 @@ INSERT INTO `materials` (`material_id`, `product_id`, `color`, `size`, `sku`, `s
 -- Table structure for table `news`
 --
 
-DROP TABLE IF EXISTS `news`;
-CREATE TABLE IF NOT EXISTS `news` (
-  `news_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `news` (
+  `news_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
@@ -245,11 +221,8 @@ CREATE TABLE IF NOT EXISTS `news` (
   `image` varchar(255) DEFAULT NULL,
   `status` enum('draft','published','archived') DEFAULT 'draft',
   `published_at` datetime DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`news_id`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `category_id` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `news`
@@ -267,16 +240,13 @@ INSERT INTO `news` (`news_id`, `category_id`, `title`, `slug`, `content`, `image
 -- Table structure for table `news_categories`
 --
 
-DROP TABLE IF EXISTS `news_categories`;
-CREATE TABLE IF NOT EXISTS `news_categories` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `news_categories` (
+  `category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`category_id`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `news_categories`
@@ -294,22 +264,16 @@ INSERT INTO `news_categories` (`category_id`, `name`, `slug`, `description`, `cr
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE IF NOT EXISTS `orders` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `voucher_id` int(11) DEFAULT NULL,
   `address_id` int(11) NOT NULL,
   `total_amount` decimal(10,0) NOT NULL,
   `final_amount` decimal(10,0) NOT NULL,
   `status` enum('pending','paid','shipping','completed','canceled') DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`order_id`),
-  KEY `voucher_id` (`voucher_id`),
-  KEY `address_id` (`address_id`),
-  KEY `idx_orders_user` (`user_id`),
-  KEY `idx_orders_status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
@@ -339,20 +303,15 @@ INSERT INTO `orders` (`order_id`, `user_id`, `voucher_id`, `address_id`, `total_
 -- Table structure for table `order_details`
 --
 
-DROP TABLE IF EXISTS `order_details`;
-CREATE TABLE IF NOT EXISTS `order_details` (
-  `order_item_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `order_details` (
+  `order_item_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `material_id` int(11) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `discount_amount` decimal(10,0) DEFAULT 0,
-  `price` decimal(10,0) NOT NULL,
-  PRIMARY KEY (`order_item_id`),
-  KEY `order_id` (`order_id`),
-  KEY `product_id` (`product_id`),
-  KEY `order_details_ibfk_3` (`material_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `price` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_details`
@@ -382,18 +341,15 @@ INSERT INTO `order_details` (`order_item_id`, `order_id`, `product_id`, `materia
 -- Table structure for table `pages`
 --
 
-DROP TABLE IF EXISTS `pages`;
-CREATE TABLE IF NOT EXISTS `pages` (
-  `page_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pages` (
+  `page_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `status` enum('draft','published','archived') DEFAULT 'published',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`page_id`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `pages`
@@ -411,9 +367,8 @@ INSERT INTO `pages` (`page_id`, `title`, `slug`, `content`, `image`, `status`, `
 -- Table structure for table `preorders`
 --
 
-DROP TABLE IF EXISTS `preorders`;
-CREATE TABLE IF NOT EXISTS `preorders` (
-  `preorder_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `preorders` (
+  `preorder_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `product_name` varchar(255) NOT NULL,
@@ -424,10 +379,7 @@ CREATE TABLE IF NOT EXISTS `preorders` (
   `price` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1,
   `total_amount` decimal(12,2) GENERATED ALWAYS AS (`price` * `quantity`) STORED,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`preorder_id`),
-  KEY `idx_preorders_product` (`product_id`),
-  KEY `idx_preorders_user` (`user_id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -436,9 +388,8 @@ CREATE TABLE IF NOT EXISTS `preorders` (
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `product_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products` (
+  `product_id` int(11) NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `brand_id` int(11) DEFAULT NULL,
   `name` varchar(150) NOT NULL,
@@ -446,11 +397,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `description` text NOT NULL,
   `price` decimal(10,0) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`product_id`),
-  KEY `idx_products_category` (`category_id`),
-  KEY `fk_products_brand` (`brand_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
@@ -551,18 +499,14 @@ INSERT INTO `products` (`product_id`, `category_id`, `brand_id`, `name`, `slug`,
 -- Table structure for table `product_reviews`
 --
 
-DROP TABLE IF EXISTS `product_reviews`;
-CREATE TABLE IF NOT EXISTS `product_reviews` (
-  `review_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_reviews` (
+  `review_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `rating` int(11) DEFAULT NULL CHECK (`rating` >= 1 and `rating` <= 5),
   `comment` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`review_id`),
-  KEY `user_id` (`user_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `product_reviews`
@@ -574,12 +518,33 @@ INSERT INTO `product_reviews` (`review_id`, `user_id`, `product_id`, `rating`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `product_tags`
+--
+
+CREATE TABLE `product_tags` (
+  `product_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(60) NOT NULL,
@@ -587,10 +552,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `address` varchar(255) NOT NULL,
   `role` enum('user','admin') DEFAULT 'user',
   `status` enum('active','inactive','banned','pending') DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -616,9 +579,8 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `phone`, `addre
 -- Table structure for table `voucher`
 --
 
-DROP TABLE IF EXISTS `voucher`;
-CREATE TABLE IF NOT EXISTS `voucher` (
-  `voucher_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `voucher` (
+  `voucher_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `code` varchar(50) NOT NULL,
   `description` text DEFAULT NULL,
@@ -630,12 +592,8 @@ CREATE TABLE IF NOT EXISTS `voucher` (
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `status` enum('scheduled','active','expired','used','disabled') DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`voucher_id`),
-  UNIQUE KEY `code` (`code`),
-  KEY `idx_voucher_status` (`status`),
-  KEY `fk_voucher_category` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `voucher`
@@ -645,6 +603,265 @@ INSERT INTO `voucher` (`voucher_id`, `category_id`, `code`, `description`, `disc
 (1, 1, 'SALE10', 'Giảm 10% cho đơn hàng từ 1.000.000 VNĐ trở lên', 'percent', 10, 1000000, 100, 0, '2025-08-28', '2025-09-26', 'active', '2025-09-13 07:50:32'),
 (2, 1, 'GIAM50K', 'Giảm 50.000 VNĐ cho đơn từ 200.000 VNĐ', 'fixed', 50000, 200000, 200, 0, '2025-08-30', '2025-09-13', 'active', '2025-09-13 07:50:32'),
 (3, 1, 'FLASH12', 'Đại Tiệc Bùng nổ', 'percent', 20, 700000, 4, 0, '2025-10-14', '2025-10-21', 'active', '2025-10-07 02:04:56');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `brands`
+--
+ALTER TABLE `brands`
+  ADD PRIMARY KEY (`brand_id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`category_id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `flash_sales`
+--
+ALTER TABLE `flash_sales`
+  ADD PRIMARY KEY (`flash_sale_id`);
+
+--
+-- Indexes for table `flash_sale_products`
+--
+ALTER TABLE `flash_sale_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `flash_sale_id` (`flash_sale_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `materials`
+--
+ALTER TABLE `materials`
+  ADD PRIMARY KEY (`material_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`news_id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `news_categories`
+--
+ALTER TABLE `news_categories`
+  ADD PRIMARY KEY (`category_id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `voucher_id` (`voucher_id`),
+  ADD KEY `address_id` (`address_id`),
+  ADD KEY `idx_orders_user` (`user_id`),
+  ADD KEY `idx_orders_status` (`status`);
+
+--
+-- Indexes for table `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`order_item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `order_details_ibfk_3` (`material_id`);
+
+--
+-- Indexes for table `pages`
+--
+ALTER TABLE `pages`
+  ADD PRIMARY KEY (`page_id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `preorders`
+--
+ALTER TABLE `preorders`
+  ADD PRIMARY KEY (`preorder_id`),
+  ADD KEY `idx_preorders_product` (`product_id`),
+  ADD KEY `idx_preorders_user` (`user_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `idx_products_category` (`category_id`),
+  ADD KEY `fk_products_brand` (`brand_id`);
+
+--
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_tags`
+--
+ALTER TABLE `product_tags`
+  ADD PRIMARY KEY (`product_id`,`tag_id`),
+  ADD KEY `tag_id` (`tag_id`);
+
+--
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `voucher`
+--
+ALTER TABLE `voucher`
+  ADD PRIMARY KEY (`voucher_id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD KEY `idx_voucher_status` (`status`),
+  ADD KEY `fk_voucher_category` (`category_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `address`
+--
+ALTER TABLE `address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `brands`
+--
+ALTER TABLE `brands`
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `flash_sales`
+--
+ALTER TABLE `flash_sales`
+  MODIFY `flash_sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `flash_sale_products`
+--
+ALTER TABLE `flash_sale_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `materials`
+--
+ALTER TABLE `materials`
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `news_categories`
+--
+ALTER TABLE `news_categories`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `pages`
+--
+ALTER TABLE `pages`
+  MODIFY `page_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `preorders`
+--
+ALTER TABLE `preorders`
+  MODIFY `preorder_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+
+--
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `voucher`
+--
+ALTER TABLE `voucher`
+  MODIFY `voucher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -719,6 +936,13 @@ ALTER TABLE `products`
 ALTER TABLE `product_reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `product_tags`
+--
+ALTER TABLE `product_tags`
+  ADD CONSTRAINT `product_tags_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `voucher`
