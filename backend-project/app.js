@@ -21,6 +21,7 @@ const pageRoutes = require("./Routers/PagesRouter");
 const preorderRoutes = require("./Routers/PreorderRouter");
 const ProductReviewRoutes = require("./Routers/ProductReviewRouter");
 const FeedBackRoutes = require("./Routers/FeedBackRouter");
+const TagRouter = require('./Routers/TagRouter');
 // Cho phép gọi API từ frontend
 app.use(cors());
 
@@ -59,9 +60,11 @@ app.use("/api/pages", pageRoutes);
 // Routes Preoders
 app.use("/api/preorders", preorderRoutes);
 // Routes ProdutReviews
-app.use("/api/product-review",ProductReviewRoutes);
+app.use("/api/product-review", ProductReviewRoutes);
 
-app.use("/api/feedback",FeedBackRoutes);
+app.use("/api/feedback", FeedBackRoutes);
+// Routes tags
+app.use("/api/tags", TagRouter);
 // Chạy server
 app.listen(5000, () => {
   console.log('Server đang chạy tại http://localhost:5000');
