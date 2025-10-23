@@ -1,0 +1,41 @@
+/* Table layout: fixed column widths */
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* Column widths */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 5%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 60%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 20%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 15%;
+}
+
+/* Truncate long text with ellipsis */
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Center-align checkboxes in table cells */
+td input[type="checkbox"],
+th input[type="checkbox"] {
+    display: block;
+    margin: 0 auto;
+}

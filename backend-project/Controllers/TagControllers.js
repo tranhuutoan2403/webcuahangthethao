@@ -1,150 +1,188 @@
-const db = require('../db'); // Adjust this to your actual DB connection or ORM
-const TagControllers = {
-    // Create a new tag
-    async createTag(req, res) {
-        const { name } = req.body;
-        try {
-            const [tag] = await db('tags').insert({ name }).returning('*');
-            res.status(201).json(tag);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to create tag', details: err });
-        }
-    },
+const db = require('../db');
 
-    // Get all tags
-    async getAllTags(req, res) {
-        try {
-            const tags = await db('tags').select('*');
-            res.status(200).json(tags);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to fetch tags', details: err });
-        }
-    },
+// Tạo tag mới
+exports.createTag = (req, res) => {
+    const { name } = req.body;
+    const sql = "INSERT INTO tags (name) VALUES (?)";
 
-    // Get a single tag by ID
-    async getTagById(req, res) {
-        const { id } = req.params;
-        try {
-            const tag = await db('tags').where({ id }).first();
-            if (!tag) return res.status(404).json({ error: 'Tag not found' });
-            res.status(200).json(tag);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to fetch tag', details: err });
-        }
-    },
+    db.query(sql, [name], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
 
-    // Update a tag
-    async updateTag(req, res) {
-        const { id } = req.params;
-        const { name } = req.body;
-        try {
-            const updated = await db('tags').where({ id }).update({ name }).returning('*');
-            if (!updated.length) return res.status(404).json({ error: 'Tag not found' });
-            res.status(200).json(updated[0]);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to update tag', details: err });
-        }
-    },
-
-    // Delete a tag
-    async deleteTag(req, res) {
-        const { id } = req.params;
-        try {
-            const deleted = await db('tags').where({ id }).del();
-            if (!deleted) return res.status(404).json({ error: 'Tag not found' });
-            res.status(200).json({ message: 'Tag deleted successfully' });
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to delete tag', details: err });
-        }
-    },
-
-    // Assign a tag to a product
-    async assignTagToProduct(req, res) {
-        const { product_id, tag_id } = req.body;
-        try {
-            await db('product_tags').insert({ product_id, tag_id });
-            res.status(201).json({ message: 'Tag assigned to product' });
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to assign tag', details: err });
-        }
-    },
-
-    // Remove a tag from a product
-    async removeTagFromProduct(req, res) {
-        const { product_id, tag_id } = req.body;
-        try {
-            await db('product_tags').where({ product_id, tag_id }).del();
-            res.status(200).json({ message: 'Tag removed from product' });
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to remove tag', details: err });
-        }
-    },
-
-    // Get all tags for a product
-    async getTagsForProduct(req, res) {
-        const { productId } = req.params;
-        try {
-            const tags = await db('product_tags')
-                .join('tags', 'product_tags.tag_id', 'tags.id')
-                .where('product_tags.product_id', productId)
-                .select('tags.id', 'tags.name');
-            res.status(200).json(tags);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to fetch tags for product', details: err });
-        }
-    },
-
-    // Get all products with a specific tag
-    async getProductsByTag(req, res) {
-        const { tagId } = req.params;
-        try {
-            const products = await db('product_tags')
-                .join('products', 'product_tags.product_id', 'products.product_id')
-                .where('product_tags.tag_id', tagId)
-                .select('products.product_id', 'products.name');
-            res.status(200).json(products);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to fetch products for tag', details: err });
-        }
-    },
-
-    // Assign a tag to multiple products
-    async assignTagToMultipleProducts(req, res) {
-        const { tag_id, product_ids } = req.body;
-        try {
-            const inserts = product_ids.map(product_id => ({ product_id, tag_id }));
-            await db('product_tags').insert(inserts);
-            res.status(201).json({ message: 'Tag assigned to multiple products' });
-        } catch (err) {
-            res.status(500).json({ error: 'Bulk assignment failed', details: err });
-        }
-    },
-
-    // Assign a tag to all products in a category
-    async assignTagByCategory(req, res) {
-        const { tag_id, category_id } = req.body;
-        try {
-            const products = await db('products').where({ category_id }).select('product_id');
-            const inserts = products.map(p => ({ product_id: p.product_id, tag_id }));
-            await db('product_tags').insert(inserts);
-            res.status(201).json({ message: 'Tag assigned to category products' });
-        } catch (err) {
-            res.status(500).json({ error: 'Category assignment failed', details: err });
-        }
-    },
-
-    // Assign a tag to all products from a brand
-    async assignTagByBrand(req, res) {
-        const { tag_id, brand_id } = req.body;
-        try {
-            const products = await db('products').where({ brand_id }).select('product_id');
-            const inserts = products.map(p => ({ product_id: p.product_id, tag_id }));
-            await db('product_tags').insert(inserts);
-            res.status(201).json({ message: 'Tag assigned to brand products' });
-        } catch (err) {
-            res.status(500).json({ error: 'Brand assignment failed', details: err });
-        }
-    }
+        const insertedId = result.insertId;
+        db.query("SELECT * FROM tags WHERE id = ?", [insertedId], (err2, rows) => {
+            if (err2) return res.status(500).json({ error: err2.message });
+            res.status(201).json(rows[0]);
+        });
+    });
 };
 
-module.exports = TagControllers;
+// Lấy tất cả tag
+exports.getAllTags = (req, res) => {
+    db.query("SELECT * FROM tags", (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(rows);
+    });
+};
+
+// Lấy tag theo ID
+exports.getTagById = (req, res) => {
+    const { tagId } = req.params;
+    db.query("SELECT * FROM tags WHERE id = ?", [tagId], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (rows.length === 0) return res.status(404).json({ error: "Không tìm thấy tag" });
+        res.status(200).json(rows[0]);
+    });
+};
+
+// Cập nhật tag
+exports.updateTag = (req, res) => {
+    const { tagId } = req.params;
+    const { name } = req.body;
+
+    db.query("UPDATE tags SET name = ? WHERE id = ?", [name, tagId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: "Tag không tồn tại" });
+
+        db.query("SELECT * FROM tags WHERE id = ?", [tagId], (err2, rows) => {
+            if (err2) return res.status(500).json({ error: err2.message });
+            res.status(200).json(rows[0]);
+        });
+    });
+};
+
+// Xóa tag
+exports.deleteTag = (req, res) => {
+    const { tagId } = req.params;
+    db.query("DELETE FROM tags WHERE id = ?", [tagId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: "Tag không tồn tại" });
+        res.status(200).json({ message: "Xóa tag thành công" });
+    });
+};
+
+// Gán tag cho sản phẩm
+exports.assignTagToProduct = (req, res) => {
+    const { product_id, tag_id } = req.body;
+    db.query("INSERT INTO product_tags (product_id, tag_id) VALUES (?, ?)", [product_id, tag_id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: "Gán tag cho sản phẩm thành công" });
+    });
+};
+
+// Xóa tag khỏi sản phẩm
+exports.removeTagFromProduct = (req, res) => {
+    const { product_id, tag_id } = req.body;
+    db.query("DELETE FROM product_tags WHERE product_id = ? AND tag_id = ?", [product_id, tag_id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json({ message: "Xóa tag khỏi sản phẩm thành công" });
+    });
+};
+
+// Lấy tất cả tag của sản phẩm
+exports.getTagsForProduct = (req, res) => {
+    const { productId } = req.params;
+    const sql = `
+    SELECT tags.id, tags.name
+    FROM product_tags
+    JOIN tags ON product_tags.tag_id = tags.id
+    WHERE product_tags.product_id = ?
+  `;
+    db.query(sql, [productId], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(rows);
+    });
+};
+
+// Lấy tất cả sản phẩm theo tag
+exports.getProductsByTag = (req, res) => {
+    const { tagId } = req.params;
+    const sql = `
+    SELECT products.product_id, products.name
+    FROM product_tags
+    JOIN products ON product_tags.product_id = products.product_id
+    WHERE product_tags.tag_id = ?
+  `;
+    db.query(sql, [tagId], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(rows);
+    });
+};
+
+// Gán tag cho nhiều sản phẩm
+exports.assignTagToMultipleProducts = (req, res) => {
+    const { tag_id, product_ids } = req.body;
+    const inserts = product_ids.map(product_id => [product_id, tag_id]);
+    db.query("INSERT INTO product_tags (product_id, tag_id) VALUES ?", [inserts], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: "Gán tag cho nhiều sản phẩm thành công" });
+    });
+};
+
+// Gán tag theo category
+exports.assignTagByCategory = (req, res) => {
+    const { tag_id, category_id } = req.body;
+    db.query("SELECT product_id FROM products WHERE category_id = ?", [category_id], (err, products) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const inserts = products.map(p => [p.product_id, tag_id]);
+        db.query("INSERT INTO product_tags (product_id, tag_id) VALUES ?", [inserts], (err2) => {
+            if (err2) return res.status(500).json({ error: err2.message });
+            res.status(201).json({ message: "Gán tag cho sản phẩm theo category thành công" });
+        });
+    });
+};
+
+// Gán tag theo brand
+exports.assignTagByBrand = (req, res) => {
+    const { tag_id, brand_id } = req.body;
+    db.query("SELECT product_id FROM products WHERE brand_id = ?", [brand_id], (err, products) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const inserts = products.map(p => [p.product_id, tag_id]);
+        db.query("INSERT INTO product_tags (product_id, tag_id) VALUES ?", [inserts], (err2) => {
+            if (err2) return res.status(500).json({ error: err2.message });
+            res.status(201).json({ message: "Gán tag cho sản phẩm theo brand thành công" });
+        });
+    });
+};
+
+// Xóa tag khỏi nhiều sản phẩm
+exports.removeTagFromMultipleProducts = (req, res) => {
+    const { tag_id, product_ids } = req.body;
+    const sql = `
+    DELETE FROM product_tags 
+    WHERE tag_id = ? AND product_id IN (?)
+  `;
+    db.query(sql, [tag_id, product_ids], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json({ message: "Xóa tag khỏi nhiều sản phẩm thành công" });
+    });
+};
+
+// Lọc sản phẩm theo tag, category, brand
+exports.getFilteredProducts = (req, res) => {
+    const { search = "", category = "all", brand = "all", sort = "asc" } = req.query;
+
+    let sql = `SELECT product_id, name, category_id, brand_id FROM products WHERE 1=1`;
+    const params = [];
+
+    if (search) {
+        sql += ` AND name LIKE ?`;
+        params.push(`%${search}%`);
+    }
+
+    if (category !== "all") {
+        sql += ` AND category_id = ?`;
+        params.push(category);
+    }
+
+    if (brand !== "all") {
+        sql += ` AND brand_id = ?`;
+        params.push(brand);
+    }
+
+    sql += ` ORDER BY name ${sort === "desc" ? "DESC" : "ASC"}`;
+
+    db.query(sql, params, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(results);
+    });
+};

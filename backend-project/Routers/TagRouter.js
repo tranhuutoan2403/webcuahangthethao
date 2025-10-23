@@ -3,11 +3,16 @@ const router = express.Router();
 const TagControllers = require('../Controllers/TagControllers');
 
 // Core tag routes
-router.post('/', TagControllers.createTag);
-router.get('/', TagControllers.getAllTags);
-router.get('/:tagId', TagControllers.getTagById);
-router.put('/:tagId', TagControllers.updateTag);
-router.delete('/:tagId', TagControllers.deleteTag);
+router.get("/products", TagControllers.getFilteredProducts);
+router.post("/assign-multiple", TagControllers.assignTagToMultipleProducts);
+router.delete("/remove-multiple", TagControllers.removeTagFromMultipleProducts);
+
+// CRUD routes
+router.post("/", TagControllers.createTag);
+router.get("/", TagControllers.getAllTags);
+router.get("/:tagId", TagControllers.getTagById);
+router.put("/:tagId", TagControllers.updateTag);
+router.delete("/:tagId", TagControllers.deleteTag);
 
 // Product-tag relationship routes
 router.post('/assign', TagControllers.assignTagToProduct);

@@ -21,7 +21,8 @@ const pageRoutes = require("./Routers/PagesRouter");
 const preorderRoutes = require("./Routers/PreorderRouter");
 const ProductReviewRoutes = require("./Routers/ProductReviewRouter");
 const FeedBackRoutes = require("./Routers/FeedBackRouter");
-const TagRouter = require('./Routers/TagRouter');
+// const TagRouter = require('./Routers/TagRouter');
+const TagRouter = require('./Routers/TagRouter')
 // Cho phép gọi API từ frontend
 app.use(cors());
 
